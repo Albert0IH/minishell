@@ -6,7 +6,7 @@
 #    By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 10:51:22 by ahamuyel          #+#    #+#              #
-#    Updated: 2024/11/19 11:28:58 by ahamuyel         ###   ########.fr        #
+#    Updated: 2024/11/25 12:04:39 by ahamuyel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,23 +14,37 @@ NAME = minishell
 CC = cc 
 CFLAGS = -Wall -Wextra -Werror
 
-SRC_DIR = ./src/
-INCLUDES = -INCLUDES
+SRCS_DIR = ./srcs
+OBJS_DIR = ./objs
+INCLUDES = -I./includes
+
+SRCS = $(SRCS_DIR)/main.c 
+
+OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
+
 LIBS = -lreadline
-SRC = $(SRC_DIR)main.c
-OBJ = $(SRC:.c=.o)
+LIBFT = ./libft
+
+LIBFT_FLAGS = -L$(LIBFT) -lft
 
 all: $(NAME)
 
-$(NAME) : $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBS)
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+	@mkdir -p $(OBJS_DIR)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+
+$(NAME): $(OBJS)
+	@make -s -C $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(LIBFT_FLAGS) -o $(NAME)
 
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJS_DIR)
+	@make clean -s -C $(LIBFT)
 
 fclean: clean
 	rm -rf $(NAME)
+	@make fclean -s -C $(LIBFT)
 
 re: fclean all
-
