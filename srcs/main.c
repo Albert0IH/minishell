@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 11:11:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2024/11/25 15:19:57 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:38:19 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(void)
 {
 	char *input;
 	char **tokens;
-	int i;
+	//int i;
 
 	while (1)
 	{
@@ -31,14 +31,20 @@ int	main(void)
 		tokens = tokenize(input);
 		if (tokens)
 		{
-			i = 0;
-			while (tokens[i])
-			{
-				printf("%s\n", tokens[i]);
-                i++;
-			}
+			if (tokens[0])
+				exec_comand(tokens);
 			free_tokens(tokens);
 		}
+		// if (tokens)
+		// {
+		// 	i = 0;
+		// 	while (tokens[i])
+		// 	{
+		// 		printf("%s\n", tokens[i]);
+        //         i++;
+		// 	}
+		// free_tokens(tokens);
+		// }
 		free(input);
 	}
 	return (0);
