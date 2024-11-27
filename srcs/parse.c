@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:51:33 by ahamuyel          #+#    #+#             */
-/*   Updated: 2024/11/25 15:48:23 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2024/11/27 11:47:30 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,26 @@ static int	is_delim(char c, const char *delim)
 	return (0);
 }
 
+int	count_tokens(const char *input)
+{
+	int	count = 0;
+	int	in_token = 0;
+
+	while (*input)
+	{
+		if ((*input != ' ' && *input != '\t') && !in_token)
+		{
+			in_token = 1;
+			count++;
+		}
+		else if (*input == ' ' || *input == '\t')
+			in_token = 0;
+		input++;
+	}
+	return (count);
+}
+
+
 char	*ft_strtok(char *s, const char *delim)
 {
 	static char	*save_ptr;
@@ -34,91 +54,41 @@ char	*ft_strtok(char *s, const char *delim)
 		return (NULL);
 	while (*save_ptr && is_delim(*save_ptr, delim))
 		save_ptr++;
-	if (*save_ptr == '\0')
+	if (!*save_ptr)
 		return (NULL);
 	token = save_ptr;
 	while (*save_ptr && !is_delim(*save_ptr, delim))
 		save_ptr++;
 	if (*save_ptr)
-	{
-		*save_ptr = '\0';
-		save_ptr++;
-	}
+		*save_ptr++ = '\0';
 	return (token);
-}
-
-int	count_tokens(char *input)
-{
-	int		count;
-	char	*token;
-
-	count = 0;
-	token = ft_strtok(input, " \t");
-	while (token)
-	{
-		count++;
-		token = ft_strtok(NULL, " \t");
-	}
-	return (count);
 }
 
 char	**tokenize(char *input)
 {
 	char	**tokens;
-	char	*input_copy;
 	char	*token;
-	int		i;
-	int		token_count;
+	int		i = 0;
+	int		token_count = count_tokens(input);
 
-	input_copy = ft_strdup(input);
-	i = 0;
-	token = NULL;
-    if (!input_copy)
-        return (NULL);
-    token_count = count_tokens(input_copy);
-    free(input_copy);
-    tokens = malloc((token_count + 1) * sizeof(char *));
-    if (!tokens)
-        return (NULL);
-    input_copy = ft_strdup(input);
-    if (!input_copy)
-    {
-        free(input);
-        return NULL;
-    }
-    token = ft_strtok(input_copy, " \t");
-    while (token)
-    {
-        tokens[i++] = ft_strdup(token);
-        token = ft_strtok(NULL, " \t");
-    }
-    tokens[i] = NULL;
-    free(input_copy);
-    return (tokens);
+	tokens = malloc((token_count + 1) * sizeof(char *));
+	if (!tokens)
+		return (NULL);
+	token = ft_strtok(input, " \t");
+	while (token)
+	{
+		tokens[i++] = ft_strdup(token);
+		token = ft_strtok(NULL, " \t");
+	}
+	tokens[i] = NULL;
+	return (tokens);
 }
 
 void	free_tokens(char **tokens)
 {
-	int	i;
+	int	i = 0;
 
-	i = 0;
 	while (tokens[i])
-	{
-		free(tokens[i]);
-		i++;
-	}
+		free(tokens[i++]);
 	free(tokens);
 }
-
-// int	main(void)
-// {
-// 	char s[] = "Este é um exemplo, de como usar; a func strtok.";
-// 	char *token;
-// 	token = ft_strtok(s, " .;,");
-// 	while (token)
-// 	{
-// 		printf("%s\n", token);
-// 		token = ft_strtok(NULL, " .;,");
-// 	}
-// 	return (0);
-// }
