@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 12:51:33 by ahamuyel          #+#    #+#             */
-/*   Updated: 2024/11/27 11:47:30 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2024/11/27 14:38:09 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,12 @@ char	**tokenize(char *input)
 	return (tokens);
 }
 
-void	free_tokens(char **tokens)
-{
-	int	i = 0;
-
-	while (tokens[i])
-		free(tokens[i++]);
-	free(tokens);
+void free_tokens(char **tokens) {
+    int i = 0;
+    while (tokens[i]) {
+        free(tokens[i]);
+        i++;
+    }
+    free(tokens);
 }
+
