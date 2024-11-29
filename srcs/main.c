@@ -6,33 +6,34 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 11:11:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2024/11/27 11:45:11 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:19:57 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(void)
+int main(void)
 {
-	char	*input;
-	char	**tokens;
-
-	while (1)
+    char *args[MAX_ARG_SIZE];
+    char *rl;
+	int i = 0; 
+    while (1)
+    {
+     
+        rl = readline("minishell> ");
+	if (!rl)
 	{
-		input = readline("minishell> ");
-		if (!input)
-		{
-			printf("exit\n");
-			break ;
-		}
-		if (*input)
-			add_history(input);
-		tokens = tokenize(input);
-		if (tokens && !is_builtin(tokens))
-			exec_command(tokens);
-		free_tokens(tokens);
-		free(input);
+		printf("exit\n");
+		break;
 	}
-	return (0);
+        parse_input(rl, args);
+	while (args[i] != NULL)
+	{
+   		printf("%s\n",args[i]);
+    		i++; 
+	}
+	free(rl);
+    }
+    return 0;
 }
 

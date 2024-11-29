@@ -6,7 +6,7 @@
 #    By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 10:51:22 by ahamuyel          #+#    #+#              #
-#    Updated: 2024/11/26 19:10:22 by ahamuyel         ###   ########.fr        #
+#    Updated: 2024/11/25 14:27:32 by ahamuyel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,7 @@ OBJS_DIR = ./objs
 INCLUDES = -I./includes
 
 SRCS =	$(SRCS_DIR)/main.c \
-		$(SRCS_DIR)/parse.c\
-		$(SRCS_DIR)/execute.c \
-		$(SRCS_DIR)/builtin.c
+		$(SRCS_DIR)/token.c 
 
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
