@@ -16,7 +16,8 @@ int main(void)
 {
     char *args[MAX_ARG_SIZE];
     char *rl;
-	int i = 0; 
+    int i; 
+
     while (1)
     {
      
@@ -27,9 +28,10 @@ int main(void)
 		break;
 	}
         parse_input(rl, args);
+        i = 0;
 	while (args[i] != NULL)
 	{
-   		printf("%s\n",args[i]);
+   		printf("%s\n", args[i]);
     		i++; 
 	}
 	free(rl);

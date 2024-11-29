@@ -12,6 +12,7 @@
 
 #include "../includes/minishell.h"
 
+
 char	*my_strtok(char *str, const char *delim)
 {
 	char		*start;
@@ -35,6 +36,7 @@ char	*my_strtok(char *str, const char *delim)
 	}
 	return (start);
 }
+
 void	parse_input(char *input, char **args)
 {
 	int		i;
