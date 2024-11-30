@@ -1,41 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 11:11:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2024/11/30 01:33:14 by ahamuyel         ###   ########.fr       */
+/*   Created: 2024/11/30 01:18:11 by ahamuyel          #+#    #+#             */
+/*   Updated: 2024/11/30 01:28:01 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(void)
+void handle_signal(int sig)
 {
-	char	*args[MAX_ARG_SIZE];
-	char	*rl;
+    if (sig == SIGINT)
+        write(1, "\nminishell> ", 12);
+}
 
-	setup_signals();
-	while (1)
-	{
-		rl = readline("minishell> ");
-		if (!rl)
-		{
-			printf("exit\n");
-			break ;
-		}
-		if (*rl)
-			add_history(rl);
-		parse_input(rl, args);
-		if (args[0] == NULL)
-		{
-			free(rl);
-			continue ;
-		}
-		execute_cmd(args);
-		free(rl);
-	}
-	return (0);
+void setup_signals(void)
+{
+    struct sigaction sa;
+    sa.sa_handler = handle_signal;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
+    sigaction(SIGINT, &sa, NULL);
 }

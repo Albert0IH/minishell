@@ -1,41 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 11:11:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2024/11/30 01:33:14 by ahamuyel         ###   ########.fr       */
+/*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
+/*   Updated: 2024/11/29 17:05:08 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(void)
+void execute_cmd(char **input)
 {
-	char	*args[MAX_ARG_SIZE];
-	char	*rl;
+    pid_t pid;
+    int status;
 
-	setup_signals();
-	while (1)
-	{
-		rl = readline("minishell> ");
-		if (!rl)
-		{
-			printf("exit\n");
-			break ;
-		}
-		if (*rl)
-			add_history(rl);
-		parse_input(rl, args);
-		if (args[0] == NULL)
-		{
-			free(rl);
-			continue ;
-		}
-		execute_cmd(args);
-		free(rl);
-	}
-	return (0);
+    if (!input[0])
+        return ;
+    pid = fork();
+    if (pid == 0)
+    {
+        if (execve(input[0], input, NULL) == -1)
+        {
+            perror("minishell");
+            exit(EXIT_FAILURE);
+        }
+    }
+    else if (pid < 0)
+        perror("minishell");
+    else
+        waitpid(pid, &status, 0);
 }
