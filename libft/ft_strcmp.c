@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/30 01:18:11 by ahamuyel          #+#    #+#             */
-/*   Updated: 2024/11/30 01:28:01 by ahamuyel         ###   ########.fr       */
+/*   Created: 2024/12/11 17:31:06 by ahamuyel          #+#    #+#             */
+/*   Updated: 2024/12/11 17:31:19 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void handle_signal(int sig)
+int ft_strcmp(const char *s1, const char *s2)
 {
-    if (sig == SIGINT)
-        write(1, "\nminishell> ", 12);
-}
-
-void setup_signals(void)
-{
-    struct sigaction sa;
-    sa.sa_handler = handle_signal;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_RESTART;
-    sigaction(SIGINT, &sa, NULL);
+    while (*s1 && (*s1 == *s2))
+    {
+        s1++;
+        s2++;
+    }
+    return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }

@@ -18,10 +18,7 @@ SRCS_DIR = ./srcs
 OBJS_DIR = ./objs
 INCLUDES = -I./includes
 
-SRCS =	$(SRCS_DIR)/main.c \
-		$(SRCS_DIR)/token.c \
-		$(SRCS_DIR)/execute.c \
-		$(SRCS_DIR)/signals.c 
+SRCS =	$(SRCS_DIR)/main.c
 
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
