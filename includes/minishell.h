@@ -25,12 +25,11 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # define MAX_INPUT_SIZE 1024
-# define MAX_TOKENS 100
+# define MAX_ARGS 100
 
 // Parsing
-
+char *extract_quote(char **args, char quote);
+char *extract_word(char **args);
 char **parse_input(char *input);
-char *ft_extract_quote(char **input, char quote);
-char *ft_extract_word(char **input);
 
 #endif

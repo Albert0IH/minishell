@@ -1,69 +1,68 @@
 #include "../includes/minishell.h"
 
-char **parse_input(char * input)
+char **parse_input(char * args)
 {
     char **tokens;
     int i;
 
     i = 0;
-    tokens = malloc(sizeof(char *) * (MAX_TOKENS + 1));
+    tokens = malloc(sizeof(char *) * (MAX_ARGS + 1));
     if (!tokens)
         return (NULL);
-    while (*input)
+    while (*args)
     {
-        while (*input == ' ')
-            input++;
-        if (*input =='\'')
+        while (*args == ' ')
+            args++;
+        if (*args =='\'')
         {
-            input++;
-            tokens[i++] = ft_extract_quote(&input, '\'');
+            args++;
+            tokens[i++] = extract_quote(&args, '\'');
         }
-        else if (*input == '"')
+        else if (*args == '"')
         {
-            input++;
-            tokens[i++] = ft_extract_quote(&input, '"');
+            args++;
+            tokens[i++] = extract_quote(&args, '"');
         }
         else
-            tokens[i++] = ft_extract_word(&input);
+            tokens[i++] = extract_word(&args);
     }
     tokens[i] = NULL;
     return(tokens);
 }
 
-char *ft_extract_quote(char **input, char quote)
+char *extract_quote(char **args, char quote)
 {
     char *start;
     char *word;
     size_t len;
 
-    start = *input;
+    start = *args;
     len = 0;
-    while (**input && **input != quote)
+    while (**args && **args != quote)
     {
-        (*input)++;
+        (*args)++;
         len++;
     }
     word = ft_substr(start, 0, len);
-    if (**input == quote)
-        (*input)++;
+    if (**args == quote)
+        (*args)++;
     return (word);
 }
 
-char *ft_extract_word(char **input)
+char *extract_word(char **args)
 {
     char *start;
     char *word;
     size_t len;
 
-    start = *input;
+    start = *args;
     len = 0;
-    while (**input && **input != ' ' && **input != '\'' && **input != '"')
+    while (**args && **args != ' ' && **args != '\'' && **args != '"')
     {
-        (*input)++;
+        (*args)++;
         len++;
     }
     word = ft_substr(start, 0, len);
     return (word);
 }
-
 

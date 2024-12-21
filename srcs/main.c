@@ -9,8 +9,9 @@ int main()
     while (1)
     {
         input = readline("minishell> ");
-        if (!input || !ft_strcmp(input, "exit"))
+        if (!input)
         {
+            printf("exit\n");
             free(input);
             break ;
         }
