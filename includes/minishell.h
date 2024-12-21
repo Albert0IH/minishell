@@ -25,18 +25,12 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # define MAX_INPUT_SIZE 1024
-# define MAX_ARG_SIZE 100
+# define MAX_TOKENS 100
 
 // Parsing
-char	*my_strtok(char *str, const char *delim);
-void	parse_input(char *input, char **args);
-void	execute_cmd(char **input);
 
-// Execution
-void	execute_cmd(char **input);
-
-// Signals
-void	handle_signal(int sig);
-void	setup_signals(void);
+char **parse_input(char *input);
+char *ft_extract_quote(char **input, char quote);
+char *ft_extract_word(char **input);
 
 #endif

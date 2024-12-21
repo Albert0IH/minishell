@@ -18,7 +18,8 @@ SRCS_DIR = ./srcs
 OBJS_DIR = ./objs
 INCLUDES = -I./includes
 
-SRCS =	$(SRCS_DIR)/main.c
+SRCS =	$(SRCS_DIR)/main.c \
+		$(SRCS_DIR)/parsing.c
 
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
