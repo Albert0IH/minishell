@@ -30,7 +30,7 @@
 // Parsing
 char *extract_quote(char **args, char quote);
 char *extract_word(char **args);
-void extracting(char **input, char **tokken, int i);
+void extracting(char **input, char **tokken, int *i);
 char **parse_input(char *input);
 
 #endif

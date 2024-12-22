@@ -36,23 +36,23 @@ char *extract_word(char **input)
     return (word);
 }
 
-void extracting(char **input, char **tokens, int i)
+void extracting(char **input, char **tokens, int *i)
 {
     while (**input == ' ')
         (*input)++;
-    if (**input =='\'')
+    if (**input == '\'')
     {
         (*input)++;
-        tokens[i] = extract_quote(input, '\'');
+        tokens[(*i)++] = extract_quote(input, '\'');
     }
     else if (**input == '"')
     {
         (*input)++;
-        tokens[i] = extract_quote(input, '"');
+        tokens[(*i)++] = extract_quote(input, '"');
     }
     else
-        tokens[i] = extract_word(input);
-}
+        tokens[(*i)++] = extract_word(input);
+}   
 
 char **parse_input(char *input)
 {
@@ -64,7 +64,7 @@ char **parse_input(char *input)
     if (!tokens)
         return (NULL);
     while (*input)
-        extracting(&input, tokens, i++);
+        extracting(&input, tokens, &i);
     tokens[i] = NULL;
     return(tokens);
 }
