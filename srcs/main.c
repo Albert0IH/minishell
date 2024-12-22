@@ -3,9 +3,10 @@
 int main()
 {
     char *input;
-    char **args;
-    int i;
+    // char **args;
+    // int i;
 
+    setup_signals();
     while (1)
     {
         input = readline("minishell> ");
@@ -17,14 +18,14 @@ int main()
         }
         if (*input)
             add_history(input);
-        args = parse_input(input);
-        i = 0;
-        while(args[i])
-        {
-            printf("%s\n", args[i]);
-            free(args[i++]);
-        }
-        free(args);
+        //args = parse_input(input);
+        // i = 0;
+        // while(args[i])
+        // {
+        //     printf("%s\n", args[i]);
+        //     free(args[i++]);
+        // }
+        //free(args);
         free(input);
     }
     return (0);

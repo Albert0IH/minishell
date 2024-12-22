@@ -27,6 +27,11 @@
 # define MAX_INPUT_SIZE 1024
 # define MAX_ARGS 100
 
+// Signals
+
+void handle_signal(int sig);
+void setup_signals(void);
+
 // Parsing
 char *extract_quote(char **args, char quote);
 char *extract_word(char **args);
