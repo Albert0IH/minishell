@@ -6,21 +6,19 @@
 #    By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 10:51:22 by ahamuyel          #+#    #+#              #
-#    Updated: 2024/11/30 01:23:03 by ahamuyel         ###   ########.fr        #
+#    Updated: 2024/12/14 19:11:48 by ahamuyel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 SRCS_DIR = ./srcs
 OBJS_DIR = ./objs
 INCLUDES = -I./includes
 
-SRCS =	$(SRCS_DIR)/main.c \
-		$(SRCS_DIR)/signals.c \
-		$(SRCS_DIR)/parsing.c
+SRCS =	$(SRCS_DIR)/main.c  $(SRCS_DIR)/parsing.c $(SRCS_DIR)/execution.c  $(SRCS_DIR)/builtins.c 
 
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
@@ -47,6 +45,5 @@ clean:
 
 fclean: clean
 	rm -rf $(NAME)
-	@make fclean -s -C $(LIBFT)
 
 re: fclean all
