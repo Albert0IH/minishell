@@ -8,7 +8,7 @@ INCLUDES = -I./includes
 SRCS_DIR = srcs/
 OBJS_DIR = objs/
 #Ficheiros .c e .o
-SRCS = $(SRCS_DIR)main.c $(SRCS_DIR)parsing.c $(SRCS_DIR)execute.c $(SRCS_DIR)builtins.c $(SRCS_DIR)redirecting.c $(SRCS_DIR)signals.c
+SRCS = $(SRCS_DIR)main.c $(SRCS_DIR)parsing.c $(SRCS_DIR)execute.c $(SRCS_DIR)builtins.c $(SRCS_DIR)redirecting.c $(SRCS_DIR)pipes.c $(SRCS_DIR)signals.c
 OBJS = $(SRCS:$(SRCS_DIR)%.c=$(OBJS_DIR)%.o)
 #Libs para funcs auxíliares
 LIBS = -lreadline

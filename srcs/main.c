@@ -1,20 +1,24 @@
 #include "../includes/minishell.h"
 
-int main()
+int	main(void)
 {
-    char *line;
-    while (1)
-    {
-        line = readline("minishell> ");
-        if (!line)
-        {
-            printf("exit\n");
-            break ;
-        }
-        if (*line)
-            add_history(line);
-        exec_command(line);
-        free(line);
-    }
-    return (0);
+	char *line;
+	char *commands[100];
+
+	setup_signals();
+	while (1)
+	{
+		line = readline("minishell> ");
+		if (!line)
+		{
+			printf("exit\n");
+			break ;
+		}
+		if (*line)
+			add_history(line);
+		split_pipes(line, commands);
+		execute(commands);
+		free(line);
+	}
+	return (0);
 }
