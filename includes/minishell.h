@@ -22,6 +22,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+extern char **environ;
+
 typedef struct s_tokenizer
 {
 	char	*current;
@@ -37,6 +39,12 @@ typedef struct s_path
 	char	*path;
 }			t_path;
 
+typedef struct t_env_var{
+    char *name;
+    char *value;
+} s_env_var;
+
+
 // Signals
 void		handle_signal(int sig);
 void		setup_signals(void);
@@ -48,12 +56,16 @@ void		print_tokens(char **tokens);
 // Execute
 void		exec_command(char *cmd);
 void		execute(char **commands);
+void	init_path(t_path *path_info);
 // Builtins
 int			is_builtin(char *cmd);
 int			exec_builtin(char **args);
 int			ft_echo(char **args);
 int			ft_cd(char **args);
 int			ft_pwd(void);
+int ft_export(char **args);
+int ft_unset(char **args);
+int ft_env(void);
 int			ft_exit(char **args);
 // Redir
 int			handle_redir(char **args, int *saved_stdout, int *saved_stdin);
