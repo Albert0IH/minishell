@@ -6,7 +6,7 @@
 #    By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/19 03:31:39 by ahamuyel          #+#    #+#              #
-#    Updated: 2024/12/11 17:29:03 by ahamuyel         ###   ########.fr        #
+#    Updated: 2025/01/10 19:00:02 by ahamuyel         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,9 @@ SRCS = 	ft_isalpha.c	\
 	ft_memcpy.c 		\
 	ft_memmove.c 		\
 	ft_strlcpy.c 		\
-	ft_strlcpy.c 		\
+	ft_strcpy.c 		\
 	ft_strlcat.c 		\
+	ft_strcat.c 		\
 	ft_toupper.c 		\
 	ft_tolower.c 		\
 	ft_strchr.c 		\

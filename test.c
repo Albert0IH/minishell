@@ -1,0 +1,14 @@
+Makefile
+includes
+libft
+minishell
+objs
+srcs
+test.c
+Makefile
+includes
+libft
+minishell
+objs
+srcs
+test.c

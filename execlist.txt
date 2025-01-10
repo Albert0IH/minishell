@@ -1,0 +1,14 @@
+/*   execute.c                                          :+:      :+:    :+:   */
+void	execute(char **commands)
+void	free_args(char **args)
+	path_info->full_path = (char *)malloc(sizeof(char) + 1);
+	path_info->directories = (char **)malloc(sizeof(char *) + 1);
+char	*get_command_path(char *cmd, t_path *path_info)
+	char	*path;
+	char	*dir;
+	char	*tmp;
+void	exec_command(char *cmd)
+	char	*args[100];
+	char	*cmd_path;
+void	execute(char **commands)
+11

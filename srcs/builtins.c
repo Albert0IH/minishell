@@ -139,10 +139,9 @@ void add_or_update_env_var(char *var_name, char *var_value)
 
     i = 0;
     var_len = ft_strlen(var_name);
-
-    while (environ[i] != NULL)
+    while (!environ[i])
     {
-        if (ft_strncmp(environ[i], var_name, var_len) == 0 && environ[i][var_len] == '=')
+        if (!ft_strncmp(environ[i], var_name, var_len) && environ[i][var_len] == '=')
         {
             new_env_var = create_env_var(var_name, var_value);
             if (!new_env_var)
@@ -152,7 +151,6 @@ void add_or_update_env_var(char *var_name, char *var_value)
         }
         i++;
     }
-
     new_env_var = create_env_var(var_name, var_value);
     if (!new_env_var)
         return ;
@@ -165,12 +163,8 @@ void show_env()
 	int i;
 
 	i = 0;
-	while (environ[i] != NULL)
-	{
-		printf("declare - x %s\n", environ[i]);
-		i++;
-	}
-
+	while (!environ[i])
+		printf("declare - x %s\n", environ[i++]);
 }
 int ft_export(char **args)
 {

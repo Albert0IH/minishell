@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/07 11:20:43 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/10 16:59:42 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ void	exec_command(char *cmd)
 	path_info = malloc(sizeof(path_info));
 	init_path(path_info);
 	tokenize_line(cmd, args);
+	if (handle_redir(args, &saved_stdout, &saved_stdin) < 0)
+		return (ft_putstr_fd("Redir error\n", STDERR_FILENO));
 	if (is_builtin(args[0]))
 	{
-		if (handle_redir(args, &saved_stdout, &saved_stdin) < 0)
-			return ;
 		exec_builtin(args);
 		dup2(saved_stdout, STDOUT_FILENO);
 		dup2(saved_stdin, STDERR_FILENO);
@@ -92,20 +92,11 @@ void	exec_command(char *cmd)
 		ft_putstr_fd("Command not found\n", STDERR_FILENO);
 		return ;
 	}
-	if (handle_redir(args, &saved_stdout, &saved_stdin) < 0)
-	{
-		ft_putstr_fd("Redir error\n", STDERR_FILENO);
-		return ;
-	}
-	if (execve(cmd_path, args, path_info->environ) == -1)
+	if (execve(cmd_path, args, environ) == -1)
 	{
 		ft_putstr_fd("execve error\n", STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	dup2(saved_stdout, STDOUT_FILENO);
-	dup2(saved_stdin, STDERR_FILENO);
-	close(saved_stdout);
-	close(saved_stdin);
 }
 
 void	execute(char **commands)
@@ -116,7 +107,6 @@ void	execute(char **commands)
 	int		in_fd;
 	int		i;
 
-	status = 0;
 	i = 0;
 	while (commands[i])
 	{
@@ -138,7 +128,9 @@ void	execute(char **commands)
 				dup2(fd[1], STDOUT_FILENO);
 				close(fd[1]);
 			}
+			close(fd[0]);
 			exec_command(commands[i]);
+			exit(EXIT_FAILURE);
 		}
 		else
 		{
@@ -147,7 +139,7 @@ void	execute(char **commands)
 				close(in_fd);
 			if (commands[i + 1])
 				in_fd = fd[0];
-			close(fd[1]);	
+			close(fd[1]);
 		}
 		i++;
 	}

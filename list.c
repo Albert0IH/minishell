@@ -1,0 +1,10 @@
+envlist.txt
+execlist.txt
+includes
+libft
+list.c
+Makefile
+minishell
+objs
+srcs
+test.c
