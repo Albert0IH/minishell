@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/07 11:20:43 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/11 18:07:12 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,13 @@ char	*get_command_path(char *cmd, t_path *path_info)
 	free_args(path_info->directories);
 	return (NULL);
 }
-
 void	exec_command(char *cmd)
 {
 	t_path	*path_info;
 	char	*args[100];
 	char	*cmd_path;
+	pid_t	pid;
+	int		status;
 	int		saved_stdin;
 	int		saved_stdout;
 
@@ -86,37 +87,41 @@ void	exec_command(char *cmd)
 		close(saved_stdin);
 		return ;
 	}
-	cmd_path = get_command_path(args[0], path_info);
-	if (!cmd_path)
+	else
 	{
-		ft_putstr_fd("Command not found\n", STDERR_FILENO);
-		return ;
+		pid = fork();
+		if (!pid)
+		{
+			cmd_path = get_command_path(args[0], path_info);
+			if (!cmd_path)
+			{
+				ft_putstr_fd("Command not found\n", STDERR_FILENO);
+				return ;
+			}
+			if (handle_redir(args, &saved_stdout, &saved_stdin) < 0)
+			{
+				ft_putstr_fd("Redir error\n", STDERR_FILENO);
+				return ;
+			}
+			if (execve(cmd_path, args, environ) == -1)
+			{
+				ft_putstr_fd("execve error\n", STDERR_FILENO);
+				exit(EXIT_FAILURE);
+			}
+			dup2(saved_stdout, STDOUT_FILENO);
+			dup2(saved_stdin, STDERR_FILENO);
+			close(saved_stdout);
+			close(saved_stdin);
+		}
+		else
+			waitpid(pid, &status, 0);
 	}
-	if (handle_redir(args, &saved_stdout, &saved_stdin) < 0)
-	{
-		ft_putstr_fd("Redir error\n", STDERR_FILENO);
-		return ;
-	}
-	if (execve(cmd_path, args, path_info->environ) == -1)
-	{
-		ft_putstr_fd("execve error\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	dup2(saved_stdout, STDOUT_FILENO);
-	dup2(saved_stdin, STDERR_FILENO);
-	close(saved_stdout);
-	close(saved_stdin);
 }
-
 void	execute(char **commands)
 {
-	pid_t	pid;
-	int		status;
-	int		fd[2];
-	int		in_fd;
-	int		i;
+	int	fd[2];
+	int	i;
 
-	status = 0;
 	i = 0;
 	while (commands[i])
 	{
@@ -125,30 +130,12 @@ void	execute(char **commands)
 			ft_putstr_fd("Error: pipe\n", STDERR_FILENO);
 			exit(EXIT_FAILURE);
 		}
-		pid = fork();
-		if (!pid)
+		if (commands[i + 1])
 		{
-			if (in_fd)
-			{
-				dup2(in_fd, STDIN_FILENO);
-				close(in_fd);
-			}
-			if (commands[i + 1])
-			{
-				dup2(fd[1], STDOUT_FILENO);
-				close(fd[1]);
-			}
-			exec_command(commands[i]);
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[1]);
 		}
-		else
-		{
-			waitpid(pid, &status, 0);
-			if (in_fd)
-				close(in_fd);
-			if (commands[i + 1])
-				in_fd = fd[0];
-			close(fd[1]);	
-		}
+		exec_command(commands[i]);
 		i++;
 	}
 }

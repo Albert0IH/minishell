@@ -48,18 +48,6 @@ int	exec_builtin(char **args)
 	return (-1);
 }
 
-char *ft_strcat(char *dest, const char *src) {
-    char *ptr = dest;
-    while (*ptr != '\0') ptr++;
-    while (*src != '\0') *ptr++ = *src++;
-    *ptr = '\0';
-    return dest;
-}
-char *ft_strcpy(char *dest, const char *src) {
-    char *ptr = dest;
-    while ((*ptr++ = *src++));
-    return dest;
-}
 int	ft_echo(char **args)
 {
 	int	i;
@@ -124,7 +112,7 @@ char *create_env_var(char *name, char *value)
         perror("malloc");
         return NULL;
     }
-    ft_strcpy(new_env_var, name);
+    new_env_var = ft_strdup(name);
     ft_strcat(new_env_var, "=");
     ft_strcat(new_env_var, value);
 
@@ -180,9 +168,9 @@ int ft_export(char **args)
 	equals_sign = ft_strchr(args[1], '=');
 	if (!equals_sign)
 		return (fprintf(stderr, "export: `%s': not a valid identifier\n", args[1]), 1);
-	*equals_sign = '\0'; // Temporariamente substitui '=' por '\0' para isolar o nome
+	*equals_sign = '\0';
 	add_or_update_env_var(args[1], equals_sign + 1);
-	*equals_sign = '='; // Restaura o sinal de igualdade
+	*equals_sign = '=';
 	return (0);
 }
 
