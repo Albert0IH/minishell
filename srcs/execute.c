@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/13 18:24:36 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:35:04 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,22 @@ void	execute_command(char *line, char **environ)
 	char	*cmd_path;
 	int		status;
 	pid_t	pid;
+	int		saved_stdin;
+	int		saved_stdout;
 
 	path_info = malloc(sizeof(path_info));
 	init_path(path_info);
 	tokenize_line(line, commands);
+	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
+		return ;
 	if (is_builtin(commands[0]))
+	{
 		execute_builtin(commands, environ);
+		dup2(saved_stdout, STDOUT_FILENO);
+		dup2(saved_stdin, STDERR_FILENO);
+		close(saved_stdout);
+		close(saved_stdin);
+	}
 	else
 	{
 		pid = fork();
@@ -93,6 +103,10 @@ void	execute_command(char *line, char **environ)
 			waitpid(pid, &status, 0);
 		else
 			exit(EXIT_FAILURE);
+		dup2(saved_stdout, STDOUT_FILENO);
+		dup2(saved_stdin, STDERR_FILENO);
+		close(saved_stdout);
+		close(saved_stdin);
 	}
 }
 
