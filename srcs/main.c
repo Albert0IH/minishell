@@ -19,7 +19,7 @@ int	main(int ac, char **av, char **environ)
 		if (*line)
 			add_history(line);
 		split_pipes(line, commands);
-		execute(commands, environ);
+		execute(line, environ);
 		free(line);
 	}
 	return (0);

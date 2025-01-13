@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/13 18:15:30 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:56:40 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ char		*extract_word(char *token);
 void		tokenize_line(char *line, char **input);
 void		print_tokens(char **tokens);
 // Execute
-void		execute_command(char *line, char **environ);
+void		execute(char *line, char **environ);
 int			execute_builtin(char **commands, char **environ);
-void		execute(char **commands, char **environ);
+//void		execute(char **commands, char **environ);
 void		init_path(t_path *path_info);
 // Builtins
 int			is_builtin(char *cmd);
