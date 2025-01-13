@@ -1,7 +1,9 @@
 #include "../includes/minishell.h"
 
-int	main(void)
+int	main(int ac, char **av, char **environ)
 {
+	(void)av;
+	(void)ac;
 	char *line;
 	char *commands[100];
 
@@ -17,7 +19,7 @@ int	main(void)
 		if (*line)
 			add_history(line);
 		split_pipes(line, commands);
-		execute(commands);
+		execute(commands, environ);
 		free(line);
 	}
 	return (0);

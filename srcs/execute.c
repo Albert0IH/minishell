@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/11 18:07:12 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/13 18:24:36 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,79 +63,40 @@ char	*get_command_path(char *cmd, t_path *path_info)
 	free_args(path_info->directories);
 	return (NULL);
 }
-void	exec_command(char *cmd)
+
+void	execute_command(char *line, char **environ)
 {
 	t_path	*path_info;
-	char	*args[100];
+	char	*commands[100];
 	char	*cmd_path;
-	pid_t	pid;
 	int		status;
-	int		saved_stdin;
-	int		saved_stdout;
+	pid_t	pid;
 
 	path_info = malloc(sizeof(path_info));
 	init_path(path_info);
-	tokenize_line(cmd, args);
-	if (is_builtin(args[0]))
-	{
-		if (handle_redir(args, &saved_stdout, &saved_stdin) < 0)
-			return ;
-		exec_builtin(args);
-		dup2(saved_stdout, STDOUT_FILENO);
-		dup2(saved_stdin, STDERR_FILENO);
-		close(saved_stdout);
-		close(saved_stdin);
-		return ;
-	}
+	tokenize_line(line, commands);
+	if (is_builtin(commands[0]))
+		execute_builtin(commands, environ);
 	else
 	{
 		pid = fork();
 		if (!pid)
 		{
-			cmd_path = get_command_path(args[0], path_info);
-			if (!cmd_path)
-			{
-				ft_putstr_fd("Command not found\n", STDERR_FILENO);
-				return ;
-			}
-			if (handle_redir(args, &saved_stdout, &saved_stdin) < 0)
-			{
-				ft_putstr_fd("Redir error\n", STDERR_FILENO);
-				return ;
-			}
-			if (execve(cmd_path, args, environ) == -1)
+			cmd_path = get_command_path(commands[0], path_info);
+			if (execve(cmd_path, commands, environ) == -1)
 			{
 				ft_putstr_fd("execve error\n", STDERR_FILENO);
 				exit(EXIT_FAILURE);
 			}
-			dup2(saved_stdout, STDOUT_FILENO);
-			dup2(saved_stdin, STDERR_FILENO);
-			close(saved_stdout);
-			close(saved_stdin);
 		}
-		else
+		else if (pid > 0)
 			waitpid(pid, &status, 0);
+		else
+			exit(EXIT_FAILURE);
 	}
 }
-void	execute(char **commands)
-{
-	int	fd[2];
-	int	i;
 
-	i = 0;
-	while (commands[i])
-	{
-		if (commands[i + 1] && pipe(fd) == -1)
-		{
-			ft_putstr_fd("Error: pipe\n", STDERR_FILENO);
-			exit(EXIT_FAILURE);
-		}
-		if (commands[i + 1])
-		{
-			dup2(fd[1], STDOUT_FILENO);
-			close(fd[1]);
-		}
-		exec_command(commands[i]);
-		i++;
-	}
+void	execute(char **commands, char **environ)
+{
+	execute_command(commands[0], environ);
 }

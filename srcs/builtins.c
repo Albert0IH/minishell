@@ -29,20 +29,20 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-int	exec_builtin(char **args)
+int			execute_builtin(char **commands, char **environ)
 {
-	if (!ft_strcmp(args[0], "echo"))
-		return (ft_echo(args));
-	if (!ft_strcmp(args[0], "cd"))
-		return (ft_cd(args));
-	if (!ft_strcmp(args[0], "pwd"))
+	if (!ft_strcmp(commands[0], "echo"))
+		return (ft_echo(commands));
+	if (!ft_strcmp(commands[0], "cd"))
+		return (ft_cd(commands));
+	if (!ft_strcmp(commands[0], "pwd"))
 		return (ft_pwd());
-	if (!ft_strcmp(args[0], "export"))
-		return (ft_export(args));
-	if (!ft_strcmp(args[0], "unset"))
-		return (ft_unset(args));
-	if (!ft_strcmp(args[0], "env"))
-		return (ft_env());
+	if (!ft_strcmp(commands[0], "export"))
+		return (ft_export(commands, environ));
+	if (!ft_strcmp(commands[0], "unset"))
+		return (ft_unset(commands, environ));
+	if (!ft_strcmp(commands[0], "env"))
+		return (ft_env(environ));
     // if (!ft_strcmp(args[0], "exit"))
 	// 	return (ft_exit(args));
 	return (-1);
@@ -115,11 +115,10 @@ char *create_env_var(char *name, char *value)
     new_env_var = ft_strdup(name);
     ft_strcat(new_env_var, "=");
     ft_strcat(new_env_var, value);
-
     return new_env_var;
 }
 
-void add_or_update_env_var(char *var_name, char *var_value)
+void add_or_update_env_var(char *var_name, char *var_value, char **environ)
 {
     int i;
     int var_len;
@@ -128,9 +127,9 @@ void add_or_update_env_var(char *var_name, char *var_value)
     i = 0;
     var_len = ft_strlen(var_name);
 
-    while (environ[i] != NULL)
+    while (environ[i])
     {
-        if (ft_strncmp(environ[i], var_name, var_len) == 0 && environ[i][var_len] == '=')
+        if (ft_strncmp(environ[i], var_name, var_len) == 0)
         {
             new_env_var = create_env_var(var_name, var_value);
             if (!new_env_var)
@@ -140,7 +139,6 @@ void add_or_update_env_var(char *var_name, char *var_value)
         }
         i++;
     }
-
     new_env_var = create_env_var(var_name, var_value);
     if (!new_env_var)
         return ;
@@ -148,7 +146,7 @@ void add_or_update_env_var(char *var_name, char *var_value)
     environ[i + 1] = NULL;
 }
 
-void show_env()
+void show_env(char **environ)
 {
 	int i;
 
@@ -160,21 +158,21 @@ void show_env()
 	}
 
 }
-int ft_export(char **args)
+int ft_export(char **args, char **environ)
 {
 	char *equals_sign;
 	if (!args[1])
-		return (show_env(), 0);
+		return (show_env(environ), 0);
 	equals_sign = ft_strchr(args[1], '=');
 	if (!equals_sign)
 		return (fprintf(stderr, "export: `%s': not a valid identifier\n", args[1]), 1);
 	*equals_sign = '\0';
-	add_or_update_env_var(args[1], equals_sign + 1);
+	add_or_update_env_var(args[1], equals_sign + 1, environ);
 	*equals_sign = '=';
 	return (0);
 }
 
-int ft_unset(char **args)
+int ft_unset(char **args, char **environ)
 {
     char *var_to_unset;
     int i;
@@ -201,7 +199,7 @@ int ft_unset(char **args)
 	return (1);
 }
 
-int ft_env(void)
+int ft_env(char **environ)
 {
     int i;
 

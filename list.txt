@@ -1,8 +1,0 @@
-total 48
--rw-rw-r-- 1 albert01h albert01h   902 Jan  7 22:00 Makefile
-drwxrwxr-x 2 albert01h albert01h  4096 Jan  7 22:00 includes
-drwxrwxr-x 2 albert01h albert01h  4096 Jan  9 20:49 libft
--rw-r--r-- 1 albert01h albert01h     0 Jan  9 20:49 list.txt
--rwxrwxr-x 1 albert01h albert01h 27104 Jan  9 20:49 minishell
-drwxrwxr-x 2 albert01h albert01h  4096 Jan  9 20:49 objs
-drwxrwxr-x 2 albert01h albert01h  4096 Jan  7 22:00 srcs
