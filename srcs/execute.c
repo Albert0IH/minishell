@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/13 19:06:37 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/14 14:40:30 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,78 +64,113 @@ char	*get_command_path(char *cmd, t_path *path_info)
 	return (NULL);
 }
 
-void	execute(char *line, char **environ)
+void	execute_command(char *line, char **environ)
 {
-	t_path	*path_info;
 	char	*commands[100];
-	char	*cmd_path;
-	int		status;
-	pid_t	pid;
 	int		saved_stdin;
 	int		saved_stdout;
-	int		fd[2];
-	int		i;
+	pid_t	pid;
+	int		status;
 
-	path_info = malloc(sizeof(path_info));
-	init_path(path_info);
 	tokenize_line(line, commands);
 	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
 		return ;
-	i = 0;
-	while (commands[i])
+	if (is_builtin(commands[0]))
 	{
-		if (commands[i + 1] && pipe(fd) == -1)
+		execute_builtin(commands, environ);
+		dup2(saved_stdout, STDOUT_FILENO);
+		dup2(saved_stdin, STDERR_FILENO);
+		close(saved_stdout);
+		close(saved_stdin);
+	}
+	else
+	{
+		pid = fork();
+		if (!pid)
 		{
-			ft_putstr_fd("Error: pipe\n", STDERR_FILENO);
-			exit(EXIT_FAILURE);
-		}
-		if (is_builtin(commands[0]))
-		{
-			execute_builtin(commands, environ);
+			execute_from_path(commands, environ);
 			dup2(saved_stdout, STDOUT_FILENO);
 			dup2(saved_stdin, STDERR_FILENO);
 			close(saved_stdout);
 			close(saved_stdin);
+			exit(0);
 		}
-		else
-		{
-			pid = fork();
-			if (!pid)
-			{
-				if (commands[i + 1])
-					dup2(fd[1], STDOUT_FILENO);
-				if (i > 0)
-					dup2(fd[0], STDIN_FILENO);
-				close(fd[0]);
-				close(fd[1]);
-				cmd_path = get_command_path(commands[0], path_info);
-				if (execve(cmd_path, commands, environ) == -1)
-				{
-					ft_putstr_fd("execve error\n", STDERR_FILENO);
-					exit(EXIT_FAILURE);
-				}
-			}
-			else if (pid > 0)
-			{
-				waitpid(pid, &status, 0);
-				close(fd[0]);
-				close(fd[1]);
-			}
-		}
-		i++;
+		else if (pid > 0)
+			waitpid(pid, &status, 0);
 	}
-	dup2(saved_stdout, STDOUT_FILENO);
-	dup2(saved_stdin, STDERR_FILENO);
-	close(saved_stdout);
-	close(saved_stdin);
 }
 
-// void	execute(char **commands, char **environ)
-// {
-// 	int		status;
-// 	pid_t	pid;
-// 	int		saved_stdin;
-// 	int		saved_stdout;
+void	execute_from_path(char **commands, char **environ)
+{
+	t_path	*path;
+	pid_t	pid;
+	char	*cmd_path;
+	int		status;
 
-// 	execute_command(commands[0], environ);
-// }
+	path = malloc(sizeof(path));
+	init_path(path);
+	pid = fork();
+	if (!pid)
+	{
+		cmd_path = get_command_path(commands[0], path);
+		if (execve(cmd_path, commands, environ) == -1)
+		{
+			ft_putstr_fd("execve error\n", STDERR_FILENO);
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (pid > 0)
+		waitpid(pid, &status, 0);
+	else
+		exit(EXIT_FAILURE);
+}
+
+void	execute(char **commands, char **environ)
+{
+	int		fd[2];
+	int		prev_fd;
+	pid_t	pid;
+	int		i;
+
+	i = 0;
+	prev_fd = 0;
+	if (!commands[1])
+		execute_command(commands[i], environ);
+	else
+	{
+		while (commands[i])
+		{
+			if (!commands[0])
+				continue ;
+			if (commands[i + 1] && pipe(fd) == -1)
+				exit(EXIT_FAILURE);
+			pid = fork();
+			if (pid == 0)
+			{
+				if (prev_fd)
+				{
+					dup2(prev_fd, STDIN_FILENO);
+					close(prev_fd);
+				}
+				if (commands[i + 1])
+				{
+					close(fd[0]);
+					dup2(fd[1], STDOUT_FILENO);
+					close(fd[1]);
+				}
+				execute_command(commands[i], environ);
+				exit(EXIT_FAILURE);
+			}
+			if (commands[i + 1])
+				close(fd[1]);
+			if (prev_fd)
+				close(prev_fd);
+			prev_fd = fd[0];
+			i++;
+		}
+		if (prev_fd)
+			close(prev_fd);
+		while (wait(NULL) > 0)
+			;
+	}
+}
