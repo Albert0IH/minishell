@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/14 14:40:30 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/14 17:26:06 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,28 +76,22 @@ void	execute_command(char *line, char **environ)
 	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
 		return ;
 	if (is_builtin(commands[0]))
-	{
 		execute_builtin(commands, environ);
-		dup2(saved_stdout, STDOUT_FILENO);
-		dup2(saved_stdin, STDERR_FILENO);
-		close(saved_stdout);
-		close(saved_stdin);
-	}
 	else
 	{
 		pid = fork();
 		if (!pid)
 		{
 			execute_from_path(commands, environ);
-			dup2(saved_stdout, STDOUT_FILENO);
-			dup2(saved_stdin, STDERR_FILENO);
-			close(saved_stdout);
-			close(saved_stdin);
 			exit(0);
 		}
 		else if (pid > 0)
 			waitpid(pid, &status, 0);
 	}
+	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdout);
+	close(saved_stdin);
 }
 
 void	execute_from_path(char **commands, char **environ)

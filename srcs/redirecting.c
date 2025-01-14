@@ -27,9 +27,11 @@ int	handle_redir(char **args, int *saved_stdout, int *saved_stdin)
 			close(fd);
 			args[i] = NULL;
 		}
-		else if (ft_strcmp(args[i], "<") == 0)
+		else if (ft_strcmp(args[i], "<") == 0 || ft_strcmp(args[i], "<<") == 0)
 		{
-			fd = open(args[i + 1], O_RDONLY);
+			if (ft_strcmp(args[i], "<") == 0)
+				fd = open(args[i + 1], O_RDONLY);
+			
 			if (fd < 0)
 			{
 				perror("open");
