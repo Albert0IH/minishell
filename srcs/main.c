@@ -16,10 +16,12 @@ int	main(int ac, char **av, char **environ)
 			printf("exit\n");
 			break ;
 		}
+		if (!ft_strcmp(line, "\0"))
+			continue;
 		if (*line)
 			add_history(line);
 		split_pipes(line, commands);
-		execute(line, environ);
+		execute(commands, environ);
 		free(line);
 	}
 	return (0);
