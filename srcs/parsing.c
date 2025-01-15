@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/13 18:25:16 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/14 19:14:42 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	tokenize_line(char *line, char **input)
 	{
 		word = extract_word(token);
 		if (word)
-			input[i++] = word;
+			input[i++] = word;	
 		token = ft_strtok(NULL, " ", &state);
 	}
 	input[i] = NULL;
@@ -125,6 +125,17 @@ void	print_tokens(char **tokens)
 	while (tokens[i])
 	{
 		printf("Token %d: %s\n", i, tokens[i]);
+		i++;
+	}
+}
+
+void free_tokkens(char **tokens)
+{
+	int i;
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]);
 		i++;
 	}
 }

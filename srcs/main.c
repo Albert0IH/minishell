@@ -14,6 +14,7 @@ int	main(int ac, char **av, char **environ)
 		if (!line)
 		{
 			printf("exit\n");
+			free(line);
 			break ;
 		}
 		if (!ft_strcmp(line, "\0"))
@@ -22,7 +23,9 @@ int	main(int ac, char **av, char **environ)
 			add_history(line);
 		split_pipes(line, commands);
 		execute(commands, environ);
+		//free_tokkens(commands);
 		free(line);
+		line = NULL;
 	}
 	return (0);
 }

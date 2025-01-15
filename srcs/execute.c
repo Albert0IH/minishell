@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/14 17:26:06 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/14 19:02:46 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	free_args(char **args)
 
 void	init_path(t_path *path_info)
 {
-	path_info->full_path = (char *)malloc(sizeof(char) + 1);
-	path_info->directories = (char **)malloc(sizeof(char *) + 1);
+	path_info->full_path = NULL;
+	path_info->directories = NULL;
 	path_info->environ = NULL;
 }
 
@@ -64,6 +64,31 @@ char	*get_command_path(char *cmd, t_path *path_info)
 	return (NULL);
 }
 
+void	execute_from_path(char **commands, char **environ)
+{
+	t_path	*path;
+	pid_t	pid;
+	char	*cmd_path;
+	int		status;
+
+	path = malloc(sizeof(path));
+	init_path(path);
+	pid = fork();
+	if (!pid)
+	{
+		cmd_path = get_command_path(commands[0], path);
+		if (execve(cmd_path, commands, environ) == -1)
+		{
+			ft_putstr_fd("execve error\n", STDERR_FILENO);
+			exit(EXIT_FAILURE);
+		}
+		free(path);
+	}
+	else if (pid > 0)
+		waitpid(pid, &status, 0);
+	free(path);
+}
+
 void	execute_command(char *line, char **environ)
 {
 	char	*commands[100];
@@ -92,31 +117,6 @@ void	execute_command(char *line, char **environ)
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);
 	close(saved_stdin);
-}
-
-void	execute_from_path(char **commands, char **environ)
-{
-	t_path	*path;
-	pid_t	pid;
-	char	*cmd_path;
-	int		status;
-
-	path = malloc(sizeof(path));
-	init_path(path);
-	pid = fork();
-	if (!pid)
-	{
-		cmd_path = get_command_path(commands[0], path);
-		if (execve(cmd_path, commands, environ) == -1)
-		{
-			ft_putstr_fd("execve error\n", STDERR_FILENO);
-			exit(EXIT_FAILURE);
-		}
-	}
-	else if (pid > 0)
-		waitpid(pid, &status, 0);
-	else
-		exit(EXIT_FAILURE);
 }
 
 void	execute(char **commands, char **environ)
