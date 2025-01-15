@@ -1,3 +1,18 @@
+a.c
+includes
+libft
+Makefile
+minishell
+objs
+srcs
+a.c
+b.c
+includes
+libft
+Makefile
+minishell
+objs
+srcs
 
 NAME = minishell
 

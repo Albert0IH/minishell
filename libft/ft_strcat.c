@@ -6,10 +6,11 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 18:48:07 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/10 20:12:56 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/11 11:28:27 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <unistd.h>
 
 char	*ft_strcat(char *dest, const char *src)

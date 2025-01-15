@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/10 19:37:39 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/10 19:37:40 by ahamuyel         ###   ########.fr       */
+/*   Created: 2025/01/10 18:48:09 by ahamuyel          #+#    #+#             */
+/*   Updated: 2025/01/11 11:25:25 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h> // Para NULL
+#include "libft.h"
 
 char	*ft_strcpy(char *dest, const char *src)
 {

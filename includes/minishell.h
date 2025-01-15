@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/07 09:41:57 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/15 11:27:30 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-
-extern char **environ;
 
 typedef struct s_tokenizer
 {
@@ -39,11 +37,11 @@ typedef struct s_path
 	char	*path;
 }			t_path;
 
-typedef struct t_env_var{
-    char *name;
-    char *value;
-} s_env_var;
-
+typedef struct t_env_var
+{
+	char	*name;
+	char	*value;
+}			s_env_var;
 
 // Signals
 void		handle_signal(int sig);
@@ -54,18 +52,19 @@ char		*extract_word(char *token);
 void		tokenize_line(char *line, char **input);
 void		print_tokens(char **tokens);
 // Execute
-void		exec_command(char *cmd);
-void		execute(char **commands);
-void	init_path(t_path *path_info);
+void		execute_command(char *line, char **environ);
+int			execute_builtin(char **commands, char **environ);
+void		execute_from_path(char **commands, char **environ);
+void		execute(char **commands, char **environ);
+void		init_path(t_path *path_info);
 // Builtins
 int			is_builtin(char *cmd);
-int			exec_builtin(char **args);
 int			ft_echo(char **args);
 int			ft_cd(char **args);
 int			ft_pwd(void);
-int ft_export(char **args);
-int ft_unset(char **args);
-int ft_env(void);
+int			ft_export(char **args, char **environ);
+int			ft_unset(char **args, char **environ);
+int			ft_env(char **environ);
 int			ft_exit(char **args);
 // Redir
 int			handle_redir(char **args, int *saved_stdout, int *saved_stdin);
