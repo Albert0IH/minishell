@@ -4,6 +4,7 @@ int	main(int ac, char **av, char **environ)
 {
 	(void)av;
 	(void)ac;
+	(void)environ;
 	char *line;
 	char *commands[100];
 	//int i = 0;
@@ -23,6 +24,8 @@ int	main(int ac, char **av, char **environ)
 			add_history(line);
 		split_pipes(line, commands);
 		execute(commands, environ);
+		// tokenize_line(line, commands);
+		// print_tokens(commands);
 		free(line);
 	}
 	return (0);

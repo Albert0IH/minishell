@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/13 18:25:16 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/16 10:20:16 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*ft_strtok(char *line, const char *delim, t_tokenizer *state)
 	state->current = process_token(state, delim);
 	if (*state->current == '\0' && (state->in_single_quote
 			|| state->in_double_quote))
-		return (ft_putstr_fd("Error: Unclosed quote detected.\n", 2), (NULL));
+		return (ft_putstr_fd("Error: Unclosed quote detected.\n", 2), NULL);
 	if (*state->current)
 	{
 		*state->current = '\0';
@@ -115,6 +115,19 @@ void	tokenize_line(char *line, char **input)
 		token = ft_strtok(NULL, " ", &state);
 	}
 	input[i] = NULL;
+}
+
+void	free_tokens(char **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]);
+		tokens[i] = NULL;
+		i++;
+	}
 }
 
 void	print_tokens(char **tokens)
