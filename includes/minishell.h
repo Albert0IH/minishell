@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/16 09:35:48 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/16 18:19:15 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ typedef struct s_path
 	char	*path;
 }			t_path;
 
-typedef struct t_env_var
+typedef struct s_env_var
 {
 	char	*name;
 	char	*value;
-}			s_env_var;
+}			t_env_var;
 
 // Signals
 void		handle_signal(int sig);
@@ -51,7 +51,8 @@ char		*ft_strtok(char *line, const char *delim, t_tokenizer *state);
 char		*extract_word(char *token);
 void		tokenize_line(char *line, char **input);
 void		print_tokens(char **tokens);
-void		free_tokens(char **tokens);
+// Expand
+char		*expand_variable(const char *s, char **environ, int exit_status);
 // Execute
 void		execute_command(char *line, char **environ);
 int			execute_builtin(char **commands, char **environ);
@@ -71,4 +72,7 @@ int			ft_exit(char **args);
 int			handle_redir(char **args, int *saved_stdout, int *saved_stdin);
 // Pipes
 void		split_pipes(char *input, char **cmd);
+// Clean
+void		free_args(char **args);
+void		free_tokens(char **tokens);
 #endif

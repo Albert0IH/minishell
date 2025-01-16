@@ -4,7 +4,7 @@ int	main(int ac, char **av, char **environ)
 {
 	(void)av;
 	(void)ac;
-	(void)environ;
+	//(void)environ;
 	char *line;
 	char *commands[100];
 	//int i = 0;
