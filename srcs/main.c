@@ -6,6 +6,7 @@ int	main(int ac, char **av, char **environ)
 	(void)ac;
 	char *line;
 	char *commands[100];
+	//int i = 0;
 
 	setup_signals();
 	while (1)
