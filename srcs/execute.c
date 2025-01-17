@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/16 18:55:19 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/17 10:49:27 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	execute_command(char *line, char **environ)
 	int		status;
 
 	status = 0;
-	line = expand_variable(line, environ, status);
 	tokenize_line(line, commands);
 	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
 		return ;

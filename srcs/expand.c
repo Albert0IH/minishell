@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 17:04:54 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/16 17:26:43 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/17 10:44:52 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ char	*get_env_value(const char *var_name, char **environ)
 		i++;
 	}
 	return (NULL); // Se não encontrar
+}
+
+char *get_env_value(const char *name, char **environ)
+{
+	
 }
 
 char	*allocate_expansion_buffer(const char *s)
