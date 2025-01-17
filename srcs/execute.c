@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/17 10:49:27 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/17 16:04:48 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	execute_command(char *line, char **environ)
 		execute_builtin(commands, environ);
 	else
 	{
+
 		pid = fork();
 		if (!pid)
 		{

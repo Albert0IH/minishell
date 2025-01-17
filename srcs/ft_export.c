@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:16:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/16 16:37:41 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/17 11:40:17 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	show_env(char **environ)
 	i = 0;
 	while (environ[i] != NULL)
 	{
-		printf("declare - x %s\n", environ[i]);
+		printf("declare - x \"%s\"\n", environ[i]);
 		i++;
 	}
 }

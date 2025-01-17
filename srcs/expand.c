@@ -5,132 +5,87 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/16 17:04:54 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/17 10:44:52 by ahamuyel         ###   ########.fr       */
+/*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
+/*   Updated: 2025/01/17 15:07:42 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*get_env_value(const char *var_name, char **environ)
-{
-	int	i;
 
-	i = 0;
-	while (environ[i])
+char	*get_env_value(char *var)
+{
+	char	*value;
+
+	value = getenv(var);
+	if (value)
+		return (ft_strdup(value));
+	return (ft_strdup(""));
+}
+
+static void	handle_quotes(const char *s, int *i, int *in_single_quote,
+		int *in_double_quote, char *expanded, int *j)
+{
+	if (s[*i] == '\'' && !(*in_double_quote))
 	{
-		if (strncmp(environ[i], var_name, strlen(var_name)) == 0
-			&& environ[i][strlen(var_name)] == '=')
-			return (environ[i] + strlen(var_name) + 1);
-		// Retorna o valor após o '='
-		i++;
+		*in_single_quote = !(*in_single_quote);
+		expanded[(*j)++] = s[(*i)++];
 	}
-	return (NULL); // Se não encontrar
-}
-
-char *get_env_value(const char *name, char **environ)
-{
-	
-}
-
-char	*allocate_expansion_buffer(const char *s)
-{
-	char	*buffer;
-
-	int len = strlen(s) + 128; // Inicial com margem para expansão.
-	buffer = malloc(len);
-	if (!buffer)
-		exit(EXIT_FAILURE);
-	return (buffer);
-}
-
-void	expand_exit_status(char *expanded, int *j, int exit_status)
-{
-	char	tmp[12];
-
-	snprintf(tmp, sizeof(tmp), "%d", exit_status);
-	for (int k = 0; tmp[k]; k++)
-		expanded[(*j)++] = tmp[k];
-}
-
-char	*extract_variable_name(const char *start, const char **end)
-{
-	const char	*ptr = start;
-
-	while (*ptr && (isalnum(*ptr) || *ptr == '_'))
-		ptr++;
-	*end = ptr;
-	return (strndup(start, ptr - start));
-}
-
-void	append_variable_value(char *expanded, int *j, const char *var_value,
-		int *len)
-{
-	while (*var_value)
+	else if (s[*i] == '"' && !(*in_single_quote))
 	{
-		if (*j >= *len - 1)
-		{
-			*len *= 2;
-			expanded = realloc(expanded, *len);
-			if (!expanded)
-				exit(EXIT_FAILURE);
-		}
-		expanded[(*j)++] = *var_value++;
+		*in_double_quote = !(*in_double_quote);
+		expanded[(*j)++] = s[(*i)++];
 	}
 }
-char	*expand_variable(const char *s, char **environ, int exit_status)
-{
-	char		*expanded;
-	int			i;
-	int			j;
-	int			len;
-	const char	*end;
-	char		*var_name;
-	char		*var_value;
 
-	i = 0;
-	expanded = allocate_expansion_buffer(s);
+static int	handle_dollar(const char *s, int *i, char *expanded, int *j,
+		int in_single_quote)
+{
+	char	var[256];
+	char	*value;
+	int		k;
+
+	if (s[*i] == '$' && !in_single_quote)
+	{
+		(*i)++;
+		k = 0;
+		while (s[*i] && s[*i] != ' ' && s[*i] != '\'' && s[*i] != '"'
+			&& k < 255)
+			var[k++] = s[(*i)++];
+		var[k] = '\0';
+		value = get_env_value(var);
+		ft_strcpy(&expanded[*j], value);
+		*j += ft_strlen(value);
+		free(value);
+		return (1);
+	}
+	return (0);
+}
+
+char	*expand_env_vars(const char *s)
+{
+	char	*expanded;
+	int		i;
+	int		j;
+	int		in_single_quote;
+	int		in_double_quote;
+
+	expanded = malloc(1024);
+	if (!expanded)
+		return (NULL);
 	i = 0;
 	j = 0;
-	len = strlen(s) + 128;
+	in_single_quote = 0;
+	in_double_quote = 0;
 	while (s[i])
 	{
-		if (s[i] == '$' && s[i + 1])
-		{
-			if (s[i + 1] == '?') // Caso para expansão do exit_status
-			{
-				expand_exit_status(expanded, &j, exit_status);
-				// Expande o exit_status
-				i += 2;
-				// Avança para o próximo caractere após o ?
-			}
-			else
-			{
-				var_name = extract_variable_name(&s[i + 1], &end);
-				if (!var_name)
-				{
-					free(expanded);
-					exit(EXIT_FAILURE);
-				}
-				var_value = get_env_value(var_name, environ);
-				free(var_name);
-				if (var_value)
-					append_variable_value(expanded, &j, var_value, &len);
-				i = end - s;
-			}
-		}
-		else
-		{
-			if (j >= len - 1)
-			{
-				len *= 2;
-				expanded = realloc(expanded, len);
-				if (!expanded)
-					exit(EXIT_FAILURE);
-			}
+		handle_quotes(s, &i, &in_single_quote, &in_double_quote, expanded, &j);
+		if (handle_dollar(s, &i, expanded, &j, in_single_quote))
+			continue ;
+		if (s[i])
 			expanded[j++] = s[i++];
-		}
 	}
 	expanded[j] = '\0';
 	return (expanded);
 }
+

@@ -13,6 +13,7 @@ SRCS = 	$(SRCS_DIR)main.c		\
 		$(SRCS_DIR)parsing.c 	\
 		$(SRCS_DIR)tokens.c 	\
 		$(SRCS_DIR)execute.c 	\
+		$(SRCS_DIR)expand.c 	\
 		$(SRCS_DIR)builtins.c	\
 		$(SRCS_DIR)ft_cd.c 		\
 		$(SRCS_DIR)ft_echo.c 	\
