@@ -6,16 +6,15 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/17 11:22:56 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/17 11:30:10 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <string.h>
 
-char *get_env_value(char *var)
+char	*get_env_value(char *var)
 {
-	char *value;
+	char	*value;
 
 	value = getenv(var);
 	if (value)
@@ -54,8 +53,8 @@ static int	handle_dollar(const char *str, int *i, char *expanded, int *j,
 			var[k++] = str[(*i)++];
 		var[k] = '\0';
 		env_value = get_env_value(var);
-		strcpy(&expanded[*j], env_value);
-		*j += strlen(env_value);
+		ft_strcpy(&expanded[*j], env_value);
+		*j += ft_strlen(env_value);
 		free(env_value);
 		return (1);
 	}
@@ -70,7 +69,7 @@ char	*expand_env_vars(const char *str)
 	int		in_single_quote;
 	int		in_double_quote;
 
-	expanded = malloc(1024); // Buffer para a string expandida
+	expanded = malloc(1024);
 	if (!expanded)
 		return (NULL);
 	i = 0;
@@ -99,7 +98,6 @@ char	*extract_word(char *token)
 	int		in_double_quote;
 
 	token = expand_env_vars(token);
-		// Expande as variáveis de ambiente antes da extração
 	if (!token)
 		return (NULL);
 	word = malloc(strlen(token) + 1);
@@ -120,7 +118,7 @@ char	*extract_word(char *token)
 		i++;
 	}
 	word[j] = '\0';
-	free(token); // Libera a string expandida original
+	free(token);
 	return (word);
 }
 
