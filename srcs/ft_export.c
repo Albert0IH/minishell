@@ -6,13 +6,56 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:16:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/17 11:40:17 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/18 01:05:39 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*create_env_var(char *name, char *value)
+int	ft_searc_char(char *s, char c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+char	*ft_extract_name(char *s)
+{
+	char	*name;
+	int		i;
+
+	i = 0;
+	while (s[i] && s[i] != '=')
+		i++;
+	name = malloc(i + 1);
+	if (!name)
+		return (NULL);
+	ft_strncpy(name, s, i);
+	name[i] = '\0';
+	return (name);
+}
+
+char	*ft_extract_value(char *s)
+{
+	char	*value;
+	char	*start;
+
+	start = ft_strchr(s, '=');
+	if (!start)
+		return (NULL);
+	start++;
+	value = ft_strdup(start);
+	return (value);
+}
+
+char	*create_env_var(char *line, char *name, char *value)
 {
 	int		var_len;
 	int		value_len;
@@ -27,12 +70,14 @@ char	*create_env_var(char *name, char *value)
 		return (NULL);
 	}
 	new_env_var = ft_strdup(name);
-	ft_strcat(new_env_var, "=");
+	if (ft_searc_char(line, '='))
+		ft_strcat(new_env_var, "=");
 	ft_strcat(new_env_var, value);
 	return (new_env_var);
 }
 
-void	add_or_update_env_var(char *var_name, char *var_value, char **environ)
+void	add_or_update_env_var(char *line, char *var_name, char *var_value,
+		char **environ)
 {
 	int		i;
 	int		var_len;
@@ -44,7 +89,7 @@ void	add_or_update_env_var(char *var_name, char *var_value, char **environ)
 	{
 		if (ft_strncmp(environ[i], var_name, var_len) == 0)
 		{
-			new_env_var = create_env_var(var_name, var_value);
+			new_env_var = create_env_var(line, var_name, var_value);
 			if (!new_env_var)
 				return ;
 			environ[i] = new_env_var;
@@ -52,7 +97,7 @@ void	add_or_update_env_var(char *var_name, char *var_value, char **environ)
 		}
 		i++;
 	}
-	new_env_var = create_env_var(var_name, var_value);
+	new_env_var = create_env_var(line, var_name, var_value);
 	if (!new_env_var)
 		return ;
 	environ[i] = new_env_var;
@@ -61,28 +106,40 @@ void	add_or_update_env_var(char *var_name, char *var_value, char **environ)
 
 void	show_env(char **environ)
 {
-	int	i;
-
+	int		i;
+	char	*name;
+	char	*value;
+	
 	i = 0;
-	while (environ[i] != NULL)
+	while (environ[i])
 	{
-		printf("declare - x \"%s\"\n", environ[i]);
+		name = ft_extract_name(environ[i]);
+		value = ft_extract_value(environ[i]);
+		if (!ft_searc_char(environ[i], '='))
+			printf("declare - x %s\n", name);
+		else 
+			printf("declare - x %s=\"%s\"\n", name, value);
 		i++;
+		free(value);
+		free(name);
 	}
 }
 
 int	ft_export(char **args, char **environ)
 {
 	char	*equals_sign;
+	char	*line;
 
 	if (!args[1])
 		return (show_env(environ), 0);
-	equals_sign = ft_strchr(args[1], '=');
+	line = ft_strdup(args[1]);
+	equals_sign = ft_strchr(line, '=');
 	if (!equals_sign)
-		return (fprintf(stderr, "export: `%s': not a valid identifier\n",
-				args[1]), 1);
+	{
+		add_or_update_env_var(args[1], line, "", environ);
+		return (0);
+	}
 	*equals_sign = '\0';
-	add_or_update_env_var(args[1], equals_sign + 1, environ);
-	*equals_sign = '=';
+	add_or_update_env_var(args[1], line, equals_sign + 1, environ);
 	return (0);
 }
