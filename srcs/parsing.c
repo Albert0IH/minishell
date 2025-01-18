@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/18 08:45:03 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/18 11:01:26 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,36 +44,38 @@ char	*extract_word(char *token)
 	free(token);
 	return (word);
 }
-
-int	is_operator(char *operator)
-{
-	if (!ft_strcmp(operator, ">"))
-		return (1);
-	else if (!ft_strcmp(operator, ">>"))
-		return (1);
-	else if (!ft_strcmp(operator, "<"))
-		return (1);
-	else if (!ft_strcmp(operator, "<<"))
-		return (1);
-	else
-		return (0);
+// Verifica se a string é um operador
+int is_operator(const char *token) {
+    return (!ft_strcmp(token, ">") || !ft_strcmp(token, ">>") ||
+            !ft_strcmp(token, "<") || !ft_strcmp(token, "<<"));
 }
 
-void	switch_token(char **token)
-{
-	char *cmd = token[2];
-	char *operator= token[0];
-	char *file = token[1];
-	
-	token[0] = cmd;
-	token[1] = operator;
-	token[2] = file;
+// Encontra o índice do primeiro operador na lista de tokens
+int find_first_operator(char **tokens) {
+    for (int i = 0; tokens[i]; i++) {
+        if (is_operator(tokens[i]))
+            return i;
+    }
+    return -1; // Nenhum operador encontrado
 }
-void	lexic_tokken(char **token)
-{
-	char	*operator= token[1];
-	if (!is_operator(operator))
-		switch_token(token);
+
+// Reorganiza os tokens na ordem: comando -> operador -> arquivo(s)
+void reorder_tokens(char **tokens) {
+    int operator_index = find_first_operator(tokens);
+    if (operator_index <= 0) // Sem operador ou operador já está na posição correta
+        return;
+
+    char *operator = tokens[operator_index];
+    char *file = tokens[operator_index + 1];
+    
+    // Move comando para o início
+    for (int i = operator_index; i > 0; i--) {
+        tokens[i + 1] = tokens[i - 1];
+    }
+
+    // Reposiciona operador e arquivo
+    tokens[1] = operator;
+    tokens[2] = file;
 }
 void	tokenize_line(char *line, char **input)
 {
@@ -95,7 +97,12 @@ void	tokenize_line(char *line, char **input)
 		token = ft_strtok(NULL, " ", &state);
 	}
 	input[i] = NULL;
-	lexic_tokken(input);
+	reorder_tokens(input);
+}
+void free_tokens(char **tokens) {
+    for (int i = 0; tokens[i]; i++) {
+        free(tokens[i]);
+    }
 }
 
 void	print_tokens(char **tokens)

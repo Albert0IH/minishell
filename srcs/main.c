@@ -57,7 +57,8 @@ int	main(int ac, char **av, char **environ)
 		split_pipes(line, commands);
 		execute(commands, env);
 		// tokenize_line(line, commands);
-		// print_tokens(commands);
+		//reorganize_tokens(commands, );
+		print_tokens(commands);
 		free(line);
 	}
 	return (0);

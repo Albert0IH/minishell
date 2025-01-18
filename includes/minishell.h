@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/18 00:22:34 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/18 11:02:20 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@ char		*ft_strtok(char *line, const char *delim, t_tokenizer *state);
 char		*extract_word(char *token);
 void		tokenize_line(char *line, char **input);
 void		print_tokens(char **tokens);
+void		reorder_tokens(char **tokens);
+int			is_operator(const char *token);
+int			find_first_operator(char **tokens);
+//void		free_tokens(char **tokens);
 // Expand
 char		*expand_env_vars(const char *s);
 // Execute
