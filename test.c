@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 16:32:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/18 00:28:51 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/18 08:38:44 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,24 +115,77 @@ void	ft_show_env(char **environ)
 	}
 }
 
-int	main(int ac, char *av, char **environ)
-{
-	char	**env;
-	char	*name;
-	char	*value;
-	int		i;
+// int	main(int ac, char *av, char **environ)
+// {
+// 	char	**env;
+// 	char	*name;
+// 	char	*value;
+// 	int		i;
 
-	(void)ac;
-	(void)av;
-	// env = ft_environ(environ);
-	// name = ft_extract_name(env[1]);
-	// value = ft_extract_value(env[1]);
-	// printf("%s=\"%s\"\n", name, value);
-	env = ft_environ(environ);
-	ft_show_env(env);
+// 	(void)ac;
+// 	(void)av;
+// 	// env = ft_environ(environ);
+// 	// name = ft_extract_name(env[1]);
+// 	// value = ft_extract_value(env[1]);
+// 	// printf("%s=\"%s\"\n", name, value);
+// 	env = ft_environ(environ);
+// 	ft_show_env(env);
+// 	i = 0;
+// 	while (env[i])
+// 		free(env[i++]);
+// 	free(env);
+// 	return (0);
+// }
+
+int	is_operator(char *operator)
+{
+	if (!strcmp(operator, ">"))
+		return (1);
+	else if (!strcmp(operator, ">>"))
+		return (1);
+	else if (!strcmp(operator, "<"))
+		return (1);
+	else if (!strcmp(operator, "<<"))
+		return (1);
+	else
+		return (0);
+}
+
+void	switch_token(char **token)
+{
+	char *cmd = token[2];
+	char *operator= token[0];
+	char *file = token[1];
+	
+	token[0] = cmd;
+	token[1] = operator;
+	token[2] = file;
+}
+
+void	lexic_tokken(char **token)
+{
+	char	*operator= token[1];
+	if (!is_operator(operator))
+		switch_token(token);
+}
+void	print_tokens(char **tokens)
+{
+	int	i;
+
 	i = 0;
-	while (env[i])
-		free(env[i++]);
-	free(env);
-	return (0);
+	while (tokens[i])
+	{
+		printf("Token %d: %s\n", i, tokens[i]);
+		i++;
+	}
+}
+int	main()
+{
+	char *av[] = {">", "a.t", "ls", NULL};
+	printf("---------- ANTES ----------\n");
+	print_tokens(av);
+	lexic_tokken(av);
+	printf("---------- DEPOIS ----------\n");
+	print_tokens(av);
+	return(0);
 }

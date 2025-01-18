@@ -1,0 +1,12 @@
+alia.d
+app
+a.t
+includes
+lia.c
+libft
+ls
+Makefile
+minishell
+objs
+srcs
+test.c

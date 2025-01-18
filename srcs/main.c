@@ -39,6 +39,7 @@ int	main(int ac, char **av, char **environ)
 
 	(void)av;
 	(void)ac;
+	// (void)environ;
 	env = ft_environ(environ);
 	setup_signals();
 	while (1)
@@ -55,6 +56,8 @@ int	main(int ac, char **av, char **environ)
 			add_history(line);
 		split_pipes(line, commands);
 		execute(commands, env);
+		// tokenize_line(line, commands);
+		// print_tokens(commands);
 		free(line);
 	}
 	return (0);

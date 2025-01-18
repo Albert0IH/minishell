@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/17 23:42:36 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/18 08:45:03 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,36 @@ char	*extract_word(char *token)
 	return (word);
 }
 
+int	is_operator(char *operator)
+{
+	if (!ft_strcmp(operator, ">"))
+		return (1);
+	else if (!ft_strcmp(operator, ">>"))
+		return (1);
+	else if (!ft_strcmp(operator, "<"))
+		return (1);
+	else if (!ft_strcmp(operator, "<<"))
+		return (1);
+	else
+		return (0);
+}
+
+void	switch_token(char **token)
+{
+	char *cmd = token[2];
+	char *operator= token[0];
+	char *file = token[1];
+	
+	token[0] = cmd;
+	token[1] = operator;
+	token[2] = file;
+}
+void	lexic_tokken(char **token)
+{
+	char	*operator= token[1];
+	if (!is_operator(operator))
+		switch_token(token);
+}
 void	tokenize_line(char *line, char **input)
 {
 	int			i;
@@ -65,6 +95,7 @@ void	tokenize_line(char *line, char **input)
 		token = ft_strtok(NULL, " ", &state);
 	}
 	input[i] = NULL;
+	lexic_tokken(input);
 }
 
 void	print_tokens(char **tokens)

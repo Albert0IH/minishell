@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:16:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/18 01:05:39 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/18 07:25:30 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	show_env(char **environ)
 	int		i;
 	char	*name;
 	char	*value;
-	
+
 	i = 0;
 	while (environ[i])
 	{
@@ -117,7 +117,7 @@ void	show_env(char **environ)
 		value = ft_extract_value(environ[i]);
 		if (!ft_searc_char(environ[i], '='))
 			printf("declare - x %s\n", name);
-		else 
+		else
 			printf("declare - x %s=\"%s\"\n", name, value);
 		i++;
 		free(value);
@@ -129,17 +129,21 @@ int	ft_export(char **args, char **environ)
 {
 	char	*equals_sign;
 	char	*line;
+	int		i;
 
 	if (!args[1])
 		return (show_env(environ), 0);
-	line = ft_strdup(args[1]);
-	equals_sign = ft_strchr(line, '=');
-	if (!equals_sign)
+	i = 1;
+	while (args[i])
 	{
-		add_or_update_env_var(args[1], line, "", environ);
-		return (0);
+		line = ft_strdup(args[i]);
+		equals_sign = ft_strchr(line, '=');
+		if (!equals_sign)
+			add_or_update_env_var(args[i], line, "", environ);
+		*equals_sign = '\0';
+		if (equals_sign)
+			add_or_update_env_var(args[i], line, equals_sign + 1, environ);
+		i++;
 	}
-	*equals_sign = '\0';
-	add_or_update_env_var(args[1], line, equals_sign + 1, environ);
 	return (0);
 }

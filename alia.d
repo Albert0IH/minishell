@@ -1,0 +1,9 @@
+alia.d
+app
+includes
+libft
+Makefile
+minishell
+objs
+srcs
+test.c
