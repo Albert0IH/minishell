@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/20 16:29:59 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/20 17:54:05 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ char	*extract_word(t_parse *state, char *token)
 			word[state->j++] = token[state->i];
 		state->i++;
 	}
-	word[state->j] = '\0';
 	free(token);
+	word[state->j] = '\0';
 	return (word);
 }
 
@@ -69,6 +69,7 @@ void	print_tokens(char **tokens)
 	while (tokens[i])
 	{
 		printf("Token %d: %s\n", i, tokens[i]);
+		free(tokens[i]);
 		i++;
 	}
 }

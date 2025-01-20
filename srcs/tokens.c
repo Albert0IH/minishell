@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:52:12 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/20 16:25:07 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/20 17:38:51 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ char	*ft_strtok(char *line, const char *delim, t_parse *state)
 		state->current = line;
 		state->in_single_quote = 0;
 		state->in_double_quote = 0;
-		state->i = 0;
-		state->j = 0;
 	}
 	if (!state->current)
 		return (NULL);
