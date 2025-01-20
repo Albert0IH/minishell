@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/18 00:22:34 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/20 17:16:06 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
-typedef struct s_tokenizer
+typedef struct s_parse
 {
 	char	*current;
 	int		in_single_quote;
 	int		in_double_quote;
-}			t_tokenizer;
+	int		i;
+	int		j;
+}			t_parse;
 
 typedef struct s_path
 {
@@ -47,8 +49,8 @@ typedef struct s_env_var
 void		handle_signal(int sig);
 void		setup_signals(void);
 // Parsing
-char		*ft_strtok(char *line, const char *delim, t_tokenizer *state);
-char		*extract_word(char *token);
+char		*ft_strtok(char *line, const char *delim, t_parse *state);
+char		*extract_word(t_parse *state, char *token);
 void		tokenize_line(char *line, char **input);
 void		print_tokens(char **tokens);
 // Expand

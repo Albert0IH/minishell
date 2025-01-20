@@ -35,11 +35,12 @@ int	main(int ac, char **av, char **environ)
 {
 	char	*line;
 	char	*commands[100];
-	char	**env;
+	//char	**env;
 
 	(void)av;
 	(void)ac;
-	env = ft_environ(environ);
+	(void)environ;
+	//env = ft_environ(environ);
 	setup_signals();
 	while (1)
 	{
@@ -53,8 +54,10 @@ int	main(int ac, char **av, char **environ)
 			continue ;
 		if (*line)
 			add_history(line);
-		split_pipes(line, commands);
-		execute(commands, env);
+		// split_pipes(line, commands);
+		// execute(commands, env);
+		tokenize_line(line, commands);
+		print_tokens(commands);
 		free(line);
 	}
 	return (0);

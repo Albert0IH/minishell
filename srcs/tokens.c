@@ -6,20 +6,20 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:52:12 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/16 18:20:03 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/20 16:25:07 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	skip_delim(t_tokenizer *state, const char *delim)
+static void	skip_delim(t_parse *state, const char *delim)
 {
 	while (*state->current && ft_strchr(delim, *state->current)
 		&& !state->in_double_quote && !state->in_single_quote)
 		state->current++;
 }
 
-static void	handle_quotes(t_tokenizer *state)
+static void	handle_quotes(t_parse *state)
 {
 	if (*state->current == '\'' && !state->in_double_quote)
 		state->in_single_quote = !state->in_single_quote;
@@ -27,7 +27,7 @@ static void	handle_quotes(t_tokenizer *state)
 		state->in_double_quote = !state->in_double_quote;
 }
 
-static char	*process_token(t_tokenizer *state, const char *delim)
+static char	*process_token(t_parse *state, const char *delim)
 {
 	while (*state->current)
 	{
@@ -40,7 +40,7 @@ static char	*process_token(t_tokenizer *state, const char *delim)
 	return (state->current);
 }
 
-char	*ft_strtok(char *line, const char *delim, t_tokenizer *state)
+char	*ft_strtok(char *line, const char *delim, t_parse *state)
 {
 	char	*start;
 
@@ -49,6 +49,8 @@ char	*ft_strtok(char *line, const char *delim, t_tokenizer *state)
 		state->current = line;
 		state->in_single_quote = 0;
 		state->in_double_quote = 0;
+		state->i = 0;
+		state->j = 0;
 	}
 	if (!state->current)
 		return (NULL);

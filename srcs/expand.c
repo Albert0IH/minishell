@@ -6,12 +6,11 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/17 15:07:42 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/20 17:33:52 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 char	*get_env_value(char *var)
 {
@@ -23,40 +22,41 @@ char	*get_env_value(char *var)
 	return (ft_strdup(""));
 }
 
-static void	handle_quotes(const char *s, int *i, int *in_single_quote,
-		int *in_double_quote, char *expanded, int *j)
+static void	handle_quotes(t_parse *state, const char *s, char *expanded)
 {
-	if (s[*i] == '\'' && !(*in_double_quote))
+	if (s[state->i] == '\'' && !state->in_double_quote)
 	{
-		*in_single_quote = !(*in_single_quote);
-		expanded[(*j)++] = s[(*i)++];
+		state->in_single_quote = !state->in_single_quote;
+		expanded[state->j++] = s[state->i++];
 	}
-	else if (s[*i] == '"' && !(*in_single_quote))
+	else if (s[state->i] == '"' && !state->in_single_quote)
 	{
-		*in_double_quote = !(*in_double_quote);
-		expanded[(*j)++] = s[(*i)++];
+		state->in_double_quote = !state->in_double_quote;
+		expanded[state->j++] = s[state->i++];
 	}
 }
 
-static int	handle_dollar(const char *s, int *i, char *expanded, int *j,
-		int in_single_quote)
+static int	handle_dollar(t_parse *state, const char *s, char *expanded)
 {
 	char	var[256];
 	char	*value;
 	int		k;
 
-	if (s[*i] == '$' && !in_single_quote)
+	if (s[state->i] == '$' && !state->in_single_quote)
 	{
-		(*i)++;
+		state->i++;
 		k = 0;
-		while (s[*i] && s[*i] != ' ' && s[*i] != '\'' && s[*i] != '"'
-			&& k < 255)
-			var[k++] = s[(*i)++];
+		while (s[state->i] && s[state->i] != ' ' && s[state->i] != '\''
+			&& s[state->i] != '"' && k < 255)
+			var[k++] = s[state->i++];
 		var[k] = '\0';
 		value = get_env_value(var);
-		ft_strcpy(&expanded[*j], value);
-		*j += ft_strlen(value);
-		free(value);
+		if (value)
+		{
+			ft_strcpy(&expanded[state->j], value);
+			state->j += ft_strlen(value);
+			free(value);
+		}
 		return (1);
 	}
 	return (0);
@@ -65,27 +65,23 @@ static int	handle_dollar(const char *s, int *i, char *expanded, int *j,
 char	*expand_env_vars(const char *s)
 {
 	char	*expanded;
-	int		i;
-	int		j;
-	int		in_single_quote;
-	int		in_double_quote;
+	t_parse	*state;
 
 	expanded = malloc(1024);
 	if (!expanded)
 		return (NULL);
-	i = 0;
-	j = 0;
-	in_single_quote = 0;
-	in_double_quote = 0;
-	while (s[i])
+	state = malloc(sizeof(t_parse));
+	state->i = 0;
+	state->j = 0;
+	state->in_single_quote = 0;
+	state->in_double_quote = 0;
+	while (s[state->i])
 	{
-		handle_quotes(s, &i, &in_single_quote, &in_double_quote, expanded, &j);
-		if (handle_dollar(s, &i, expanded, &j, in_single_quote))
+		handle_quotes(state, s, expanded);
+		if (handle_dollar(state, s, expanded))
 			continue ;
-		if (s[i])
-			expanded[j++] = s[i++];
+		expanded[state->j++] = s[state->i++];
 	}
-	expanded[j] = '\0';
+	expanded[state->j] = '\0';
 	return (expanded);
 }
-
