@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/21 15:01:12 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/21 18:38:15 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,25 +95,19 @@ void	execute_from_path(char **commands, char **environ)
 	free(path);
 }
 
-void	execute_command(char *line, char **environ)
+void	execute_command(char *line, char **commands, char **environ)
 {
-	char	*commands[100];
-	int		saved_stdin;
-	int		saved_stdout;
+	int	saved_stdin;
+	int	saved_stdout;
 
 	tokenize_line(line, commands);
 	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
 		return ;
 	if (is_builtin(commands[0]))
-	{
 		execute_builtin(commands, environ);
-		free_tokens(commands);
-	}
 	else
-	{
 		execute_from_path(commands, environ);
-		free_tokens(commands);
-	}
+	free_tokens(commands);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);
@@ -130,7 +124,7 @@ void	execute(char **commands, char **environ)
 	i = 0;
 	prev_fd = 0;
 	if (!commands[1])
-		execute_command(commands[i], environ);
+		execute_command(commands[i], commands, environ);
 	else
 	{
 		while (commands[i])
@@ -153,7 +147,7 @@ void	execute(char **commands, char **environ)
 					dup2(fd[1], STDOUT_FILENO);
 					close(fd[1]);
 				}
-				execute_command(commands[i], environ);
+				execute_command(commands[i], commands, environ);
 				exit(EXIT_FAILURE);
 			}
 			if (commands[i + 1])

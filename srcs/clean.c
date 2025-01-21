@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:44:55 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/21 15:01:45 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/21 18:22:57 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,9 @@ void	free_tokens(char **tokens)
 
 	i = 0;
 	while (tokens[i])
-		free(tokens[i++]);
+	{
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
 }

@@ -1,6 +1,5 @@
 #include "../includes/minishell.h"
 
-
 int	count_lines(char **s)
 {
 	int	i;
@@ -30,11 +29,10 @@ char	**ft_environ(char **environ)
 	return (env);
 }
 
-
 int	main(int ac, char **av, char **environ)
 {
 	char	*line;
-	char	*commands[100];
+	char	**commands;
 	char	**env;
 
 	(void)av;
@@ -56,7 +54,8 @@ int	main(int ac, char **av, char **environ)
 		}
 		if (*line)
 			add_history(line);
-		split_pipes(line, commands);
+		commands = malloc(sizeof(char *) * count_commands(line) + 1);
+		commands = split_commands(line);
 		execute(commands, env);
 		free(line);
 	}

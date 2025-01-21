@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/20 17:16:06 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/21 18:14:48 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void		print_tokens(char **tokens);
 // Expand
 char		*expand_env_vars(const char *s);
 // Execute
-void		execute_command(char *line, char **environ);
+void		execute_command(char *line, char **commands, char **environ);
 int			execute_builtin(char **commands, char **environ);
 void		execute_from_path(char **commands, char **environ);
 void		execute(char **commands, char **environ);
@@ -73,7 +73,8 @@ int			ft_exit(char **args);
 // Redir
 int			handle_redir(char **args, int *saved_stdout, int *saved_stdin);
 // Pipes
-void		split_pipes(char *input, char **cmd);
+char		**split_commands(char *input);
+int			count_commands(char *input);
 // Clean
 void		free_args(char **args);
 void		free_tokens(char **tokens);
