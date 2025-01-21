@@ -3,7 +3,9 @@ includes
 libft
 Makefile
 minishell
+new.c
 objs
 srcs
 test.c
 test.v
+t.t

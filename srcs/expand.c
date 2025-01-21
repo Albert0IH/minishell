@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/20 17:58:32 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/21 11:26:21 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,7 @@ char	*expand_env_vars(const char *s)
 
 	expanded = malloc(1024);
 	if (!expanded)
-	{
-		free(expanded);
-		return (NULL);
-	}
+		return (free(expanded), NULL);
 	state = malloc(sizeof(t_parse));
 	state->i = 0;
 	state->j = 0;
@@ -83,7 +80,10 @@ char	*expand_env_vars(const char *s)
 		handle_quotes(state, s, expanded);
 		if (handle_dollar(state, s, expanded))
 			continue ;
+		if (state->j < 1024 - 1)
 		expanded[state->j++] = s[state->i++];
+		if (state->j >= 1024)
+			expanded = realloc(expanded, state->j + 1024);
 	}
 	expanded[state->j] = '\0';
 	free(state);

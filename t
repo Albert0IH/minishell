@@ -1,9 +1,14 @@
 app
 includes
+l
 libft
+l.t
 Makefile
 minishell
+new.c
 objs
 srcs
+t
 test.c
 test.v
+t.t

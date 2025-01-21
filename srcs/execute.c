@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/20 18:05:46 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/21 15:01:12 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ char	*ft_strncpy(char *dest, const char *src, size_t n)
 
 void	init_path(t_path *path_info)
 {
-	path_info->full_path = (char *)malloc(sizeof(char) + 1);
-	path_info->directories = (char **)malloc(sizeof(char *) + 1);
+	path_info->full_path = NULL;
+	path_info->directories = NULL;
 	path_info->environ = NULL;
 }
 
@@ -69,39 +69,6 @@ char	*get_command_path(char *cmd, t_path *path_info)
 	return (NULL);
 }
 
-void	execute_command(char *line, char **environ)
-{
-	char	*commands[100];
-	int		saved_stdin;
-	int		saved_stdout;
-	pid_t	pid;
-	int		status;
-
-	status = 0;
-	tokenize_line(line, commands);
-	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
-		return ;
-	if (is_builtin(commands[0]))
-		execute_builtin(commands, environ);
-	else
-	{
-
-		pid = fork();
-		if (!pid)
-		{
-			execute_from_path(commands, environ);
-			exit(0);
-		}
-		else if (pid > 0)
-			waitpid(pid, &status, 0);
-	}
-	free_tokens(commands);
-	dup2(saved_stdout, STDOUT_FILENO);
-	dup2(saved_stdin, STDIN_FILENO);
-	close(saved_stdout);
-	close(saved_stdin);
-}
-
 void	execute_from_path(char **commands, char **environ)
 {
 	t_path	*path;
@@ -109,7 +76,7 @@ void	execute_from_path(char **commands, char **environ)
 	char	*cmd_path;
 	int		status;
 
-	path = malloc(sizeof(path));
+	path = malloc(sizeof(t_path));
 	init_path(path);
 	pid = fork();
 	if (!pid)
@@ -125,6 +92,32 @@ void	execute_from_path(char **commands, char **environ)
 		waitpid(pid, &status, 0);
 	else
 		exit(EXIT_FAILURE);
+	free(path);
+}
+
+void	execute_command(char *line, char **environ)
+{
+	char	*commands[100];
+	int		saved_stdin;
+	int		saved_stdout;
+
+	tokenize_line(line, commands);
+	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
+		return ;
+	if (is_builtin(commands[0]))
+	{
+		execute_builtin(commands, environ);
+		free_tokens(commands);
+	}
+	else
+	{
+		execute_from_path(commands, environ);
+		free_tokens(commands);
+	}
+	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdout);
+	close(saved_stdin);
 }
 
 void	execute(char **commands, char **environ)
