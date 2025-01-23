@@ -58,6 +58,8 @@ int	main(int ac, char **av, char **environ)
 			add_history(line);
 		split_pipes(line, commands);
 		execute(commands, env);
+		// tokenize_line(line, commands);
+		// print_tokens(commands);
 		free(line);
 	}
 	free_args(env);

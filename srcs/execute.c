@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/21 15:01:12 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/23 14:53:20 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,25 @@ void	init_path(t_path *path_info)
 	path_info->environ = NULL;
 }
 
-char	*get_command_path(char *cmd, t_path *path_info)
+char *ft_get_env(char *var, char **environ)
+{
+	int i;
+	size_t var_len;
+
+	if (!var || !environ)
+		return (NULL);
+	var_len = ft_strlen(var);
+	i = 0;
+	while (environ[i])
+	{
+		if (!ft_strncmp(environ[i], var, var_len))
+			return (environ[i] + var_len + 1);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*get_command_path(char *cmd, t_path *path_info, char **environ)
 {
 	char	*path;
 	char	*dir;
@@ -45,7 +63,7 @@ char	*get_command_path(char *cmd, t_path *path_info)
 	int		i;
 
 	i = 0;
-	path = getenv("PATH");
+	path = ft_get_env("PATH", environ);
 	if (!path)
 		return (NULL);
 	if (cmd[0] == '/')
@@ -81,7 +99,7 @@ void	execute_from_path(char **commands, char **environ)
 	pid = fork();
 	if (!pid)
 	{
-		cmd_path = get_command_path(commands[0], path);
+		cmd_path = get_command_path(commands[0], path, environ);
 		if (execve(cmd_path, commands, environ) == -1)
 		{
 			ft_putstr_fd("execve error\n", STDERR_FILENO);

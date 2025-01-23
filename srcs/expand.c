@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/21 11:26:21 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:21:43 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,7 @@ char	*expand_env_vars(const char *s)
 	if (!expanded)
 		return (free(expanded), NULL);
 	state = malloc(sizeof(t_parse));
-	state->i = 0;
-	state->j = 0;
-	state->in_single_quote = 0;
-	state->in_double_quote = 0;
+	init_state(state);
 	while (s[state->i])
 	{
 		handle_quotes(state, s, expanded);
