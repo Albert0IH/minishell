@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/23 14:18:35 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/24 11:59:00 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,14 @@ void		setup_signals(void);
 // Parsing
 void		init_state(t_parse *state);
 char		*ft_strtok(char *line, const char *delim, t_parse *state);
-char		*extract_word(t_parse *state, char *token);
-void		tokenize_line(char *line, char **input);
+char		*extract_word(t_parse *state, char *token, char **environ);
+void		tokenize_line(char *line, char **input, char **environ);
 void		print_tokens(char **tokens);
 // Expand
-char		*expand_env_vars(const char *s);
+char		*get_env_value(char *var, char **environ);
+char		*expand_env_vars(const char *s, char **environ);
 // Execute
+char		*ft_get_env(char *var, char **environ);
 char		*get_command_path(char *cmd, t_path *path_info, char **environ);
 void		execute_command(char *line, char **environ);
 int			execute_builtin(char **commands, char **environ);

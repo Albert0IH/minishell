@@ -1,10 +1,12 @@
-app
+dinis.c
 includes
+lia.txt
 libft
+ls
 Makefile
 minishell
-new.c
 objs
+oi
+oi.c
 srcs
 test.c
-test.v

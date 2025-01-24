@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/23 14:53:20 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/24 12:22:05 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char *ft_get_env(char *var, char **environ)
 	i = 0;
 	while (environ[i])
 	{
-		if (!ft_strncmp(environ[i], var, var_len))
+		if (!ft_strncmp(environ[i], var, var_len) && environ[i][var_len] == '=')
 			return (environ[i] + var_len + 1);
 		i++;
 	}
@@ -119,7 +119,7 @@ void	execute_command(char *line, char **environ)
 	int		saved_stdin;
 	int		saved_stdout;
 
-	tokenize_line(line, commands);
+	tokenize_line(line, commands, environ);
 	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
 		return ;
 	if (is_builtin(commands[0]))

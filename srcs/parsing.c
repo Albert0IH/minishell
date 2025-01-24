@@ -6,17 +6,17 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/23 15:07:00 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/24 12:04:01 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*extract_word(t_parse *state, char *token)
+char	*extract_word(t_parse *state, char *token, char **environ)
 {
 	char	*word;
 
-	token = expand_env_vars(token);
+	token = expand_env_vars(token, environ);
 	if (!token)
 		return (NULL);
 	word = malloc(ft_strlen(token) + 1);
@@ -36,11 +36,10 @@ char	*extract_word(t_parse *state, char *token)
 	}
 	free(token);
 	word[state->j] = '\0';
-	printf("expanded [%s]\n", word);
 	return (word);
 }
 
-void	tokenize_line(char *line, char **input)
+void	tokenize_line(char *line, char **input, char **environ)
 {
 	int			i;
 	char		*token;
@@ -54,12 +53,9 @@ void	tokenize_line(char *line, char **input)
 	i = 0;
 	while (token)
 	{
-		word = extract_word(&state, token);
+		word = extract_word(&state, token, environ);
 		if (word)
-		{
-			printf("word [%s]\n", word);
 			input[i++] = word;
-		}
 		token = ft_strtok(NULL, " ", &state);
 	}
 	input[i] = NULL;

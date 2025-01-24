@@ -6,17 +6,17 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/23 12:21:43 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/24 11:51:47 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*get_env_value(char *var)
+char	*get_env_value(char *var, char **environ)
 {
 	char	*value;
 
-	value = getenv(var);
+	value = ft_get_env(var, environ);
 	if (value)
 		return (ft_strdup(value));
 	return (ft_strdup(""));
@@ -36,7 +36,7 @@ static void	handle_quotes(t_parse *state, const char *s, char *expanded)
 	}
 }
 
-static int	handle_dollar(t_parse *state, const char *s, char *expanded)
+static int	handle_dollar(t_parse *state, const char *s, char *expanded, char **environ)
 {
 	char	var[256];
 	char	*value;
@@ -50,7 +50,7 @@ static int	handle_dollar(t_parse *state, const char *s, char *expanded)
 			&& s[state->i] != '"' && k < 255)
 			var[k++] = s[state->i++];
 		var[k] = '\0';
-		value = get_env_value(var);
+		value = get_env_value(var, environ);
 		if (value)
 		{
 			ft_strcpy(&expanded[state->j], value);
@@ -62,7 +62,7 @@ static int	handle_dollar(t_parse *state, const char *s, char *expanded)
 	return (0);
 }
 
-char	*expand_env_vars(const char *s)
+char	*expand_env_vars(const char *s, char **environ)
 {
 	char	*expanded;
 	t_parse	*state;
@@ -75,7 +75,7 @@ char	*expand_env_vars(const char *s)
 	while (s[state->i])
 	{
 		handle_quotes(state, s, expanded);
-		if (handle_dollar(state, s, expanded))
+		if (handle_dollar(state, s, expanded, environ))
 			continue ;
 		if (state->j < 1024 - 1)
 		expanded[state->j++] = s[state->i++];

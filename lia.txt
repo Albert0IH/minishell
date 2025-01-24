@@ -1,11 +1,9 @@
-app
 includes
+lia.txt
 libft
+ls
 Makefile
 minishell
-new.c
 objs
 srcs
 test.c
-test.v
-t.t
