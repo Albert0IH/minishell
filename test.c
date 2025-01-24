@@ -163,10 +163,21 @@ int	is_operator(char *s)
 	return (0);
 }
 
+void	free_tokens(char **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+		free(tokens[i++]);
+}
+
 int	count_lines(char **s)
 {
 	int	i;
 
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i])
 		i++;
@@ -214,46 +225,38 @@ char	**operator_matrix(char **input)
 	return (new_input);
 }
 
+int	ft_search_str(char **array, char *s)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (array[i])
+	{
+		if (!strcmp(array[i], s))
+			count++;
+		i++;
+	}
+	return (count);
+}
+
 char	**sort_lexic(char **av)
 {
-	char	*oprd;
-	char	*file;
 	char	**lexic_tokens;
-	int		flag;
 	char	**mop;
 	int		i;
 	int		j;
 
-	// char	*cmd;
-	// int i;
-	// cmd = av[3];
-	// oprd = av[1];
-	// file = av[2];
-	// av[1] = cmd;
-	// av[2] = oprd;
-	// av[3] = file;
 	lexic_tokens = malloc(sizeof(char *) * (count_lines(av) + 1));
+	mop = operator_matrix(av);
 	i = 0;
 	j = 0;
-	flag = 0;
 	while (av[i])
 	{
 		if (is_operator(av[i]) && av[i + 1])
 		{
-			if (!flag)
-			{
-				flag = 1;
-				oprd = av[i];
-				file = av[i + 1];
-				i += 2;
-			}
-			else
-			{
-				flag = 0;
-				lexic_tokens[j] = strdup(oprd);
-				lexic_tokens[j + 1] = strdup(file);
-				j += 2;
-			}
+			i += 2;
 			continue ;
 		}
 		else
@@ -261,10 +264,87 @@ char	**sort_lexic(char **av)
 		i++;
 		j++;
 	}
-	lexic_tokens[j] = strdup(oprd);
-	lexic_tokens[j + 1] = strdup(file);
-	lexic_tokens[j + 2] = NULL;
+	i = 0;
+	while (mop[i])
+		lexic_tokens[j++] = mop[i++];
+	lexic_tokens[j] = NULL;
 	return (lexic_tokens);
+}
+
+char	**matrix_join(char **mtx1, char **mtx2)
+{
+	char	**matrix;
+	int		i;
+	int		j;
+	size_t	len_m1;
+	size_t	len_m2;
+
+	i = 0;
+	j = 0;
+	len_m1 = count_lines(mtx1);
+	len_m2 = count_lines(mtx2);
+	matrix = malloc(sizeof(char *) * (len_m1 + len_m2 + 2));
+	while (mtx1 && mtx1[i])
+		matrix[j++] = strdup(mtx1[i++]);
+	matrix[j] = "|";
+	i = 0;
+	// j++;
+	while (mtx2[i])
+		matrix[j++] = strdup(mtx2[i++]);
+	matrix[j] = NULL;
+	return (matrix);
+}
+
+void	free_args(char **args)
+{
+	int	i;
+
+	i = 0;
+	if (args)
+	{
+		while (args[i])
+			free(args[i++]);
+		free(args);
+	}
+}
+
+char	**mult_lexic_sort(char **input)
+{
+	int		i;
+	int		j;
+	char	**final;
+	char	**sorted;
+	char	**tmp;
+
+	i = 0;
+	j = 0;
+	final = NULL;
+	sorted = NULL;
+	tmp = malloc(sizeof(char *) * (count_lines(input) + 1));
+	while (input[i])
+	{
+		if (!strcmp(input[i], "|"))
+		{
+			tmp[j] = NULL;
+			sorted = sort_lexic(tmp);
+			// printf("...............\n");
+			// print_tokens(sorted);
+			// //printf("...............\n");
+			final = matrix_join(final, sorted);
+			free_tokens(tmp);
+			free_args(sorted);
+			j = 0;
+		}
+		tmp[j] = strdup(input[i]);
+		i++;
+		j++;
+	}
+	tmp[j] = NULL;
+	sorted = sort_lexic(tmp);
+	final = matrix_join(final, sorted);
+	free_args(tmp);
+	free_args(sorted);
+	return (final);
 }
 
 int	main(int ac, char **av)
@@ -273,7 +353,25 @@ int	main(int ac, char **av)
 
 	(void)ac;
 	print_tokens(av);
-	printf("-----------------\n");
-	lexic = sort_lexic(av + 1);
+	printf("---------- ordenado ---------\n");
+	lexic = mult_lexic_sort(av + 1);
 	print_tokens(lexic);
+	return (0);
 }
+
+// int	main(void)
+// {
+// 	char	**matrix;
+// 	char	**m1;
+// 	char	**m2;
+
+// 	m1 = {"alia", "dinis", NULL};
+// 	m2 = {"alberto", "hamuyela", NULL};
+// 	print_tokens(m1);
+// 	printf("-------------------\n");
+// 	print_tokens(m2);
+// 	printf("-------------------\n");
+// 	matrix = matrix_join(m1, m2);
+// 	print_tokens(matrix);
+// 	return (0);
+// }

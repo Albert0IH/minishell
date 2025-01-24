@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/24 15:00:56 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 00:05:23 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ char		*extract_word(t_parse *state, char *token, char **environ);
 void		tokenize_line(char *line, char **input, char **environ);
 void		print_tokens(char **tokens);
 // Lexic
-int			is_operator(char *s);
-void		sort_lexic(char **av);
+int			count_lines(char **s);
+void		mult_lexic_sort(char **input);
 // Expand
 char		*get_env_value(char *var, char **environ);
 char		*expand_env_vars(const char *s, char **environ);

@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/24 17:18:52 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 00:03:00 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ void	tokenize_line(char *line, char **input, char **environ)
 		expanded = ft_strtok(NULL, " ", &state);
 	}
 	input[i] = NULL;
-	if (is_operator(input[0]))
-		sort_lexic(input); // printf("sort lexic\n");
+	
 }
 
 // void	print_expandeds(char **expandeds)
