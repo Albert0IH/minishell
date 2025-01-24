@@ -1,9 +1,0 @@
-includes
-lia.txt
-libft
-ls
-Makefile
-minishell
-objs
-srcs
-test.c

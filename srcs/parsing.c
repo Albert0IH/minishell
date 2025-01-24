@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/24 12:04:01 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/24 17:18:52 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,61 +15,64 @@
 char	*extract_word(t_parse *state, char *token, char **environ)
 {
 	char	*word;
+	char	*expanded;
 
-	token = expand_env_vars(token, environ);
-	if (!token)
+	expanded = expand_env_vars(token, environ);
+	if (!expanded)
 		return (NULL);
-	word = malloc(ft_strlen(token) + 1);
+	word = malloc(ft_strlen(expanded) + 1);
 	if (!word)
 		return (NULL);
 	state->i = 0;
 	state->j = 0;
-	while (token[state->i])
+	while (expanded[state->i])
 	{
-		if (token[state->i] == '\'' && !state->in_double_quote)
+		if (expanded[state->i] == '\'' && !state->in_double_quote)
 			state->in_single_quote = !state->in_single_quote;
-		else if (token[state->i] == '"' && !state->in_single_quote)
+		else if (expanded[state->i] == '"' && !state->in_single_quote)
 			state->in_double_quote = !state->in_double_quote;
 		else
-			word[state->j++] = token[state->i];
+			word[state->j++] = expanded[state->i];
 		state->i++;
 	}
-	free(token);
+	free(expanded);
 	word[state->j] = '\0';
 	return (word);
 }
 
 void	tokenize_line(char *line, char **input, char **environ)
 {
-	int			i;
-	char		*token;
-	char		*word;
+	int		i;
+	char	*expanded;
+	char	*word;
 	t_parse	state;
 
 	line[ft_strcspn(line, "\n")] = '\0';
-	token = ft_strtok(line, " ", &state);
-	if (!token)
+	expanded = ft_strtok(line, " ", &state);
+	if (!expanded)
 		return ;
 	i = 0;
-	while (token)
+	while (expanded)
 	{
-		word = extract_word(&state, token, environ);
+		word = extract_word(&state, expanded, environ);
 		if (word)
 			input[i++] = word;
-		token = ft_strtok(NULL, " ", &state);
+		expanded = ft_strtok(NULL, " ", &state);
 	}
 	input[i] = NULL;
+	if (is_operator(input[0]))
+		sort_lexic(input); // printf("sort lexic\n");
 }
 
-void	print_tokens(char **tokens)
-{
-	int	i;
+// void	print_expandeds(char **expandeds)
+// {
+// 	int	i;
 
-	i = 0;
-	while (tokens[i])
-	{
-		printf("Token %d: %s\n", i, tokens[i]);
-		free(tokens[i]);
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (expandeds[i])
+// 	{
+// 		printf("expanded %d: %s\n", i, expandeds[i]);
+// 		free(expandeds[i]);
+// 		i++;
+// 	}
+// }

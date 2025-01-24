@@ -1,6 +1,18 @@
 #include "../includes/minishell.h"
 
 
+void	print_tokens(char **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		printf("Token %d: %s\n", i, tokens[i]);
+		free(tokens[i]);
+		i++;
+	}
+}
 int	count_lines(char **s)
 {
 	int	i;
@@ -9,6 +21,18 @@ int	count_lines(char **s)
 	while (s[i])
 		i++;
 	return (i);
+}
+
+int	check_readline(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] && line[i] == ' ')
+		i++;
+	if (line[i] == '\0')
+		return (0);
+	return (1);
 }
 
 char	**ft_environ(char **environ)
@@ -49,7 +73,7 @@ int	main(int ac, char **av, char **environ)
 			printf("exit\n");
 			break ;
 		}
-		if (!ft_strcmp(line, "\0"))
+		if (!ft_strcmp(line, "\0") || !check_readline(line))
 		{
 			free(line);
 			continue ;
@@ -58,7 +82,7 @@ int	main(int ac, char **av, char **environ)
 			add_history(line);
 		split_pipes(line, commands);
 		execute(commands, env);
-		// tokenize_line(line, commands);
+		// tokenize_line(line, commands, environ);
 		// print_tokens(commands);
 		free(line);
 	}
