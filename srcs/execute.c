@@ -3,89 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adinis <adinis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 07:45:01 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 12:35:47 by adinis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*ft_strncpy(char *dest, const char *src, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n && src[i] != '\0')
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	while (i < n)
-	{
-		dest[i] = '\0';
-		i++;
-	}
-	return (dest);
-}
-
-void	init_path(t_path *path_info)
-{
-	path_info->full_path = NULL;
-	path_info->directories = NULL;
-	path_info->environ = NULL;
-}
-
-char	*ft_get_env(char *var, char **environ)
-{
-	int		i;
-	size_t	var_len;
-
-	if (!var || !environ)
-		return (NULL);
-	var_len = ft_strlen(var);
-	i = 0;
-	while (environ[i])
-	{
-		if (!ft_strncmp(environ[i], var, var_len) && environ[i][var_len] == '=')
-			return (environ[i] + var_len + 1);
-		i++;
-	}
-	return (NULL);
-}
-
-char	*get_command_path(char *cmd, t_path *path_info, char **environ)
-{
-	char	*path;
-	char	*dir;
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	path = ft_get_env("PATH", environ);
-	if (!path)
-		return (NULL);
-	if (cmd[0] == '/')
-		return (cmd);
-	path_info->directories = ft_split(path, ':');
-	while (path_info->directories[i])
-	{
-		dir = path_info->directories[i];
-		tmp = ft_strjoin(dir, "/");
-		path_info->full_path = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (!access(path_info->full_path, F_OK))
-		{
-			free_args(path_info->directories);
-			return (path_info->full_path);
-		}
-		free(path_info->full_path);
-		i++;
-	}
-	free_args(path_info->directories);
-	return (NULL);
-}
 
 void	execute_from_path(char **commands, char **environ)
 {
@@ -120,7 +45,6 @@ void	execute_command(char *line, char **environ)
 	char	**commands;
 	int		saved_stdin;
 	int		saved_stdout;
-	// char	**cmd;
 
 	commands = tokenize_line(line, environ);
 	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+         #
+#    By: adinis <adinis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/19 03:31:39 by ahamuyel          #+#    #+#              #
-#    Updated: 2025/01/11 11:35:59 by ahamuyel         ###   ########.fr        #
+#    Updated: 2025/01/25 11:33:10 by adinis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS = 	ft_isalpha.c	\
 	ft_strlcpy.c 		\
 	ft_strlcat.c 		\
 	ft_strcpy.c 		\
+	ft_strncpy.c 		\
 	ft_strcmp.c 		\
 	ft_strcat.c 		\
 	ft_toupper.c 		\

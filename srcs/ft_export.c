@@ -3,28 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adinis <adinis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:16:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/18 01:05:39 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 11:50:29 by adinis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	ft_searc_char(char *s, char c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 char	*ft_extract_name(char *s)
 {
@@ -53,27 +39,6 @@ char	*ft_extract_value(char *s)
 	start++;
 	value = ft_strdup(start);
 	return (value);
-}
-
-char	*create_env_var(char *line, char *name, char *value)
-{
-	int		var_len;
-	int		value_len;
-	char	*new_env_var;
-
-	var_len = ft_strlen(name);
-	value_len = ft_strlen(value);
-	new_env_var = malloc(var_len + value_len + 2);
-	if (!new_env_var)
-	{
-		perror("malloc");
-		return (NULL);
-	}
-	new_env_var = ft_strdup(name);
-	if (ft_searc_char(line, '='))
-		ft_strcat(new_env_var, "=");
-	ft_strcat(new_env_var, value);
-	return (new_env_var);
 }
 
 void	add_or_update_env_var(char *line, char *var_name, char *var_value,
@@ -109,7 +74,7 @@ void	show_env(char **environ)
 	int		i;
 	char	*name;
 	char	*value;
-	
+
 	i = 0;
 	while (environ[i])
 	{
@@ -117,7 +82,7 @@ void	show_env(char **environ)
 		value = ft_extract_value(environ[i]);
 		if (!ft_searc_char(environ[i], '='))
 			printf("declare - x %s\n", name);
-		else 
+		else
 			printf("declare - x %s=\"%s\"\n", name, value);
 		i++;
 		free(value);

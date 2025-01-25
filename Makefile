@@ -25,7 +25,10 @@ SRCS = 	$(SRCS_DIR)main.c		\
 		$(SRCS_DIR)ft_exit.c 	\
 		$(SRCS_DIR)redirecting.c\
 		$(SRCS_DIR)pipes.c 		\
-		$(SRCS_DIR)clean.c
+		$(SRCS_DIR)clean.c		\
+		$(SRCS_DIR)search_c_s.c \
+		$(SRCS_DIR)operater.c  	\
+		$(SRCS_DIR)get_path.c 	
 OBJS = $(SRCS:$(SRCS_DIR)%.c=$(OBJS_DIR)%.o)
 
 LIBS = -lreadline

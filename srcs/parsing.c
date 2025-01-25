@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adinis <adinis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 07:31:33 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 12:44:52 by adinis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,43 +43,28 @@ char	*extract_word(t_parse *state, char *token, char **environ)
 char	**tokenize_line(char *line, char **environ)
 {
 	int		i;
-	char	*expanded;
-	char	*word;
-	char	**parsed_token;
-	char	**input;
+	//char	*expanded;
+	// char	*word;
 	t_parse	state;
+	t_token *token;
 
+	token = malloc(sizeof(t_token));
+	init_token(token);
 	line[ft_strcspn(line, "\n")] = '\0';
-	expanded = ft_strtok(line, " ", &state);
-	if (!expanded)
-		return (free(expanded), NULL);
-	// if (!input)
-	input = malloc(sizeof(char *) * 50); // Alocar espaço para até 50 tokens
-	// if (!input)
-	// 	return (NULL); // Falha na alocação
+	token->expanded = ft_strtok(line, " ", &state);
+	if (!token->expanded)
+		return (free(token->expanded), NULL);
+	token->input = malloc(sizeof(char *) * 50);
 	i = 0;
-	while (expanded)
+	while (token->expanded)
 	{
-		word = extract_word(&state, expanded, environ);
-		if (word)
-			input[i++] = word;
-		expanded = ft_strtok(NULL, " ", &state);
+		token->word = extract_word(&state, token->expanded, environ);
+		if (token->word)
+			token->input[i++] = token->word;
+		token->expanded = ft_strtok(NULL, " ", &state);
 	}
-	input[i] = NULL;
-	parsed_token = mult_lexic_sort(input);
-	free_args(input);
-	return (parsed_token);
+	token->input[i] = NULL;
+	token->parsed_token = mult_lexic_sort(token->input);
+	free_args(token->input);
+	return (token->parsed_token);
 }
-
-// void	print_expandeds(char **expandeds)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (expandeds[i])
-// 	{
-// 		printf("expanded %d: %s\n", i, expandeds[i]);
-// 		free(expandeds[i]);
-// 		i++;
-// 	}
-// }

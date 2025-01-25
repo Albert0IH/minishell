@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adinis <adinis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/24 11:51:47 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 11:24:07 by adinis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static void	handle_quotes(t_parse *state, const char *s, char *expanded)
 	}
 }
 
-static int	handle_dollar(t_parse *state, const char *s, char *expanded, char **environ)
+static int	handle_dollar(t_parse *state, const char *s, char *expanded,
+		char **environ)
 {
 	char	var[256];
 	char	*value;
@@ -78,7 +79,7 @@ char	*expand_env_vars(const char *s, char **environ)
 		if (handle_dollar(state, s, expanded, environ))
 			continue ;
 		if (state->j < 1024 - 1)
-		expanded[state->j++] = s[state->i++];
+			expanded[state->j++] = s[state->i++];
 		if (state->j >= 1024)
 			expanded = realloc(expanded, state->j + 1024);
 	}

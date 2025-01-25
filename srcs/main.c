@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adinis <adinis@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/25 11:26:06 by adinis            #+#    #+#             */
+/*   Updated: 2025/01/25 11:53:45 by adinis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	print_tokens(char **tokens)
@@ -11,17 +23,6 @@ void	print_tokens(char **tokens)
 		free(tokens[i]);
 		i++;
 	}
-}
-int	count_lines(char **s)
-{
-	int	i;
-
-	if (!s)
-		return (0);
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
 }
 
 int	check_readline(char *line)

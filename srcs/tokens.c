@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adinis <adinis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:52:12 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/24 15:14:01 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 11:21:43 by adinis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void init_state(t_parse *state)
+void	init_state(t_parse *state)
 {
 	state->in_single_quote = 0;
 	state->in_double_quote = 0;

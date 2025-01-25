@@ -1,15 +1,8 @@
-a
-app
-b
-c
-count
-file
 includes
 libft
-li.txt
 Makefile
 minishell
-mtx.c
 objs
+ppp.t
 srcs
-test.c
+test

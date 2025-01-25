@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adinis <adinis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 06:40:03 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 12:44:16 by adinis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,20 @@ typedef struct s_env_var
 	char	*name;
 	char	*value;
 }			t_env_var;
+typedef struct s_token
+{
+	char	**parsed_token;
+	char	**input;
+	char	*expanded;
+	char	*word;
+}			t_token;
 
 // Signals
 void		handle_signal(int sig);
 void		setup_signals(void);
 // Parsing
 void		init_state(t_parse *state);
+void		init_token(t_token *s);
 char		*ft_strtok(char *line, const char *delim, t_parse *state);
 char		*extract_word(t_parse *state, char *token, char **environ);
 char		**tokenize_line(char *line, char **environ);
@@ -59,9 +67,11 @@ int			count_lines(char **s);
 int			is_operator(char *s);
 char		**mult_lexic_sort(char **input);
 int			count_lines(char **s);
+char		**operator_matrix(char **input);
 // Expand
 char		*get_env_value(char *var, char **environ);
 char		*expand_env_vars(const char *s, char **environ);
+
 // Execute
 char		*ft_get_env(char *var, char **environ);
 char		*get_command_path(char *cmd, t_path *path_info, char **environ);
@@ -89,5 +99,7 @@ int			count_commands(char *input);
 void		free_args(char **args);
 void		free_tokens(char **tokens);
 char		*ft_strncpy(char *dest, const char *src, size_t n);
-
+//!
+char		*create_env_var(char *line, char *name, char *value);
+int			ft_searc_char(char *s, char c);
 #endif
