@@ -308,6 +308,47 @@ void	free_args(char **args)
 	}
 }
 
+// void	mult_lexic_sort(char ***ptr_input)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	**final;
+// 	char	**sorted;
+//  
+// 	input = *input_ptr;
+// 	i = 0;
+// 	j = 0;
+// 	final = NULL;
+// 	sorted = NULL;
+// 	tmp = malloc(sizeof(char *) * (count_lines(input) + 1));
+// 	while (input[i])
+// 	{
+// 		if (!strcmp(input[i], "|"))
+// 		{
+// 			tmp[j] = NULL;
+// 			sorted = sort_lexic(tmp);
+// 			final = matrix_join(final, sorted);
+// 			free_tokens(tmp);
+// 			free_args(sorted);
+// 			j = 0;
+// 			i++;
+// 			continue ;
+// 		}
+// 		tmp[j] = strdup(input[i]);
+// 		if (!tmp[j])
+// 			return ;
+// 		i++;
+// 		j++;
+// 	}
+// 	tmp[j] = NULL;
+// 	sorted = sort_lexic(tmp);
+// 	final = matrix_join(final, sorted);
+// 	*input_ptr = final;
+//  free_
+// 	free_args(tmp);
+// 	free_args(sorted);
+// }
+
 char	**mult_lexic_sort(char **input)
 {
 	int		i;
@@ -327,9 +368,6 @@ char	**mult_lexic_sort(char **input)
 		{
 			tmp[j] = NULL;
 			sorted = sort_lexic(tmp);
-			// printf("...............\n");
-			// print_tokens(sorted);
-			// //printf("...............\n");
 			final = matrix_join(final, sorted);
 			free_tokens(tmp);
 			free_args(sorted);

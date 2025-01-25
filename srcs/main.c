@@ -1,6 +1,5 @@
 #include "../includes/minishell.h"
 
-
 void	print_tokens(char **tokens)
 {
 	int	i;
@@ -17,6 +16,8 @@ int	count_lines(char **s)
 {
 	int	i;
 
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i])
 		i++;
@@ -54,13 +55,13 @@ char	**ft_environ(char **environ)
 	return (env);
 }
 
-
 int	main(int ac, char **av, char **environ)
 {
 	char	*line;
-	char	*commands[100];
+	char	**commands;
 	char	**env;
 
+	commands = malloc(sizeof(char *) * 50);
 	(void)av;
 	(void)ac;
 	env = ft_environ(environ);
@@ -82,8 +83,6 @@ int	main(int ac, char **av, char **environ)
 			add_history(line);
 		split_pipes(line, commands);
 		execute(commands, env);
-		// tokenize_line(line, commands, environ);
-		// print_tokens(commands);
 		free(line);
 	}
 	free_args(env);

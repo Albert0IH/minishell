@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 00:03:14 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 03:50:33 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,9 @@ void	execute_from_path(char **commands, char **environ)
 		cmd_path = get_command_path(commands[0], path, environ);
 		if (execve(cmd_path, commands, environ) == -1)
 		{
-			ft_putstr_fd("execve error\n", STDERR_FILENO);
+			ft_putstr_fd(commands[0], STDERR_FILENO);
+			ft_putstr_fd(": ", STDERR_FILENO);
+			ft_putstr_fd("command not found\n", STDERR_FILENO);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -115,11 +117,13 @@ void	execute_from_path(char **commands, char **environ)
 
 void	execute_command(char *line, char **environ)
 {
-	char	*commands[100];
+	char	**commands;
 	int		saved_stdin;
 	int		saved_stdout;
 
-	tokenize_line(line, commands, environ);
+	commands = malloc(sizeof(char *) * 50);
+
+	commands = tokenize_line(line, commands, environ);
 	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
 		return ;
 	if (is_builtin(commands[0]))

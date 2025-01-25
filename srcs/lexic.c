@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:56:44 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 00:03:52 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 02:54:13 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char	**matrix_join(char **mtx1, char **mtx2)
 	return (matrix);
 }
 
-void	mult_lexic_sort(char **input)
+char	**mult_lexic_sort(char **input)
 {
 	int		i;
 	int		j;
@@ -164,4 +164,5 @@ void	mult_lexic_sort(char **input)
 	final = matrix_join(final, sorted);
 	free_args(tmp);
 	free_args(sorted);
+	return (final);
 }

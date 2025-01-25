@@ -1,0 +1,10 @@
+app
+file
+includes
+libft
+Makefile
+minishell
+mtx.c
+objs
+srcs
+test.c
