@@ -70,6 +70,9 @@ int	main(int ac, char **av, char **environ)
 		line = readline("minishell> ");
 		if (!line)
 		{
+			rl_clear_history();
+			free_args(commands);
+			free(line);
 			printf("exit\n");
 			break ;
 		}
@@ -80,12 +83,11 @@ int	main(int ac, char **av, char **environ)
 		}
 		if (*line)
 			add_history(line);
-		commands = malloc(sizeof(char *) * count_commands(line) + 1);
 		commands = split_commands(line);
 		execute(commands, env);
 		free_args(commands);
-		free(line);
 	}
+	free(line);
 	free_args(env);
 	return (0);
 }

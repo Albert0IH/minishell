@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:56:44 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 07:10:01 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 09:05:48 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,14 @@ char	**operator_matrix(char **input)
 
 	i = 0;
 	j = 0;
-	new_input = malloc(sizeof(char *) * ((count_operator(input) + 2) + 1));
+	new_input = malloc(sizeof(char *) * ((count_operator(input) * 2) + 1));
 	while (input[i])
 	{
 		if (is_operator(input[i]) && input[i + 1])
 		{
 			new_input[j] = ft_strdup(input[i]);
+			if (!new_input[j])
+				return(free_args(new_input), NULL);
 			new_input[j + 1] = ft_strdup(input[i + 1]);
 			i += 2;
 			j += 2;
@@ -104,6 +106,7 @@ char	**sort_lexic(char **av)
 	while (mop[i])
 		lexic_tokens[j++] = ft_strdup(mop[i++]);
 	lexic_tokens[j] = NULL;
+	
 	free_args(mop);
 	return (lexic_tokens);
 }
@@ -124,7 +127,7 @@ char	**matrix_join(char **mtx1, char **mtx2, int pipe)
 	while (mtx1 && mtx1[i])
 		matrix[j++] = ft_strdup(mtx1[i++]);
 	if (pipe && mtx1)
-		matrix[j] = "|";
+		matrix[j] = ft_strdup("|");
 	i = 0;
 	while (mtx2 && mtx2[i])
 		matrix[j++] = ft_strdup(mtx2[i++]);
@@ -135,36 +138,37 @@ char	**matrix_join(char **mtx1, char **mtx2, int pipe)
 
 char	**mult_lexic_sort(char **input)
 {
-	int		i;
-	int		j;
-	char	**final;
-	char	**sorted;
-	char	**tmp;
+	// int		i;
+	// int		j;
+	char **final;
+	// char	**sorted;
+	// char	**tmp;
 
-	i = 0;
-	j = 0;
+	// i = 0;
+	// j = 0;
 	final = NULL;
-	sorted = NULL;
-	tmp = malloc(sizeof(char *) * (count_lines(input) + 1));
-	while (input[i])
-	{
-		if (!ft_strcmp(input[i], "|"))
-		{
-			tmp[j] = NULL;
-			sorted = sort_lexic(tmp);
-			final = matrix_join(final, sorted, 1);
-			free_tokens(tmp);
-			free_args(sorted);
-			j = 0;
-		}
-		tmp[j] = ft_strdup(input[i]);
-		i++;
-		j++;
-	}
-	tmp[j] = NULL;
-	sorted = sort_lexic(tmp);
-	final = matrix_join(final, sorted, 0);
-	free_args(tmp);
-	free_args(sorted);
+	// sorted = NULL;
+	// tmp = malloc(sizeof(char *) * (count_lines(input) + 1));
+	// while (input[i])
+	// {
+	// 	// if (!ft_strcmp(input[i], "|"))
+	// 	// {
+	// 	// 	tmp[j] = NULL;
+	// 	// 	sorted = sort_lexic(tmp);
+	// 	// 	final = matrix_join(final, sorted, 1);
+	// 	// 	free_tokens(tmp);
+	// 	// 	free_args(sorted);
+	// 	// 	j = 0;
+	// 	// }
+	// 	tmp[j] = ft_strdup(input[i]);
+	// 	i++;
+	// 	j++;
+	// }
+	// tmp[j] = NULL;
+	// sorted = sort_lexic(tmp);
+	// final = matrix_join(final, sorted, 0);
+	// free_args(tmp);
+	// free_args(sorted);
+	final = sort_lexic(input);
 	return (final);
 }

@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 06:40:11 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 07:45:01 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void	execute_command(char *line, char **environ)
 	char	**commands;
 	int		saved_stdin;
 	int		saved_stdout;
+	// char	**cmd;
 
 	commands = tokenize_line(line, environ);
 	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
@@ -131,11 +132,11 @@ void	execute_command(char *line, char **environ)
 		execute_builtin(commands, environ);
 	else
 		execute_from_path(commands, environ);
-	free_args(commands);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);
 	close(saved_stdin);
+	free_args(commands);
 }
 
 void	execute(char **commands, char **environ)

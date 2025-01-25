@@ -2,7 +2,7 @@
 NAME = minishell
 
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 INCLUDES = -I./includes
 SRCS_DIR = srcs/
