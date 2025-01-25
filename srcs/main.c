@@ -61,7 +61,6 @@ int	main(int ac, char **av, char **environ)
 	char	**commands;
 	char	**env;
 
-	commands = malloc(sizeof(char *) * 50);
 	(void)av;
 	(void)ac;
 	env = ft_environ(environ);
@@ -81,8 +80,10 @@ int	main(int ac, char **av, char **environ)
 		}
 		if (*line)
 			add_history(line);
-		split_pipes(line, commands);
+		commands = malloc(sizeof(char *) * count_commands(line) + 1);
+		commands = split_commands(line);
 		execute(commands, env);
+		free_args(commands);
 		free(line);
 	}
 	free_args(env);

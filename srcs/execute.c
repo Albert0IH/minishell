@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 03:50:33 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 06:40:11 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ void	init_path(t_path *path_info)
 	path_info->environ = NULL;
 }
 
-char *ft_get_env(char *var, char **environ)
+char	*ft_get_env(char *var, char **environ)
 {
-	int i;
-	size_t var_len;
+	int		i;
+	size_t	var_len;
 
 	if (!var || !environ)
 		return (NULL);
@@ -121,21 +121,17 @@ void	execute_command(char *line, char **environ)
 	int		saved_stdin;
 	int		saved_stdout;
 
-	commands = malloc(sizeof(char *) * 50);
-
-	commands = tokenize_line(line, commands, environ);
+	commands = tokenize_line(line, environ);
 	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
+	{
+		free_args(commands);
 		return ;
+	}
 	if (is_builtin(commands[0]))
-	{
 		execute_builtin(commands, environ);
-		free_tokens(commands);
-	}
 	else
-	{
 		execute_from_path(commands, environ);
-		free_tokens(commands);
-	}
+	free_args(commands);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);

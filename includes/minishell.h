@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 03:36:34 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/25 06:40:03 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,10 @@ void		setup_signals(void);
 void		init_state(t_parse *state);
 char		*ft_strtok(char *line, const char *delim, t_parse *state);
 char		*extract_word(t_parse *state, char *token, char **environ);
-char		**tokenize_line(char *line, char **input, char **environ);
+char		**tokenize_line(char *line, char **environ);
 void		print_tokens(char **tokens);
 // Lexic
+int			count_lines(char **s);
 int			is_operator(char *s);
 char		**mult_lexic_sort(char **input);
 int			count_lines(char **s);
@@ -81,7 +82,9 @@ int			ft_exit(char **args);
 // Redir
 int			handle_redir(char **args, int *saved_stdout, int *saved_stdin);
 // Pipes
-void		split_pipes(char *input, char **cmd);
+// void		split_pipes(char *input, char **cmd);
+char		**split_commands(char *input);
+int			count_commands(char *input);
 // Clean
 void		free_args(char **args);
 void		free_tokens(char **tokens);
