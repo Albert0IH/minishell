@@ -5,127 +5,84 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/16 17:04:54 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/16 17:26:43 by ahamuyel         ###   ########.fr       */
+/*   Created: 2025/01/25 17:31:02 by ahamuyel          #+#    #+#             */
+/*   Updated: 2025/01/25 17:31:08 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*get_env_value(const char *var_name, char **environ)
+char	*get_env_value(char *var, char **environ)
 {
-	int	i;
+	char	*value;
 
-	i = 0;
-	while (environ[i])
+	value = ft_get_env(var, environ);
+	if (value)
+		return (ft_strdup(value));
+	return (ft_strdup(""));
+}
+
+static void	handle_quotes(t_parse *state, const char *s, char *expanded)
+{
+	if (s[state->i] == '\'' && !state->in_double_quote)
 	{
-		if (strncmp(environ[i], var_name, strlen(var_name)) == 0
-			&& environ[i][strlen(var_name)] == '=')
-			return (environ[i] + strlen(var_name) + 1);
-		// Retorna o valor após o '='
-		i++;
+		state->in_single_quote = !state->in_single_quote;
+		expanded[state->j++] = s[state->i++];
 	}
-	return (NULL); // Se não encontrar
-}
-
-char	*allocate_expansion_buffer(const char *s)
-{
-	char	*buffer;
-
-	int len = strlen(s) + 128; // Inicial com margem para expansão.
-	buffer = malloc(len);
-	if (!buffer)
-		exit(EXIT_FAILURE);
-	return (buffer);
-}
-
-void	expand_exit_status(char *expanded, int *j, int exit_status)
-{
-	char	tmp[12];
-
-	snprintf(tmp, sizeof(tmp), "%d", exit_status);
-	for (int k = 0; tmp[k]; k++)
-		expanded[(*j)++] = tmp[k];
-}
-
-char	*extract_variable_name(const char *start, const char **end)
-{
-	const char	*ptr = start;
-
-	while (*ptr && (isalnum(*ptr) || *ptr == '_'))
-		ptr++;
-	*end = ptr;
-	return (strndup(start, ptr - start));
-}
-
-void	append_variable_value(char *expanded, int *j, const char *var_value,
-		int *len)
-{
-	while (*var_value)
+	else if (s[state->i] == '"' && !state->in_single_quote)
 	{
-		if (*j >= *len - 1)
-		{
-			*len *= 2;
-			expanded = realloc(expanded, *len);
-			if (!expanded)
-				exit(EXIT_FAILURE);
-		}
-		expanded[(*j)++] = *var_value++;
+		state->in_double_quote = !state->in_double_quote;
+		expanded[state->j++] = s[state->i++];
 	}
 }
-char	*expand_variable(const char *s, char **environ, int exit_status)
-{
-	char		*expanded;
-	int			i;
-	int			j;
-	int			len;
-	const char	*end;
-	char		*var_name;
-	char		*var_value;
 
-	i = 0;
-	expanded = allocate_expansion_buffer(s);
-	i = 0;
-	j = 0;
-	len = strlen(s) + 128;
-	while (s[i])
+static int	handle_dollar(t_parse *state, const char *s, char *expanded, char **environ)
+{
+	char	var[256];
+	char	*value;
+	int		k;
+
+	if (s[state->i] == '$' && !state->in_single_quote)
 	{
-		if (s[i] == '$' && s[i + 1])
+		state->i++;
+		k = 0;
+		while (s[state->i] && s[state->i] != ' ' && s[state->i] != '\''
+			&& s[state->i] != '"' && k < 255)
+			var[k++] = s[state->i++];
+		var[k] = '\0';
+		value = get_env_value(var, environ);
+		if (value)
 		{
-			if (s[i + 1] == '?') // Caso para expansão do exit_status
-			{
-				expand_exit_status(expanded, &j, exit_status);
-				// Expande o exit_status
-				i += 2;
-				// Avança para o próximo caractere após o ?
-			}
-			else
-			{
-				var_name = extract_variable_name(&s[i + 1], &end);
-				if (!var_name)
-				{
-					free(expanded);
-					exit(EXIT_FAILURE);
-				}
-				var_value = get_env_value(var_name, environ);
-				free(var_name);
-				if (var_value)
-					append_variable_value(expanded, &j, var_value, &len);
-				i = end - s;
-			}
+			ft_strcpy(&expanded[state->j], value);
+			state->j += ft_strlen(value);
+			free(value);
 		}
-		else
-		{
-			if (j >= len - 1)
-			{
-				len *= 2;
-				expanded = realloc(expanded, len);
-				if (!expanded)
-					exit(EXIT_FAILURE);
-			}
-			expanded[j++] = s[i++];
-		}
+		return (1);
 	}
-	expanded[j] = '\0';
+	return (0);
+}
+
+char	*expand_env_vars(const char *s, char **environ)
+{
+	char	*expanded;
+	t_parse	*state;
+
+	expanded = malloc(1024);
+	if (!expanded)
+		return (free(expanded), NULL);
+	state = malloc(sizeof(t_parse));
+	init_state(state);
+	while (s[state->i])
+	{
+		handle_quotes(state, s, expanded);
+		if (handle_dollar(state, s, expanded, environ))
+			continue ;
+		if (state->j < 1024 - 1)
+		expanded[state->j++] = s[state->i++];
+		if (state->j >= 1024)
+			expanded = realloc(expanded, state->j + 1024);
+	}
+	expanded[state->j] = '\0';
+	free(state);
 	return (expanded);
 }

@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   setuput_structs.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/16 16:19:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/16 16:37:38 by ahamuyel         ###   ########.fr       */
+/*   Created: 2025/01/25 17:10:17 by ahamuyel          #+#    #+#             */
+/*   Updated: 2025/01/25 17:12:45 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_env(char **environ)
+void init_state(t_parse *state)
 {
-	int	i;
+	state->in_single_quote = 0;
+	state->in_double_quote = 0;
+	state->i = 0;
+	state->j = 0;
+}
 
-	i = 0;
-	while (environ[i] != NULL)
-	{
-		printf("%s\n", environ[i]);
-		i++;
-	}
-	return (0);
+void init_token(t_token *token)
+{
+	token->expanded = NULL;
+	token->input = NULL;
+	token->word = NULL;
 }

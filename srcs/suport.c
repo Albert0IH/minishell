@@ -1,20 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   suport.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/16 16:21:29 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/16 16:37:46 by ahamuyel         ###   ########.fr       */
+/*   Created: 2025/01/25 17:00:30 by ahamuyel          #+#    #+#             */
+/*   Updated: 2025/01/25 17:53:41 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_exit(char **args)
+int	check_readline(char *line)
 {
-	(void)args;
-	exit(0);
-	return (0);
+	int	i;
+
+	i = 0;
+	while (line[i] && line[i] == ' ')
+		i++;
+	if (line[i] == '\0')
+		return (0);
+	return (1);
+}
+
+void	print_tokens(char **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		printf("Token %d: %s\n", i, tokens[i]);
+		i++;
+	}
+}
+int	count_lines(char **s)
+{
+	int	i;
+
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }

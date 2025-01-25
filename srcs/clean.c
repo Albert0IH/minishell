@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/16 16:44:55 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/16 16:46:28 by ahamuyel         ###   ########.fr       */
+/*   Created: 2025/01/25 17:46:41 by ahamuyel          #+#    #+#             */
+/*   Updated: 2025/01/25 17:48:27 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_args(char **args)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (args)

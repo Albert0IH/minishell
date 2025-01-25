@@ -5,72 +5,63 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 18:25:15 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/16 18:15:56 by ahamuyel         ###   ########.fr       */
+/*   Created: 2025/01/25 17:30:01 by ahamuyel          #+#    #+#             */
+/*   Updated: 2025/01/25 18:04:28 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*extract_word(char *token)
+char	*extract_word(t_parse *state, char *token, char **environ)
 {
 	char	*word;
-	int		i;
-	int		j;
-	int		in_single_quote;
-	int		in_double_quote;
+	char	*expanded;
 
-	word = malloc(ft_strlen(token) + 1);
-	if (!word)
+	expanded = expand_env_vars(token, environ);
+	if (!expanded)
 		return (NULL);
-	i = 0;
-	j = 0;
-	in_single_quote = 0;
-	in_double_quote = 0;
-	while (token[i])
+	word = malloc(ft_strlen(expanded) + 1);
+	if (!word)
+		return (free(expanded), NULL);
+	state->i = 0;
+	state->j = 0;
+	while (expanded[state->i])
 	{
-		if (token[i] == '\'' && !in_double_quote)
-			in_single_quote = !in_single_quote;
-		else if (token[i] == '"' && !in_single_quote)
-			in_double_quote = !in_double_quote;
+		if (expanded[state->i] == '\'' && !state->in_double_quote)
+			state->in_single_quote = !state->in_single_quote;
+		else if (expanded[state->i] == '"' && !state->in_single_quote)
+			state->in_double_quote = !state->in_double_quote;
 		else
-			word[j++] = token[i];
-		i++;
+			word[state->j++] = expanded[state->i];
+		state->i++;
 	}
-	word[j] = '\0';
+	free(expanded);
+	word[state->j] = '\0';
 	return (word);
 }
 
-void	tokenize_line(char *line, char **input)
+char	**tokenize_line(char *line, char **environ)
 {
-	int			i;
-	char		*token;
-	char		*word;
-	t_tokenizer	state;
+	int i;
+	t_token *token;
+	t_parse state;
 
+	token = malloc(sizeof(t_token));
+	init_token(token);
 	line[ft_strcspn(line, "\n")] = '\0';
-	token = ft_strtok(line, " ", &state);
-	if (!token)
-		return ;
+	token->expanded = ft_strtok(line, " ", &state);
+	if (!token->expanded)
+		return (free(token->expanded), NULL);
+	token->input = malloc(sizeof(char *) * 50);
 	i = 0;
-	while (token)
+	while (token->expanded)
 	{
-		word = extract_word(token);
-		if (word)
-			input[i++] = word;
-		token = ft_strtok(NULL, " ", &state);
+		token->word = extract_word(&state, token->expanded, environ);
+		if (token->word)
+			token->input[i++] = token->word;
+		token->expanded = ft_strtok(NULL, " ", &state);
 	}
-	input[i] = NULL;
-}
-
-void	print_tokens(char **tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i])
-	{
-		printf("Token %d: %s\n", i, tokens[i]);
-		i++;
-	}
+	token->input[i] = NULL;
+	free(token);
+	return (token->input);
 }
