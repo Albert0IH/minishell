@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 09:30:30 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 13:23:28 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+
+# define SIZE_EXPANDED 2048
 
 typedef struct s_parse
 {

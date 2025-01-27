@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:31:02 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 13:04:33 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 13:25:07 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,20 +63,12 @@ static int	handle_dollar(t_parse *state, const char *s, char *expanded,
 	return (0);
 }
 
-char	*expand_env_vars(const char *s, char **environ)
+static void	process_token(const char *s, char *expanded, t_parse *state,
+		char **environ)
 {
-	char	*expanded;
-	t_parse	*state;
-	int 	len;
-	int	size;
+	int	len;
 
-	size = 2048;
 	len = ft_strlen(s);
-	expanded = malloc(size);
-	if (!expanded)
-		return (free(expanded), NULL);
-	state = malloc(sizeof(t_parse));
-	init_state(state);
 	while (1)
 	{
 		if (state->i >= len)
@@ -84,11 +76,24 @@ char	*expand_env_vars(const char *s, char **environ)
 		handle_quotes(state, s, expanded);
 		if (handle_dollar(state, s, expanded, environ))
 			continue ;
-		if (state->j <  size - 1)
+		if (state->j < SIZE_EXPANDED - 1)
 			expanded[state->j++] = s[state->i++];
 		else
 			break ;
 	}
+}
+
+char	*expand_env_vars(const char *s, char **environ)
+{
+	char	*expanded;
+	t_parse	*state;
+
+	expanded = malloc(SIZE_EXPANDED);
+	if (!expanded)
+		return (free(expanded), NULL);
+	state = malloc(sizeof(t_parse));
+	init_state(state);
+	process_token(s, expanded, state, environ);
 	expanded[state->j] = '\0';
 	free(state);
 	return (expanded);
