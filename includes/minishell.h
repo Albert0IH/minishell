@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 16:18:55 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:41:20 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,20 @@ void		setup_signals(void);
 // Setup structs
 void		init_state(t_parse *state);
 void		init_token(t_token *token);
+void		init_path(t_path *path_info);
 // Environ
 char		**ft_environ(char **environ);
 char		*ft_get_env(char *var, char **environ);
+char		*get_command_path(char *cmd, t_path *path_info, char **environ);
 // Parsing
 char		*ft_strtok(char *line, const char *delim, t_parse *state);
 char		**tokenize_line(char *line, char **environ);
 char		*expand_env_vars(const char *s, char **environ);
 // Lexic
 char		**mult_lexic_sort(char **input);
+// Execute
+void		execute_from_path(char **commands, char **environ);
+void		execute_command(char *line, char **environ);
 // Clean
 void		free_args(char **args);
 void		free_tokens(char **tokens);

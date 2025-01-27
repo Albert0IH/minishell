@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:15:11 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 14:35:59 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:36:02 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,3 +48,37 @@ char	*ft_get_env(char *var, char **environ)
 	}
 	return (NULL);
 }
+
+
+char	*get_command_path(char *cmd, t_path *path_info, char **environ)
+{
+	char	*path;
+	char	*dir;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	path = ft_get_env("PATH", environ);
+	if (!path)
+		return (NULL);
+	if (cmd[0] == '/')
+		return (cmd);
+	path_info->directories = ft_split(path, ':');
+	while (path_info->directories[i])
+	{
+		dir = path_info->directories[i];
+		tmp = ft_strjoin(dir, "/");
+		path_info->full_path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (!access(path_info->full_path, F_OK))
+		{
+			free_args(path_info->directories);
+			return (path_info->full_path);
+		}
+		free(path_info->full_path);
+		i++;
+	}
+	free_args(path_info->directories);
+	return (NULL);
+}
+
