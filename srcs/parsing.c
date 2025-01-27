@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:30:01 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 18:04:28 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 12:11:29 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char	**tokenize_line(char *line, char **environ)
 	int i;
 	t_token *token;
 	t_parse state;
+	char **tokens;
 
 	token = malloc(sizeof(t_token));
 	init_token(token);
@@ -52,16 +53,16 @@ char	**tokenize_line(char *line, char **environ)
 	token->expanded = ft_strtok(line, " ", &state);
 	if (!token->expanded)
 		return (free(token->expanded), NULL);
-	token->input = malloc(sizeof(char *) * 50);
+	tokens = malloc(sizeof(char *) * 50);
 	i = 0;
 	while (token->expanded)
 	{
 		token->word = extract_word(&state, token->expanded, environ);
 		if (token->word)
-			token->input[i++] = token->word;
+			tokens[i++] = token->word;
 		token->expanded = ft_strtok(NULL, " ", &state);
 	}
-	token->input[i] = NULL;
+	tokens[i] = NULL;
 	free(token);
-	return (token->input);
+	return (tokens);
 }

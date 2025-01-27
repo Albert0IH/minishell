@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setuput_structs.c                                  :+:      :+:    :+:   */
+/*   setup_structs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:10:17 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 17:12:45 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 09:28:54 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,5 @@ void init_state(t_parse *state)
 void init_token(t_token *token)
 {
 	token->expanded = NULL;
-	token->input = NULL;
 	token->word = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:31:02 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 17:31:08 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 13:04:33 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ static void	handle_quotes(t_parse *state, const char *s, char *expanded)
 	}
 }
 
-static int	handle_dollar(t_parse *state, const char *s, char *expanded, char **environ)
+static int	handle_dollar(t_parse *state, const char *s, char *expanded,
+		char **environ)
 {
 	char	var[256];
 	char	*value;
 	int		k;
 
-	if (s[state->i] == '$' && !state->in_single_quote)
+	if (s && s[state->i] == '$' && !state->in_single_quote)
 	{
 		state->i++;
 		k = 0;
@@ -66,21 +67,27 @@ char	*expand_env_vars(const char *s, char **environ)
 {
 	char	*expanded;
 	t_parse	*state;
+	int 	len;
+	int	size;
 
-	expanded = malloc(1024);
+	size = 2048;
+	len = ft_strlen(s);
+	expanded = malloc(size);
 	if (!expanded)
 		return (free(expanded), NULL);
 	state = malloc(sizeof(t_parse));
 	init_state(state);
-	while (s[state->i])
+	while (1)
 	{
+		if (state->i >= len)
+			break ;
 		handle_quotes(state, s, expanded);
 		if (handle_dollar(state, s, expanded, environ))
 			continue ;
-		if (state->j < 1024 - 1)
-		expanded[state->j++] = s[state->i++];
-		if (state->j >= 1024)
-			expanded = realloc(expanded, state->j + 1024);
+		if (state->j <  size - 1)
+			expanded[state->j++] = s[state->i++];
+		else
+			break ;
 	}
 	expanded[state->j] = '\0';
 	free(state);
