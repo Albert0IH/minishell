@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:56:44 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 19:54:42 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 20:00:04 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void free_matrix(char **matrix)
 
 int	is_operator(char *s)
 {
-	if (!strcmp(s, ">") || !strcmp(s, ">>") || !strcmp(s, "<")
-		|| !strcmp(s, "<<"))
+	if (!ft_strcmp(s, ">") || !ft_strcmp(s, ">>") || !ft_strcmp(s, "<")
+		|| !ft_strcmp(s, "<<"))
 		return (1);
 	return (0);
 }
@@ -58,10 +58,10 @@ char	**operator_matrix(char **input)
 	{
 		if (is_operator(input[i]) && input[i + 1])
 		{
-			new_input[j] = strdup(input[i]);
+			new_input[j] = ft_ft_strdup(input[i]);
 			if (!new_input[j])
 				return (free_args(new_input), NULL);
-			new_input[j + 1] = strdup(input[i + 1]);
+			new_input[j + 1] = ft_strdup(input[i + 1]);
 			i += 2;
 			j += 2;
 			continue ;
@@ -91,13 +91,13 @@ char	**sort_lexic(char **av)
 			continue ;
 		}
 		else
-			lexic_tokens[j] = strdup(av[i]);
+			lexic_tokens[j] = ft_strdup(av[i]);
 		i++;
 		j++;
 	}
 	i = 0;
 	while (mop[i])
-		lexic_tokens[j++] = strdup(mop[i++]);
+		lexic_tokens[j++] = ft_strdup(mop[i++]);
 	lexic_tokens[j] = NULL;
 	free_args(mop);
 	return (lexic_tokens);
@@ -117,12 +117,12 @@ char	**matrix_join(char **mtx1, char **mtx2, int pipe)
 	len_m2 = count_lines(mtx2);
 	matrix = malloc(sizeof(char *) * (len_m1 + len_m2 + 2));
 	while (mtx1 && mtx1[i])
-		matrix[j++] = strdup(mtx1[i++]);
+		matrix[j++] = ft_strdup(mtx1[i++]);
 	if (pipe && mtx1)
-		matrix[j] = strdup("|");
+		matrix[j] = ft_strdup("|");
 	i = 0;
 	while (mtx2 && mtx2[i])
-		matrix[j++] = strdup(mtx2[i++]);
+		matrix[j++] = ft_strdup(mtx2[i++]);
 	matrix[j] = NULL;
 	free_args(mtx1);
 	return (matrix);
@@ -146,7 +146,7 @@ char	**mult_lexic_sort(char **input)
 //     while (1)
 //     {
 //         input = readline("shell> "); // Prompt para entrada do usuário
-//         if (!input || strcmp(input, "exit") == 0) // Sair com "exit" ou EOF
+//         if (!input || ft_strcmp(input, "exit") == 0) // Sair com "exit" ou EOF
 //         {
 //             free(input);
 //             break;

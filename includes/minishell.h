@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 19:50:17 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:57:44 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ int			ft_unset(char **args, char **environ);
 int			ft_env(char **environ);
 int			ft_exit(char **args);
 int			execute_builtin(char **commands, char **environ);
+// Redirect
+int	handle_redir(char **args, int *saved_stdout, int *saved_stdin);
 // Clean
 void		free_args(char **args);
 void		free_tokens(char **tokens);

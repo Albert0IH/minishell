@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 19:46:37 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:58:11 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,23 @@ void	execute_from_path(char **commands, char **environ)
 void	execute_command(char *line, char **environ)
 {
 	char	**commands;
-	// int		saved_stdin;
-	// int		saved_stdout;
+	int		saved_stdin;
+	int		saved_stdout;
 
 	commands = tokenize_line(line, environ);
-	// if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
-	// {
-	// 	free_args(commands);
-	// 	return ;
-	// }
+	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
+	{
+		free_args(commands);
+		return ;
+	}
 	if (is_builtin(commands[0]))
 		execute_builtin(commands, environ);
 	else
 	execute_from_path(commands, environ);
-	// dup2(saved_stdout, STDOUT_FILENO);
-	// dup2(saved_stdin, STDIN_FILENO);
-	// close(saved_stdout);
-	// close(saved_stdin);
+	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdout);
+	close(saved_stdin);
 	free_args(commands);
 }
 
