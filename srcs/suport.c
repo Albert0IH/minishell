@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:00:30 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 17:53:41 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 14:38:57 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	print_tokens(char **tokens)
 		i++;
 	}
 }
+
 int	count_lines(char **s)
 {
 	int	i;

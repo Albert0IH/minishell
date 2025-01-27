@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 13:23:28 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 16:18:55 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_token
 {
 	char	*expanded;
 	char	*word;
+	char	**tokens;
 }			t_token;
 
 // Suport
@@ -64,6 +65,8 @@ char		*ft_get_env(char *var, char **environ);
 char		*ft_strtok(char *line, const char *delim, t_parse *state);
 char		**tokenize_line(char *line, char **environ);
 char		*expand_env_vars(const char *s, char **environ);
+// Lexic
+char		**mult_lexic_sort(char **input);
 // Clean
 void		free_args(char **args);
 void		free_tokens(char **tokens);

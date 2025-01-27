@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:42:48 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 11:23:56 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 16:34:59 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int ac, char **av, char **environ)
 
 	(void)ac;
 	(void)av;
-    env = ft_environ(environ);
+	env = ft_environ(environ);
 	setup_signals();
 	while (1)
 	{
@@ -39,16 +39,10 @@ int	main(int ac, char **av, char **environ)
 		if (*line)
 			add_history(line);
 		commands = tokenize_line(line, env);
-		if (!commands)
-		{
-			free(line);
-			continue ;
-		}
-		print_tokens(commands);
-        free_args(commands);
+		free_args(commands);
 		free(line);
 	}
 	rl_clear_history();
-    free_args(env);
+	free_args(env);
 	return (0);
 }

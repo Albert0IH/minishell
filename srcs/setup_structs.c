@@ -6,13 +6,13 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:10:17 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 09:28:54 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 16:22:14 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void init_state(t_parse *state)
+void	init_state(t_parse *state)
 {
 	state->in_single_quote = 0;
 	state->in_double_quote = 0;
@@ -20,8 +20,9 @@ void init_state(t_parse *state)
 	state->j = 0;
 }
 
-void init_token(t_token *token)
+void	init_token(t_token *token)
 {
+	token->tokens = malloc(sizeof(char *) * 50);
 	token->expanded = NULL;
 	token->word = NULL;
 }

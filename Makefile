@@ -17,6 +17,7 @@ SRCS = 	$(SRCS_DIR)main.c			\
 		$(SRCS_DIR)expand.c 		\
 		$(SRCS_DIR)environ.c 		\
 		$(SRCS_DIR)clean.c 	\
+		$(SRCS_DIR)lexic.c	\
 		# $(SRCS_DIR)builtins.c	\
 		# $(SRCS_DIR)ft_cd.c 		\
 		# $(SRCS_DIR)ft_echo.c 	\

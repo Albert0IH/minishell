@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:15:11 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 17:38:04 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 14:35:59 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char	**ft_environ(char **environ)
 {
-	char **env;
-	int i;
-	int len;
+	char	**env;
+	int		i;
+	int		len;
 
 	env = malloc(sizeof(char *) * (count_lines(environ) + 1));
 	i = 0;
@@ -48,4 +48,3 @@ char	*ft_get_env(char *var, char **environ)
 	}
 	return (NULL);
 }
-

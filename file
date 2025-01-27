@@ -1,0 +1,62 @@
+Token 0: ./app
+Token 1: ls
+----------------------------
+Token 0: ls
+Token 0: ./app
+----------------------------
+=== TEST 1 ===
+Token 0: ls
+Token 1: >
+Token 2: file1
+Token 3: |
+Token 4: grep
+Token 5: pattern
+Token 6: |
+Token 7: wc
+Token 8: -l
+----------------------------
+Token 0: ls
+Token 1: >
+Token 2: file1
+Token 3: |
+Token 4: grep
+Token 5: pattern
+Token 6: |
+Token 7: wc
+Token 8: -l
+
+=== TEST 2 ===
+Token 0: echo
+Token 1: hello
+Token 2: |
+Token 3: cat
+Token 4: >
+Token 5: output
+----------------------------
+Token 0: echo
+Token 1: hello
+Token 2: |
+Token 3: cat
+Token 4: >
+Token 5: output
+
+=== TEST 3 ===
+Token 0: cat
+Token 1: file1
+Token 2: |
+Token 3: grep
+Token 4: text
+Token 5: |
+Token 6: wc
+Token 7: >
+Token 8: result
+----------------------------
+Token 0: cat
+Token 1: file1
+Token 2: |
+Token 3: grep
+Token 4: text
+Token 5: |
+Token 6: wc
+Token 7: >
+Token 8: result
