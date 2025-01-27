@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 19:41:20 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:50:17 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ typedef struct s_token
 int			check_readline(char *line);
 void		print_tokens(char **tokens);
 int			count_lines(char **s);
+int			ft_search_str(char **array, char *s);
+int			ft_searc_char(char *s, char c);
 // Signals
 void		handle_signal(int sig);
 void		setup_signals(void);
@@ -63,6 +65,7 @@ void		init_path(t_path *path_info);
 char		**ft_environ(char **environ);
 char		*ft_get_env(char *var, char **environ);
 char		*get_command_path(char *cmd, t_path *path_info, char **environ);
+char		*create_env_var(char *line, char *name, char *value);
 // Parsing
 char		*ft_strtok(char *line, const char *delim, t_parse *state);
 char		**tokenize_line(char *line, char **environ);
@@ -72,6 +75,16 @@ char		**mult_lexic_sort(char **input);
 // Execute
 void		execute_from_path(char **commands, char **environ);
 void		execute_command(char *line, char **environ);
+// Builtins
+int			is_builtin(char *cmd);
+int			ft_echo(char **args);
+int			ft_cd(char **args);
+int			ft_pwd(void);
+int			ft_export(char **args, char **environ);
+int			ft_unset(char **args, char **environ);
+int			ft_env(char **environ);
+int			ft_exit(char **args);
+int			execute_builtin(char **commands, char **environ);
 // Clean
 void		free_args(char **args);
 void		free_tokens(char **tokens);

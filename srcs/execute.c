@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 19:41:43 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:46:37 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	execute_command(char *line, char **environ)
 	// 	free_args(commands);
 	// 	return ;
 	// }
-	// if (is_builtin(commands[0]))
-	// 	execute_builtin(commands, environ);
-	// else
+	if (is_builtin(commands[0]))
+		execute_builtin(commands, environ);
+	else
 	execute_from_path(commands, environ);
 	// dup2(saved_stdout, STDOUT_FILENO);
 	// dup2(saved_stdin, STDIN_FILENO);

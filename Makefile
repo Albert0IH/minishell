@@ -19,14 +19,14 @@ SRCS = 	$(SRCS_DIR)main.c			\
 		$(SRCS_DIR)clean.c 	\
 		$(SRCS_DIR)lexic.c	\
 		$(SRCS_DIR)execute.c 		\
-		# $(SRCS_DIR)builtins.c	\
-		# $(SRCS_DIR)ft_cd.c 		\
-		# $(SRCS_DIR)ft_echo.c 	\
-		# $(SRCS_DIR)ft_pwd.c 	\
-		# $(SRCS_DIR)ft_export.c 	\
-		# $(SRCS_DIR)ft_unset.c 	\
-		# $(SRCS_DIR)ft_env.c 	\
-		# $(SRCS_DIR)ft_exit.c 	\
+		$(SRCS_DIR)builtins.c	\
+		$(SRCS_DIR)ft_cd.c 		\
+		$(SRCS_DIR)ft_echo.c 	\
+		$(SRCS_DIR)ft_pwd.c 	\
+		$(SRCS_DIR)ft_export.c 	\
+		$(SRCS_DIR)ft_unset.c 	\
+		$(SRCS_DIR)ft_env.c 	\
+		$(SRCS_DIR)ft_exit.c 	\
 		# $(SRCS_DIR)redirecting.c\
 		# $(SRCS_DIR)pipes.c 		\
 		# $(SRCS_DIR)clean.c

@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:56:44 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 16:06:48 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:54:42 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,59 +19,6 @@ void free_matrix(char **matrix)
     i = 0;
     while (matrix[i])
         free(matrix[i++]);
-}
-
-// void free_args(char **args)
-// {
-//     int	i;
-
-//     i = 0;
-//     if (args)
-//     {
-//         while (args[i])
-//             free(args[i++]);
-//         free(args);
-//     }
-// }
-
-// void print_tokens(char **tokens)
-// {
-//     int i = 0;
-//     while (tokens[i])
-//     {
-//         printf("Token %d: %s\n", i, tokens[i]);
-//         i++;
-//     }
-// }
-
-int	ft_search_str(char **array, char *s)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (array[i])
-	{
-		if (!strcmp(array[i], s))
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-int	ft_searc_char(char *s, char c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
 }
 
 int	is_operator(char *s)

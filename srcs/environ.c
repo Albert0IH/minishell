@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:15:11 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 19:36:02 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 19:49:59 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,26 @@ char	*ft_get_env(char *var, char **environ)
 	return (NULL);
 }
 
+char	*create_env_var(char *line, char *name, char *value)
+{
+	int		var_len;
+	int		value_len;
+	char	*new_env_var;
+
+	var_len = ft_strlen(name);
+	value_len = ft_strlen(value);
+	new_env_var = malloc(var_len + value_len + 2);
+	if (!new_env_var)
+	{
+		perror("malloc");
+		return (NULL);
+	}
+	new_env_var = ft_strdup(name);
+	if (ft_searc_char(line, '='))
+		ft_strcat(new_env_var, "=");
+	ft_strcat(new_env_var, value);
+	return (new_env_var);
+}
 
 char	*get_command_path(char *cmd, t_path *path_info, char **environ)
 {
