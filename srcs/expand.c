@@ -6,13 +6,13 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:31:02 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 13:25:07 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 17:25:49 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*get_env_value(char *var, char **environ)
+char	*get_env_value_to_expand(char *var, char **environ)
 {
 	char	*value;
 
@@ -51,7 +51,7 @@ static int	handle_dollar(t_parse *state, const char *s, char *expanded,
 			&& s[state->i] != '"' && k < 255)
 			var[k++] = s[state->i++];
 		var[k] = '\0';
-		value = get_env_value(var, environ);
+		value = get_env_value_to_expand(var, environ);
 		if (value)
 		{
 			ft_strcpy(&expanded[state->j], value);

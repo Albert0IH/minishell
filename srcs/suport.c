@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:00:30 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 14:38:57 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/27 16:48:52 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,34 @@ int	count_lines(char **s)
 	while (s[i])
 		i++;
 	return (i);
+}
+
+int	ft_search_str(char **array, char *s)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (array[i])
+	{
+		if (!strcmp(array[i], s))
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+int	ft_searc_char(char *s, char c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }

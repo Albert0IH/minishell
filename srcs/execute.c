@@ -1,0 +1,150 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
+/*   Updated: 2025/01/27 17:53:37 by ahamuyel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
+
+void	init_path(t_path *path_info)
+{
+	path_info->full_path = NULL;
+	path_info->directories = NULL;
+	path_info->environ = NULL;
+}
+
+char	*get_command_path(char *cmd, t_path *path_info, char **environ)
+{
+	char	*path;
+	char	*dir;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	path = ft_get_env("PATH", environ);
+	if (!path)
+		return (NULL);
+	if (cmd[0] == '/')
+		return (cmd);
+	path_info->directories = ft_split(path, ':');
+	while (path_info->directories[i])
+	{
+		dir = path_info->directories[i];
+		tmp = ft_strjoin(dir, "/");
+		path_info->full_path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (!access(path_info->full_path, F_OK))
+		{
+			free_args(path_info->directories);
+			return (path_info->full_path);
+		}
+		free(path_info->full_path);
+		i++;
+	}
+	free_args(path_info->directories);
+	return (NULL);
+}
+
+void	execute_from_path(char **commands, char **environ)
+{
+	t_path	*path;
+	pid_t	pid;
+	char	*cmd_path;
+	int		status;
+
+	path = malloc(sizeof(t_path));
+	init_path(path);
+	pid = fork();
+	if (!pid)
+	{
+		cmd_path = get_command_path(commands[0], path, environ);
+		if (execve(cmd_path, commands, environ) == -1)
+		{
+			ft_putstr_fd(commands[0], STDERR_FILENO);
+			ft_putstr_fd(": ", STDERR_FILENO);
+			ft_putstr_fd("command not found\n", STDERR_FILENO);
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (pid > 0)
+		waitpid(pid, &status, 0);
+	else
+		exit(EXIT_FAILURE);
+	free(path);
+}
+
+void	execute_command(char *line, char **commands, char **environ)
+{
+	int		saved_stdin;
+	int		saved_stdout;
+
+	//commands = malloc(sizeof(char *) * 50);
+	commands = tokenize_line(line, commands);
+	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
+		return ;
+	if (is_builtin(commands[0]))
+		execute_builtin(commands, environ);
+	else
+		execute_from_path(commands, environ);
+	//free_args(commands);
+	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdout);
+	close(saved_stdin);
+}
+
+void	execute(char **commands, char **environ)
+{
+	int		fd[2];
+	int		prev_fd;
+	pid_t	pid;
+	int		i;
+
+	i = 0;
+	prev_fd = 0;
+	if (!commands[1])
+		execute_command(commands[i], commands, environ);
+	else
+	{
+		while (commands[i])
+		{
+			if (!commands[0])
+				continue ;
+			if (commands[i + 1] && pipe(fd) == -1)
+				exit(EXIT_FAILURE);
+			pid = fork();
+			if (pid == 0)
+			{
+				if (prev_fd)
+				{
+					dup2(prev_fd, STDIN_FILENO);
+					close(prev_fd);
+				}
+				if (commands[i + 1])
+				{
+					close(fd[0]);
+					dup2(fd[1], STDOUT_FILENO);
+					close(fd[1]);
+				}
+				execute_command(commands[i], commands, environ);
+				exit(EXIT_FAILURE);
+			}
+			if (commands[i + 1])
+				close(fd[1]);
+			if (prev_fd)
+				close(prev_fd);
+			prev_fd = fd[0];
+			i++;
+		}
+		if (prev_fd)
+			close(prev_fd);
+		while (wait(NULL) > 0)
+			;
+	}
+}

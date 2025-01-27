@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean.c                                            :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/25 17:46:41 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 18:14:16 by ahamuyel         ###   ########.fr       */
+/*   Created: 2025/01/27 16:42:30 by ahamuyel          #+#    #+#             */
+/*   Updated: 2025/01/27 16:42:40 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-// void	free_args(char **args)
-// {
-// 	int	i;
+char	*ft_strncpy(char *dest, const char *src, size_t n)
+{
+	size_t	i;
 
-// 	i = 0;
-// 	if (args)
-// 	{
-// 		while (args[i])
-// 			free(args[i++]);
-// 		free(args);
-// 	}
-// }
-
-// void	free_tokens(char **tokens)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (tokens[i])
-// 		free(tokens[i++]);
-// }
+	i = 0;
+	while (i < n && src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
+}

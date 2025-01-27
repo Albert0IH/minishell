@@ -1,35 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clean.c                                            :+:      :+:    :+:   */
+/*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/25 17:46:41 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 18:14:16 by ahamuyel         ###   ########.fr       */
+/*   Created: 2025/01/16 16:20:49 by ahamuyel          #+#    #+#             */
+/*   Updated: 2025/01/20 19:56:55 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// void	free_args(char **args)
-// {
-// 	int	i;
+int	ft_unset(char **args, char **environ)
+{
+	char	*var_to_unset;
+	int		i;
+	int		len;
 
-// 	i = 0;
-// 	if (args)
-// 	{
-// 		while (args[i])
-// 			free(args[i++]);
-// 		free(args);
-// 	}
-// }
-
-// void	free_tokens(char **tokens)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (tokens[i])
-// 		free(tokens[i++]);
-// }
+	if (args[1] == NULL)
+		return (0);
+	i = 0;
+	var_to_unset = args[1];
+	len = strlen(var_to_unset);
+	while (environ[i])
+	{
+		if (ft_strncmp(environ[i], var_to_unset, len) == 0
+			&& (environ[i][len] == '=' || environ[i][len] == '\0'))
+		{
+			while (environ[i])
+			{
+				environ[i] = environ[i + 1];
+				i++;
+			}
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}

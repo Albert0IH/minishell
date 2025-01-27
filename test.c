@@ -29,27 +29,27 @@
 // 	return (result);
 // }
 
-void free_matrix(char **matrix)
-{
-    int	i;
+// void free_matrix(char **matrix)
+// {
+//     int	i;
 
-    i = 0;
-    while (matrix[i])
-        free(matrix[i++]);
-}
+//     i = 0;
+//     while (matrix[i])
+//         free(matrix[i++]);
+// }
 
-void free_args(char **args)
-{
-    int	i;
+// void free_args(char **args)
+// {
+//     int	i;
 
-    i = 0;
-    if (args)
-    {
-        while (args[i])
-            free(args[i++]);
-        free(args);
-    }
-}
+//     i = 0;
+//     if (args)
+//     {
+//         while (args[i])
+//             free(args[i++]);
+//         free(args);
+//     }
+// }
 
 // int	count_lines(char **s)
 // {
