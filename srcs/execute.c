@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 19:58:11 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:37:20 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	execute_command(char *line, char **environ)
 	if (is_builtin(commands[0]))
 		execute_builtin(commands, environ);
 	else
-	execute_from_path(commands, environ);
+		execute_from_path(commands, environ);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);
@@ -63,52 +63,52 @@ void	execute_command(char *line, char **environ)
 	free_args(commands);
 }
 
-// void	execute(char **commands, char **environ)
-// {
-// 	int		fd[2];
-// 	int		prev_fd;
-// 	pid_t	pid;
-// 	int		i;
+void	execute(char **commands, char **environ)
+{
+	int		fd[2];
+	int		prev_fd;
+	pid_t	pid;
+	int		i;
 
-// 	i = 0;
-// 	prev_fd = 0;
-// 	if (!commands[1])
-// 		execute_command(commands[i], environ);
-// 	else
-// 	{
-// 		while (commands[i])
-// 		{
-// 			if (!commands[0])
-// 				continue ;
-// 			if (commands[i + 1] && pipe(fd) == -1)
-// 				exit(EXIT_FAILURE);
-// 			pid = fork();
-// 			if (pid == 0)
-// 			{
-// 				if (prev_fd)
-// 				{
-// 					dup2(prev_fd, STDIN_FILENO);
-// 					close(prev_fd);
-// 				}
-// 				if (commands[i + 1])
-// 				{
-// 					close(fd[0]);
-// 					dup2(fd[1], STDOUT_FILENO);
-// 					close(fd[1]);
-// 				}
-// 				execute_command(commands[i], environ);
-// 				exit(EXIT_FAILURE);
-// 			}
-// 			if (commands[i + 1])
-// 				close(fd[1]);
-// 			if (prev_fd)
-// 				close(prev_fd);
-// 			prev_fd = fd[0];
-// 			i++;
-// 		}
-// 		if (prev_fd)
-// 			close(prev_fd);
-// 		while (wait(NULL) > 0)
-// 			;
-// 	}
-// }
+	i = 0;
+	prev_fd = 0;
+	if (!commands[1])
+		execute_command(commands[i], environ);
+	else
+	{
+		while (commands[i])
+		{
+			if (!commands[0])
+				continue ;
+			if (commands[i + 1] && pipe(fd) == -1)
+				exit(EXIT_FAILURE);
+			pid = fork();
+			if (pid == 0)
+			{
+				if (prev_fd)
+				{
+					dup2(prev_fd, STDIN_FILENO);
+					close(prev_fd);
+				}
+				if (commands[i + 1])
+				{
+					close(fd[0]);
+					dup2(fd[1], STDOUT_FILENO);
+					close(fd[1]);
+				}
+				execute_command(commands[i], environ);
+				exit(EXIT_FAILURE);
+			}
+			if (commands[i + 1])
+				close(fd[1]);
+			if (prev_fd)
+				close(prev_fd);
+			prev_fd = fd[0];
+			i++;
+		}
+		if (prev_fd)
+			close(prev_fd);
+		while (wait(NULL) > 0)
+			;
+	}
+}

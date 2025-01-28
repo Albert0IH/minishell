@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:42:48 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 19:39:38 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/28 10:37:25 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	main(int ac, char **av, char **environ)
 {
 	char	*line;
-	//char	**commands;
+	char	**commands;
 	char	**env;
 
 	(void)ac;
@@ -38,8 +38,9 @@ int	main(int ac, char **av, char **environ)
 		}
 		if (*line)
 			add_history(line);
-		execute_command(line, env);
-		free(line);
+		commands = split_commands(line);
+		execute(commands, env);
+		free_args(commands);
 	}
 	rl_clear_history();
 	free_args(env);

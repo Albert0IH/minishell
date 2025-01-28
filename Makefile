@@ -28,7 +28,7 @@ SRCS = 	$(SRCS_DIR)main.c			\
 		$(SRCS_DIR)ft_env.c 	\
 		$(SRCS_DIR)ft_exit.c 	\
 		$(SRCS_DIR)redirecting.c\
-		# $(SRCS_DIR)pipes.c 		\
+		$(SRCS_DIR)pipes.c 		\
 		# $(SRCS_DIR)clean.c
 OBJS = $(SRCS:$(SRCS_DIR)%.c=$(OBJS_DIR)%.o)
 
