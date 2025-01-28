@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/28 10:37:43 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/28 14:51:44 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,10 @@ char		*expand_env_vars(const char *s, char **environ);
 char		**mult_lexic_sort(char **input);
 // Execute
 void		execute_from_path(char **commands, char **environ);
-void		execute_command(char *line, char **environ);
-void		execute(char **commands, char **environ);
+// void		execute_command(char *line, char **environ);
+
+void		execute_command(char *line, char **commands, char **environ);
+void		execute(char *line, char **commands, char **environ);
 // Builtins
 int			is_builtin(char *cmd);
 int			ft_echo(char **args);
@@ -89,7 +91,7 @@ int			execute_builtin(char **commands, char **environ);
 // Redirect
 int			handle_redir(char **args, int *saved_stdout, int *saved_stdin);
 // Pipes
-char		**split_commands(char *input);
+void		split_commands(char *input, char **commands);
 int			count_commands(char *input);
 // Clean
 void		free_args(char **args);

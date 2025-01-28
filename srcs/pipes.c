@@ -3,23 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinis <adinis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:10:22 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 11:23:21 by adinis           ###   ########.fr       */
+/*   Updated: 2025/01/28 14:35:28 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**split_commands(char *input)
+void split_commands(char *input, char	**commands)
 {
 	int		i;
 	char	*tokens;
 	t_parse	states;
-	char	**commands;
 
-	commands = malloc(sizeof(char *) * (count_commands(input) + 1));
 	tokens = ft_strtok(input, "|", &states);
 	i = 0;
 	while (tokens)
@@ -29,7 +27,7 @@ char	**split_commands(char *input)
 		i++;
 	}
 	commands[i] = NULL;
-	return (commands);
+	//return (commands);
 }
 
 int	count_commands(char *input)
