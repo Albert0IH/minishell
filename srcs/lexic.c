@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:56:44 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 20:00:04 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/28 09:48:30 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	**operator_matrix(char **input)
 	{
 		if (is_operator(input[i]) && input[i + 1])
 		{
-			new_input[j] = ft_ft_strdup(input[i]);
+			new_input[j] = ft_strdup(input[i]);
 			if (!new_input[j])
 				return (free_args(new_input), NULL);
 			new_input[j + 1] = ft_strdup(input[i + 1]);

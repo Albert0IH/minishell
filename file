@@ -1,62 +1,21 @@
-Token 0: ./app
-Token 1: ls
-----------------------------
-Token 0: ls
-Token 0: ./app
-----------------------------
-=== TEST 1 ===
-Token 0: ls
-Token 1: >
-Token 2: file1
-Token 3: |
-Token 4: grep
-Token 5: pattern
-Token 6: |
-Token 7: wc
-Token 8: -l
-----------------------------
-Token 0: ls
-Token 1: >
-Token 2: file1
-Token 3: |
-Token 4: grep
-Token 5: pattern
-Token 6: |
-Token 7: wc
-Token 8: -l
-
-=== TEST 2 ===
-Token 0: echo
-Token 1: hello
-Token 2: |
-Token 3: cat
-Token 4: >
-Token 5: output
-----------------------------
-Token 0: echo
-Token 1: hello
-Token 2: |
-Token 3: cat
-Token 4: >
-Token 5: output
-
-=== TEST 3 ===
-Token 0: cat
-Token 1: file1
-Token 2: |
-Token 3: grep
-Token 4: text
-Token 5: |
-Token 6: wc
-Token 7: >
-Token 8: result
-----------------------------
-Token 0: cat
-Token 1: file1
-Token 2: |
-Token 3: grep
-Token 4: text
-Token 5: |
-Token 6: wc
-Token 7: >
-Token 8: result
+total 116
+-rwxr-xr-x 1 ahamuyel 2023_luanda 20864 Jan 27 16:10 app
+-rw-r--r-- 1 ahamuyel 2023_luanda     0 Jan 28  2025 file
+-rw-r--r-- 1 ahamuyel 2023_luanda    67 Jan 27 19:58 file.c
+drwxr-xr-x 2 ahamuyel 2023_luanda  4096 Jan 27 19:31 includes
+drwxr-xr-x 2 ahamuyel 2023_luanda  4096 Jan 28 09:25 libft
+-rw-r--r-- 1 ahamuyel 2023_luanda  1150 Jan 27 19:58 Makefile
+-rwxr-xr-x 1 ahamuyel 2023_luanda 59320 Jan 28 09:49 minishell
+drwxr-xr-x 2 ahamuyel 2023_luanda  4096 Jan 28 09:49 objs
+drwxr-xr-x 2 ahamuyel 2023_luanda  4096 Jan 27 19:57 srcs
+-rw-r--r-- 1 ahamuyel 2023_luanda  7757 Jan 27 18:15 test.c
+app
+file
+file.c
+includes
+libft
+Makefile
+minishell
+objs
+srcs
+test.c

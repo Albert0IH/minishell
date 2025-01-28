@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirecting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinis <adinis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 11:25:09 by adinis            #+#    #+#             */
-/*   Updated: 2025/01/25 11:25:11 by adinis           ###   ########.fr       */
+/*   Updated: 2025/01/28 09:56:25 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,11 @@ int	handle_redir(char **args, int *saved_stdout, int *saved_stdin)
 			}
 			dup2(fd, STDOUT_FILENO);
 			close(fd);
+			free(args[i]);
 			args[i] = NULL;
+			free(args[i + 1]);
+			args[i + 1] = NULL;
+			i++;
 		}
 		else if (ft_strcmp(args[i], "<") == 0)
 		{
@@ -50,7 +54,11 @@ int	handle_redir(char **args, int *saved_stdout, int *saved_stdin)
 			}
 			dup2(fd, STDIN_FILENO);
 			close(fd);
+			free(args[i]);
 			args[i] = NULL;
+			free(args[i + 1]);
+			args[i + 1] = NULL;
+			i++;
 		}
 		else if (!ft_strcmp(args[i], "<<"))
 		{
@@ -70,12 +78,17 @@ int	handle_redir(char **args, int *saved_stdout, int *saved_stdin)
 			close(pipefd[1]);
 			dup2(pipefd[0], STDIN_FILENO);
 			close(pipefd[0]);
+			free(args[i]);
 			args[i] = NULL;
+			free(args[i + 1]);
+			args[i + 1] = NULL;
+			i++;
 		}
 		i++;
 	}
 	return (0);
 }
+
 
 // #include "../includes/minishell.h"
 
