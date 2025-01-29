@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:15:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/16 18:14:44 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/29 00:29:37 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-int	execute_builtin(char **commands, char **environ)
+int	execute_builtin(char **commands, char **environ, t_path *path)
 {
 	if (!ft_strcmp(commands[0], "echo"))
 		return (ft_echo(commands));
@@ -47,5 +47,6 @@ int	execute_builtin(char **commands, char **environ)
 		return (ft_env(environ));
 	if (!ft_strcmp(commands[0], "exit"))
 		return (ft_exit(commands));
+	path->status = 127;
 	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:15:11 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/28 12:21:31 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/29 06:45:17 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,18 @@ char	**ft_environ(char **environ)
 	int		i;
 	int		len;
 
-	env = malloc(sizeof(char *) * (count_lines(environ) + 1));
+	env = malloc(sizeof(char *) * (count_lines(environ) + 2));
 	i = 0;
 	while (environ[i])
 	{
-		len = strlen(environ[i]);
+		len = ft_strlen(environ[i]);
 		env[i] = malloc(sizeof(char) * (len + 1));
-		strcpy(env[i], environ[i]);
+		ft_strcpy(env[i], environ[i]);
 		i++;
 	}
-	env[i] = NULL;
+	env[i] = malloc(sizeof(char) * 10);
+	env[i] = ft_strdup("?=0");
+	env[++i] = NULL;
 	return (env);
 }
 
@@ -47,6 +49,25 @@ char	*ft_get_env(char *var, char **environ)
 		i++;
 	}
 	return (NULL);
+}
+void	chang_exit_status(char **env, char *status)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (!ft_strncmp(env[i], "?=", 2))
+		{
+			free(env[i]);
+			env[i] = NULL;
+			env[i] = ft_strjoin("?=", status);
+			free(status);
+			return ;
+		}
+		i++;
+	}
+	return ;
 }
 
 char	*create_env_var(char *line, char *name, char *value)
@@ -101,4 +122,3 @@ char	*get_command_path(char *cmd, t_path *path_info, char **environ)
 	free_args(path_info->directories);
 	return (NULL);
 }
-

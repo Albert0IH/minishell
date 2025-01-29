@@ -5,45 +5,63 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/29 16:38:05 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/28 15:16:33 by ahamuyel         ###   ########.fr       */
+/*   Created: 2025/01/29 00:56:37 by ahamuyel          #+#    #+#             */
+/*   Updated: 2025/01/29 06:07:15 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	execute_from_path(char **commands, char **environ)
+void son(int sig)
 {
-	t_path	*path;
-	pid_t	pid;
-	char	*cmd_path;
-	int		status;
+	if (sig == SIGINT)
+	{
+		ft_putstr_fd("\n", STDERR_FILENO);
+	}
+}
 
-	path = malloc(sizeof(t_path));
-	init_path(path);
+void execute_from_path(char **commands, char **environ, t_path *path)
+{
+	pid_t pid;
+	char *cmd_path;
+
 	pid = fork();
 	if (!pid)
 	{
 		cmd_path = get_command_path(commands[0], path, environ);
-		if (execve(cmd_path, commands, environ) == -1)
+		if (!cmd_path)
 		{
 			ft_putstr_fd(commands[0], STDERR_FILENO);
 			ft_putstr_fd(": ", STDERR_FILENO);
 			ft_putstr_fd("command not found\n", STDERR_FILENO);
-			exit(EXIT_FAILURE);
+			exit(127);
 		}
+		if (execve(cmd_path, commands, environ) == -1)
+		{
+			ft_putstr_fd(commands[0], STDERR_FILENO);
+			ft_putstr_fd(": ", STDERR_FILENO);
+			ft_putstr_fd("execution failed\n", STDERR_FILENO);
+			free(cmd_path);
+			exit(127);
+		}
+		free(cmd_path);
 	}
 	else if (pid > 0)
-		waitpid(pid, &status, 0);
+	{
+		signal(SIGINT, son);
+		waitpid(pid, &path->status, 0);
+		signal(SIGINT, handle_signal);
+		if (WIFEXITED(path->status))
+			path->status = WEXITSTATUS(path->status);
+	}
 	else
-		exit(EXIT_FAILURE);
-	free(path);
+		exit(2);
 }
 
-void	execute_command(char *line, char **commands, char **environ)
+void execute_command(char *line, char **commands, char **environ, t_path *path)
 {
-	int	saved_stdin;
-	int	saved_stdout;
+	int saved_stdin;
+	int saved_stdout;
 
 	commands = tokenize_line(line, environ);
 	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
@@ -52,9 +70,9 @@ void	execute_command(char *line, char **commands, char **environ)
 		return ;
 	}
 	if (is_builtin(commands[0]))
-		execute_builtin(commands, environ);
+		execute_builtin(commands, environ, path);
 	else
-		execute_from_path(commands, environ);
+		execute_from_path(commands, environ, path);
 	free_args(commands);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
@@ -62,18 +80,17 @@ void	execute_command(char *line, char **commands, char **environ)
 	close(saved_stdin);
 }
 
-void	execute(char *line, char **commands, char **environ)
+void execute(char *line, char **commands, char **environ, t_path *path)
 {
-	int		fd[2];
-	int		prev_fd;
-	pid_t	pid;
-	int		i;
+	int fd[2];
+	pid_t pid;
+	int i;
 
+	int prev_fd = 0;
 	i = 0;
-	prev_fd = 0;
 	split_commands(line, commands);
 	if (!commands[1])
-		execute_command(commands[i], commands, environ);
+		execute_command(commands[i], commands, environ, path);
 	else
 	{
 		while (commands[i])
@@ -81,7 +98,7 @@ void	execute(char *line, char **commands, char **environ)
 			if (!commands[0])
 				continue ;
 			if (commands[i + 1] && pipe(fd) == -1)
-				exit(EXIT_FAILURE);
+				exit(1);
 			pid = fork();
 			if (pid == 0)
 			{
@@ -96,8 +113,8 @@ void	execute(char *line, char **commands, char **environ)
 					dup2(fd[1], STDOUT_FILENO);
 					close(fd[1]);
 				}
-				execute_command(commands[i], commands, environ);
-				exit(EXIT_FAILURE);
+				execute_command(commands[i], commands, environ, path);
+				exit(1);
 			}
 			if (commands[i + 1])
 				close(fd[1]);
