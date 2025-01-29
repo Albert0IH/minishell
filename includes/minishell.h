@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/29 06:35:40 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/29 08:11:43 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,7 @@ int			count_commands(char *input);
 // Clean
 void		free_args(char **args);
 void		free_tokens(char **tokens);
+
+void	free_env(char **args);
 
 #endif

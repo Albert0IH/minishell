@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:42:48 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/29 06:34:49 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/29 08:23:03 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ int	main(int ac, char **av, char **environ)
 	}
 	rl_clear_history();
 	free_args(env);
+	free(path);
 	return (0);
 }

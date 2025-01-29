@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:46:41 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/29 06:39:27 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/29 07:26:08 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,11 @@ void	free_env(char **args)
 	if (!args)
 		return ;
 	while (args[i])
-		free(args[i++]);
-	free(args[i]);
+	{
+		free(args[i]);
+		i++;
+	}
 	free(args);
-	args = NULL;
 }
 
 void	free_tokens(char **tokens)
