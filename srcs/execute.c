@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 00:56:37 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 14:43:24 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 19:22:24 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,19 +61,6 @@ void	execute_command(char *line, char **commands, char **environ,
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);
 	close(saved_stdin);
-}
-
-void	execute_on_main(char *line, char **env, t_path *path)
-{
-	char	**commands;
-
-	commands = malloc(sizeof(char *) * (count_commands(line) + 1));
-	execute(line, commands, env, path);
-	chang_exit_status(env, ft_itoa(path->status));
-	free(commands);
-	commands = NULL;
-	free(line);
-	line = NULL;
 }
 
 void	execute(char *line, char **commands, char **environ, t_path *path)

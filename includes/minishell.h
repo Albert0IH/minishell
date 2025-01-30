@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 17:56:37 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 19:20:03 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ typedef struct s_process
 	int		pid;
 	int		sig;
 }			t_process;
+
+extern int	g_status;
 
 // Suport
 int			check_readline(char *line);

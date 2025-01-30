@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:52:13 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 14:27:54 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 19:32:29 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,13 @@ void	handle_sig_on_cat(int sig)
 void	handle_signal(int sig)
 {
 	if (sig == SIGINT)
-		ft_putstr_fd("\nminishell> ", 1);
+	{
+		g_status = 130;
+		ft_putstr_fd("\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 	else if (sig == SIGQUIT)
 	{
 	}

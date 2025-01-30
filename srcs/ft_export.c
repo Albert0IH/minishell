@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:16:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 18:14:09 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 19:09:20 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,8 @@ int	ft_export(char **args, char **environ)
 	while (args[i])
 	{
 		if (!ft_isalpha(args[i][0]) && args[i][0] != '_')
-		{
-			printf("minishell: export: `%s': not a valid identifier\n",
-				args[i]);
-			return (1);
-		}
+			return (ft_putstr_fd("export: not a valid identifier\n",
+					STDERR_FILENO), 1);
 		line = ft_strdup(args[i]);
 		equals_sign = ft_strchr(line, '=');
 		if (!equals_sign)
