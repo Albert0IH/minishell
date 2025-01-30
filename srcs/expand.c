@@ -6,12 +6,11 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:31:02 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/28 21:17:53 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:52:22 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 char	*get_env_value(char *var, char **environ)
 {
@@ -43,8 +42,6 @@ static int	handle_dollar(t_parse *state, const char *s, char *expanded,
 	char	var[256];
 	char	*value;
 	int		k;
-
-
 
 	if (s && s[state->i] == '$' && !state->in_single_quote)
 	{

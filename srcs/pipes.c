@@ -6,13 +6,43 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:10:22 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/28 14:35:28 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:43:35 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void split_commands(char *input, char	**commands)
+volatile sig_atomic_t	g_interrupted = 0;
+
+void	handle_sigint(int sig)
+{
+	(void)sig;
+	g_interrupted = 1;
+	write(1, "\n", 1);
+}
+
+void	d_quote(void)
+{
+	char	*line;
+
+	signal(SIGINT, handle_sigint);
+	g_interrupted = 0;
+	while (1)
+	{
+		line = readline("> ");
+		if (g_interrupted)
+		{
+			free(line);
+			break ;
+		}
+		if (!line || !ft_strcmp(line, "\'") || !ft_strcmp(line, "\""))
+			break ;
+		free(line);
+	}
+	free(line);
+}
+
+void	split_commands(char *input, char **commands)
 {
 	int		i;
 	char	*tokens;
@@ -27,7 +57,6 @@ void split_commands(char *input, char	**commands)
 		i++;
 	}
 	commands[i] = NULL;
-	//return (commands);
 }
 
 int	count_commands(char *input)

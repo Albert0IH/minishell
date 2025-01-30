@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:15:11 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/29 08:26:25 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 09:44:07 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char	*ft_get_env(char *var, char **environ)
 	}
 	return (NULL);
 }
+
 void	chang_exit_status(char **env, char *status)
 {
 	int	i;

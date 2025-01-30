@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:52:12 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/25 17:10:36 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:41:15 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ char	*ft_strtok(char *line, const char *delim, t_parse *state)
 		return (NULL);
 	start = state->current;
 	state->current = process_token(state, delim);
+	if (*state->current == '\0' && (state->in_single_quote
+			|| state->in_double_quote))
+		d_quote();
 	if (*state->current)
 	{
 		*state->current = '\0';

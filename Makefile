@@ -2,7 +2,7 @@
 NAME = minishell
 
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 INCLUDES = -I./includes
 SRCS_DIR = srcs/
@@ -19,6 +19,7 @@ SRCS = 	$(SRCS_DIR)main.c			\
 		$(SRCS_DIR)clean.c 	\
 		$(SRCS_DIR)lexic.c	\
 		$(SRCS_DIR)execute.c 		\
+		$(SRCS_DIR)suport_exec.c 		\
 		$(SRCS_DIR)builtins.c	\
 		$(SRCS_DIR)ft_cd.c 		\
 		$(SRCS_DIR)ft_echo.c 	\
@@ -28,8 +29,7 @@ SRCS = 	$(SRCS_DIR)main.c			\
 		$(SRCS_DIR)ft_env.c 	\
 		$(SRCS_DIR)ft_exit.c 	\
 		$(SRCS_DIR)redirecting.c\
-		$(SRCS_DIR)pipes.c 		\
-		# $(SRCS_DIR)clean.c
+		$(SRCS_DIR)pipes.c 		
 OBJS = $(SRCS:$(SRCS_DIR)%.c=$(OBJS_DIR)%.o)
 
 LIBS = -lreadline

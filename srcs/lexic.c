@@ -6,44 +6,11 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:56:44 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/28 09:48:30 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:44:22 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void free_matrix(char **matrix)
-{
-    int	i;
-
-    i = 0;
-    while (matrix[i])
-        free(matrix[i++]);
-}
-
-int	is_operator(char *s)
-{
-	if (!ft_strcmp(s, ">") || !ft_strcmp(s, ">>") || !ft_strcmp(s, "<")
-		|| !ft_strcmp(s, "<<"))
-		return (1);
-	return (0);
-}
-
-int	count_operator(char **s)
-{
-	int	i;
-	int	count;
-
-	count = 0;
-	i = 0;
-	while (s[i])
-	{
-		if (is_operator(s[i]))
-			count++;
-		i++;
-	}
-	return (count);
-}
 
 char	**operator_matrix(char **input)
 {
@@ -72,6 +39,20 @@ char	**operator_matrix(char **input)
 	return (new_input);
 }
 
+void	matrix_copy(char **src, char **dst)
+{
+	int	i;
+
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = ft_strdup(src[i]);
+		i++;
+	}
+	dst[i] = NULL;
+	free_args(src);
+}
+
 char	**sort_lexic(char **av)
 {
 	char	**lexic_tokens;
@@ -96,10 +77,7 @@ char	**sort_lexic(char **av)
 		j++;
 	}
 	i = 0;
-	while (mop[i])
-		lexic_tokens[j++] = ft_strdup(mop[i++]);
-	lexic_tokens[j] = NULL;
-	free_args(mop);
+	matrix_copy(mop, lexic_tokens + j);
 	return (lexic_tokens);
 }
 
@@ -136,47 +114,3 @@ char	**mult_lexic_sort(char **input)
 	final = sort_lexic(input);
 	return (final);
 }
-
-// int main(void)
-// {
-//     char *input;
-//     char **tokens;
-//     char **sorted;
-
-//     while (1)
-//     {
-//         input = readline("shell> "); // Prompt para entrada do usuário
-//         if (!input || ft_strcmp(input, "exit") == 0) // Sair com "exit" ou EOF
-//         {
-//             free(input);
-//             break;
-//         }
-
-//         if (*input)
-//             add_history(input); // Adicionar entrada ao histórico
-
-//         tokens = split_input(input); // Quebrar entrada em tokens
-//         if (!tokens)
-//         {
-//             printf("Erro ao processar a entrada.\n");
-//             free(input);
-//             continue;
-//         }
-
-//         printf("\n=== Entrada Original ===\n");
-//         print_tokens(tokens); // Mostrar tokens originais
-
-//         sorted = mult_lexic_sort(tokens); // Processar e ordenar
-//         printf("\n=== Tokens Ordenados ===\n");
-//         print_tokens(sorted); // Mostrar tokens ordenados
-
-//         // Liberar memória
-//         free_args(tokens);
-//         free_args(sorted);
-//         free(input);
-//     }
-
-//     return 0;
-// }
-
-

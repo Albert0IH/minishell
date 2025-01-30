@@ -6,11 +6,44 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:30:01 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/28 14:27:29 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:47:36 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	free_matrix(char **matrix)
+{
+	int	i;
+
+	i = 0;
+	while (matrix[i])
+		free(matrix[i++]);
+}
+
+int	is_operator(char *s)
+{
+	if (!ft_strcmp(s, ">") || !ft_strcmp(s, ">>") || !ft_strcmp(s, "<")
+		|| !ft_strcmp(s, "<<"))
+		return (1);
+	return (0);
+}
+
+int	count_operator(char **s)
+{
+	int	i;
+	int	count;
+
+	count = 0;
+	i = 0;
+	while (s[i])
+	{
+		if (is_operator(s[i]))
+			count++;
+		i++;
+	}
+	return (count);
+}
 
 char	*extract_word(t_parse *state, char *token, char **environ)
 {
@@ -45,7 +78,7 @@ char	**tokenize_line(char *line, char **environ)
 	int		i;
 	t_token	*token;
 	t_parse	state;
-	char **tokens_parsed;
+	char	**tokens_parsed;
 
 	token = malloc(sizeof(t_token));
 	init_token(token);

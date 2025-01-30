@@ -6,25 +6,16 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:42:48 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/29 09:37:02 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:47:04 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int ac, char **av, char **environ)
+void	main_loop(char **env, t_path *path)
 {
 	char	*line;
-	char	**env;
-	char	**commands;
-	t_path	*path;
 
-	path = malloc(sizeof(t_path));
-	init_path(path);
-	(void)ac;
-	(void)av;
-	env = ft_environ(environ);
-	setup_signals();
 	while (1)
 	{
 		line = readline("minishell> ");
@@ -41,14 +32,22 @@ int	main(int ac, char **av, char **environ)
 		}
 		if (*line)
 			add_history(line);
-		commands = malloc(sizeof(char *) * (count_commands(line) + 1));
-		execute(line, commands, env, path);
-		chang_exit_status(env, ft_itoa(path->status));
-		free(commands);
-		commands = NULL;
-		free(line);
-		line = NULL;
+		execute_on_main(line, env, path);
 	}
+}
+
+int	main(int ac, char **av, char **environ)
+{
+	char	**env;
+	t_path	*path;
+
+	path = malloc(sizeof(t_path));
+	init_path(path);
+	(void)ac;
+	(void)av;
+	env = ft_environ(environ);
+	setup_signals();
+	main_loop(env, path);
 	rl_clear_history();
 	free_args(env);
 	free(path);

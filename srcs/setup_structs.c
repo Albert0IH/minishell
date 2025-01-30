@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:10:17 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/28 23:14:12 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:21:09 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,17 @@ void	init_token(t_token *token)
 	token->expanded = NULL;
 	token->word = NULL;
 }
+
 void	init_path(t_path *path_info)
 {
 	path_info->exit_status = 0;
 	path_info->full_path = NULL;
 	path_info->directories = NULL;
 	path_info->environ = NULL;
+}
+
+void	init_process(t_process *process)
+{
+	process->prev_fd = 0;
+	process->i = 0;
 }
