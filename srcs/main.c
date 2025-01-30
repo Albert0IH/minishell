@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:42:48 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/29 08:23:03 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/29 09:37:02 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ int	main(int ac, char **av, char **environ)
 			add_history(line);
 		commands = malloc(sizeof(char *) * (count_commands(line) + 1));
 		execute(line, commands, env, path);
-		
 		chang_exit_status(env, ft_itoa(path->status));
-		printf("exit status: %d\n", path->status);
 		free(commands);
 		commands = NULL;
 		free(line);
