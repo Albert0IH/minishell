@@ -6,18 +6,16 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:10:22 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 14:43:35 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:28:13 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-volatile sig_atomic_t	g_interrupted = 0;
-
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	g_interrupted = 1;
+	g_status = 1;
 	write(1, "\n", 1);
 }
 
@@ -26,11 +24,11 @@ void	d_quote(void)
 	char	*line;
 
 	signal(SIGINT, handle_sigint);
-	g_interrupted = 0;
+	g_status = 0;
 	while (1)
 	{
 		line = readline("> ");
-		if (g_interrupted)
+		if (g_status)
 		{
 			free(line);
 			break ;

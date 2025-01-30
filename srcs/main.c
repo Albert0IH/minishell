@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:42:48 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 19:36:23 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 20:35:34 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void	main_loop(char **env, t_path *path)
 			free(line);
 			break ;
 		}
+		if (*line)
+			add_history(line);
 		if (!ft_strcmp(line, "\0") || !check_readline(line))
 		{
 			free(line);
 			continue ;
 		}
-		if (*line)
-			add_history(line);
 		execute_on_main(line, env, path);
 	}
 }
