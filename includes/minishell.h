@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 14:46:48 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:56:37 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,11 @@ void		execute(char *line, char **commands, char **environ, t_path *path);
 // Builtins
 int			is_builtin(char *cmd);
 int			ft_echo(char **args);
-int			ft_cd(char **args);
+int			ft_cd(char **args, t_path *path);
 int			ft_pwd(void);
 int			ft_export(char **args, char **environ);
 int			ft_unset(char **args, char **environ);
-int			ft_env(char **environ);
+int			ft_env(char **environ, char **av, t_path *path);
 int			ft_exit(char **args);
 int			execute_builtin(char **commands, char **environ, t_path *path);
 // Redirect

@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:15:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/29 00:29:37 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/30 17:57:26 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	execute_builtin(char **commands, char **environ, t_path *path)
 	if (!ft_strcmp(commands[0], "echo"))
 		return (ft_echo(commands));
 	if (!ft_strcmp(commands[0], "cd"))
-		return (ft_cd(commands));
+		return (ft_cd(commands, path));
 	if (!ft_strcmp(commands[0], "pwd"))
 		return (ft_pwd());
 	if (!ft_strcmp(commands[0], "export"))
@@ -44,7 +44,7 @@ int	execute_builtin(char **commands, char **environ, t_path *path)
 	if (!ft_strcmp(commands[0], "unset"))
 		return (ft_unset(commands, environ));
 	if (!ft_strcmp(commands[0], "env"))
-		return (ft_env(environ));
+		return (ft_env(environ, commands, path));
 	if (!ft_strcmp(commands[0], "exit"))
 		return (ft_exit(commands));
 	path->status = 127;
