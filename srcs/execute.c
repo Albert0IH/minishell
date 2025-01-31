@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 00:56:37 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 19:22:24 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:03:56 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,5 @@ void	execute(char *line, char **commands, char **environ, t_path *path)
 	if (!commands[1])
 		execute_command(commands[0], commands, environ, path);
 	else
-	{
 		exec_multi_commands(commands, environ, path);
-	}
 }
