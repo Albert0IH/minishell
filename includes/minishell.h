@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 19:20:03 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:36:10 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,9 @@ void		init_process(t_process *process);
 void		chang_exit_status(char **env, char *status);
 char		**ft_environ(char **environ);
 char		*ft_get_env(char *var, char **environ);
+
 void		add_or_update_env_var(char *line, char *var_name, char *var_value,
-				char **environ);
+				char ***environ);
 char		*get_command_path(char *cmd, t_path *path_info, char **environ);
 char		*create_env_var(char *line, char *name, char *value);
 char		*get_env_value(char *var, char **environ);

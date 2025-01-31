@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:42:48 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/31 16:17:50 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/31 16:21:20 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	execute_on_main(char *line, char **env, t_path *path)
 		path->status = 0;
 	}
 	execute(line, commands, env, path);
-	// chang_exit_status(env, ft_itoa(path->status));
 	free(commands);
 	commands = NULL;
 	free(line);
