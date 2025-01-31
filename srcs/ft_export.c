@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:16:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/31 09:06:16 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/31 10:35:19 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,12 @@ void	add_or_update_env_var(char *line, char *var_name, char *var_value,
 	char	*new_env_var;
 	int		len;
 
-	len = ft_strlen(var_name);
 	i = 0;
+	len = ft_strlen(var_name);
 	while (environ[i])
 	{
-		if (!ft_strncmp(environ[i], var_name, len)
-			&& ((environ[i][ft_strlen(var_name)] == '='
-					|| environ[i][ft_strlen(var_name)] == '\0')))
+		if (!ft_strncmp(environ[i], var_name, len) && (environ[i][len] == '='
+			|| environ[i][len] == '\0'))
 		{
 			new_env_var = create_env_var(line, var_name, var_value);
 			if (!new_env_var)
@@ -106,22 +105,17 @@ int	ft_export(char **args, char **environ)
 	i = 1;
 	if (!args[1])
 		return (show_env(environ), 0);
-	while (args[i])
+	if (!ft_isalpha(args[i][0]) && args[i][0] != '_')
+		return (ft_putstr_fd("export: not a valid identifier\n", STDERR_FILENO),
+			1);
+	line = ft_strdup(args[i]);
+	equals_sign = ft_strchr(line, '=');
+	if (!equals_sign)
 	{
-		if (!ft_isalpha(args[i][0]) && args[i][0] != '_')
-			return (ft_putstr_fd("export: not a valid identifier\n",
-					STDERR_FILENO), 1);
-		line = ft_strdup(args[i]);
-		equals_sign = ft_strchr(line, '=');
-		if (!equals_sign)
-		{
-			add_or_update_env_var(args[i], line, "", environ);
-			i++;
-			continue ;
-		}
-		*equals_sign = '\0';
-		add_or_update_env_var(args[i], line, equals_sign + 1, environ);
-		i++;
+		add_or_update_env_var(args[i], line, "", environ);
+		return (0);
 	}
+	*equals_sign = '\0';
+	add_or_update_env_var(args[i], line, equals_sign + 1, environ);
 	return (0);
 }

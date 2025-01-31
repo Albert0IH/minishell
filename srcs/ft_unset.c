@@ -6,22 +6,17 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:20:49 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/31 08:47:26 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/31 10:34:18 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_unset(char **args, char **environ)
+void	lst_env(int i, int j, char **args, char **environ)
 {
 	char	*var_to_unset;
-	int		i;
 	int		len;
-	int		j;
 
-	if (args[1] == NULL)
-		return (0);
-	i = 1;
 	while (args[i])
 	{
 		var_to_unset = args[i];
@@ -43,5 +38,17 @@ int	ft_unset(char **args, char **environ)
 		}
 		i++;
 	}
+}
+
+int	ft_unset(char **args, char **environ)
+{
+	int		i;
+	int		j;
+
+	if (args[1] == NULL)
+		return (0);
+	i = 1;
+	j = 0;
+	lst_env(i, j, args, environ);
 	return (1);
 }
