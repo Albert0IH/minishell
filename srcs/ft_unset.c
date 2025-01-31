@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:20:49 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 17:39:45 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/31 08:47:26 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,29 @@ int	ft_unset(char **args, char **environ)
 	char	*var_to_unset;
 	int		i;
 	int		len;
+	int		j;
 
 	if (args[1] == NULL)
 		return (0);
-	i = 0;
-	var_to_unset = args[1];
-	len = strlen(var_to_unset);
-	while (environ[i])
+	i = 1;
+	while (args[i])
 	{
-		if (ft_strncmp(environ[i], var_to_unset, len) == 0
-			&& (environ[i][len] == '=' || environ[i][len] == '\0'))
+		var_to_unset = args[i];
+		len = strlen(var_to_unset);
+		j = 0;
+		while (environ[j])
 		{
-			while (environ[i])
+			if (ft_strncmp(environ[j], var_to_unset, len) == 0
+				&& (environ[j][len] == '=' || environ[j][len] == '\0'))
 			{
-				environ[i] = environ[i + 1];
-				i++;
+				while (environ[j])
+				{
+					environ[j] = environ[j + 1];
+					j++;
+				}
+				continue ;
 			}
-			return (0);
+			j++;
 		}
 		i++;
 	}

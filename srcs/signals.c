@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:52:13 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 19:32:29 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/01/31 08:27:44 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,18 @@ void	handle_signal(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	else if (sig == SIGQUIT)
-	{
-	}
 }
 
 void	setup_signals(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_handler = handle_signal;
 	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = handle_signal;
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
+	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = 0;
 	sigaction(SIGQUIT, &sa, NULL);
 }
