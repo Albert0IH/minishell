@@ -6,11 +6,12 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:16:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/31 16:38:28 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/03 15:18:48 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
 
 char	*ft_extract_name(char *s)
 {

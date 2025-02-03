@@ -6,68 +6,123 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 00:56:37 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/31 16:03:56 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/03 15:16:51 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../includes/minishell.h"
 
-void	execute_from_path(char **commands, char **environ, t_path *path)
+char	*ft_extract_name(char *s)
 {
-	pid_t	pid;
-	char	*cmd_path;
+	char	*name;
+	int		i;
 
-	pid = fork();
-	if (!pid)
+	i = 0;
+	while (s[i] && s[i] != '=')
+		i++;
+	name = malloc(i + 1);
+	if (!name)
+		return (NULL);
+	ft_strncpy(name, s, i);
+	name[i] = '\0';
+	return (name);
+}
+
+char	*ft_extract_value(char *s)
+{
+	char	*value;
+	char	*start;
+
+	start = ft_strchr(s, '=');
+	if (!start)
+		return (NULL);
+	start++;
+	value = ft_strdup(start);
+	return (value);
+}
+
+void	add_or_update_env_var(char *line, char *var_name, char *var_value,
+		char **environ)
+{
+	int		i;
+	char	*new_env_var;
+	int		len;
+
+	len = ft_strlen(var_name);
+	i = 0;
+	while (environ[i])
 	{
-		cmd_path = get_command_path(commands[0], path, environ);
-		if (execve(cmd_path, commands, environ) == -1)
+		if (!ft_strncmp(environ[i], var_name, len)
+			&& ((environ[i][ft_strlen(var_name)] == '='
+					|| environ[i][ft_strlen(var_name)] == '\0')))
 		{
-			msg_from_path(commands[0], path);
-			exit(127);
+			new_env_var = create_env_var(line, var_name, var_value);
+			if (!new_env_var)
+				return ;
+			environ[i] = new_env_var;
+			return ;
 		}
-		free(cmd_path);
+		i++;
 	}
-	else if (pid > 0)
-	{
-		signal(SIGINT, handle_sig_on_cat);
-		waitpid(pid, &path->status, 0);
-		signal(SIGINT, handle_signal);
-		if (WIFEXITED(path->status))
-			path->status = WEXITSTATUS(path->status);
-	}
-	else
-		exit(2);
-}
-
-void	execute_command(char *line, char **commands, char **environ,
-		t_path *path)
-{
-	int	saved_stdin;
-	int	saved_stdout;
-
-	commands = tokenize_line(line, environ);
-	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
-	{
-		free_args(commands);
+	new_env_var = create_env_var(line, var_name, var_value);
+	if (!new_env_var)
 		return ;
-	}
-	if (is_builtin(commands[0]))
-		execute_builtin(commands, environ, path);
-	else
-		execute_from_path(commands, environ, path);
-	free_args(commands);
-	dup2(saved_stdout, STDOUT_FILENO);
-	dup2(saved_stdin, STDIN_FILENO);
-	close(saved_stdout);
-	close(saved_stdin);
+	environ[i] = new_env_var;
+	environ[i + 1] = NULL;
 }
 
-void	execute(char *line, char **commands, char **environ, t_path *path)
+void	show_env(char **environ)
 {
-	split_commands(line, commands);
-	if (!commands[1])
-		execute_command(commands[0], commands, environ, path);
-	else
-		exec_multi_commands(commands, environ, path);
+	int		i;
+	char	*name;
+	char	*value;
+
+	i = 0;
+	while (environ[i])
+	{
+		if (ft_searc_char(environ[i], '?'))
+			i++;
+		else
+		{
+			name = ft_extract_name(environ[i]);
+			value = ft_extract_value(environ[i]);
+			if (!ft_searc_char(environ[i], '='))
+				printf("declare - x %s\n", name);
+			else
+				printf("declare - x %s=\"%s\"\n", name, value);
+			i++;
+			free(value);
+			free(name);
+		}
+	}
+}
+
+int	ft_export(char **args, char **environ)
+{
+	char	*equals_sign;
+	char	*line;
+	int		i;
+
+	i = 1;
+	if (!args[1])
+		return (show_env(environ), 0);
+	while (args[i])
+	{
+		if (!ft_isalpha(args[i][0]) && args[i][0] != '_')
+			return (ft_putstr_fd("export: not a valid identifier\n",
+					STDERR_FILENO), 1);
+		line = ft_strdup(args[i]);
+		equals_sign = ft_strchr(line, '=');
+		if (!equals_sign)
+		{
+			add_or_update_env_var(args[i], line, "", environ);
+			i++;
+			continue ;
+		}
+		*equals_sign = '\0';
+		add_or_update_env_var(args[i], line, equals_sign + 1, environ);
+		i++;
+	}
+	return (0);
 }
