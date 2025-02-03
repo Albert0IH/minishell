@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:10:17 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 13:21:09 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/03 19:57:27 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	init_path(t_path *path_info)
 {
 	path_info->exit_status = 0;
 	path_info->full_path = NULL;
+	path_info->cmd_path = NULL;
 	path_info->directories = NULL;
 	path_info->environ = NULL;
 }
