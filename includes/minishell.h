@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/31 16:36:10 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:43:12 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,22 +98,22 @@ char		**mult_lexic_sort(char **input);
 // Execute
 void		msg_from_path(char *command, t_path *path);
 void		execute_from_path(char **commands, char **environ, t_path *path);
-void		execute_command(char *line, char **commands, char **environ,
+void		execute_command(char *line, char **commands, char ***environ,
 				t_path *path);
-void		exec_multi_commands(char **commands, char **environ, t_path *path);
+void		exec_multi_commands(char **commands, char ***environ, t_path *path);
 
-void		execute_on_main(char *line, char **env, t_path *path);
-void		execute(char *line, char **commands, char **environ, t_path *path);
+void		execute_on_main(char *line, char ***env, t_path *path);
+void		execute(char *line, char **commands, char ***environ, t_path *path);
 // Builtins
 int			is_builtin(char *cmd);
 int			ft_echo(char **args);
 int			ft_cd(char **args, t_path *path);
 int			ft_pwd(void);
-int			ft_export(char **args, char **environ);
-int			ft_unset(char **args, char **environ);
+int			ft_export(char **args, char ***environ);
+int			ft_unset(char **args, char ***environ);
 int			ft_env(char **environ, char **av, t_path *path);
 int			ft_exit(char **args);
-int			execute_builtin(char **commands, char **environ, t_path *path);
+int			execute_builtin(char **commands, char ***environ, t_path *path);
 // Redirect
 void		d_quote(void);
 void		redir_in(char **args, int fd, int i);

@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:25:57 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 14:30:10 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:29:47 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	close_process(int prev_fd)
 		;
 }
 
-void	exec_multi_commands(char **commands, char **environ, t_path *path)
+void	exec_multi_commands(char **commands, char ***environ, t_path *path)
 {
 	t_process	*process;
 

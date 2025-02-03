@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:42:48 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/31 16:21:20 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:42:05 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 int		g_status = 0;
 
-void	execute_on_main(char *line, char **env, t_path *path)
+void	execute_on_main(char *line, char ***env, t_path *path)
 {
 	char	**commands;
 	path->status = 0;
 	commands = malloc(sizeof(char *) * (count_commands(line) + 1));
 	if (g_status == 130)
 	{
-		chang_exit_status(env, ft_itoa(g_status));
+		chang_exit_status(*env, ft_itoa(g_status));
 		g_status = 0;
 		path->status = 0;
 	}
 	else
 	{
-		chang_exit_status(env, ft_itoa(path->status));
+		chang_exit_status(*env, ft_itoa(path->status));
 		path->status = 0;
 	}
 	execute(line, commands, env, path);
@@ -37,7 +37,7 @@ void	execute_on_main(char *line, char **env, t_path *path)
 	line = NULL;
 }
 
-void	main_loop(char **env, t_path *path)
+void	main_loop(char ***env, t_path *path)
 {
 	char	*line;
 
@@ -72,7 +72,7 @@ int	main(int ac, char **av, char **environ)
 	(void)av;
 	env = ft_environ(environ);
 	setup_signals();
-	main_loop(env, path);
+	main_loop(&env, path);
 	rl_clear_history();
 	free_args(env);
 	free(path);

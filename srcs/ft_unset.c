@@ -6,13 +6,13 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:20:49 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/31 08:47:26 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:38:02 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_unset(char **args, char **environ)
+int	ft_unset(char **args, char ***environ)
 {
 	char	*var_to_unset;
 	int		i;
@@ -27,14 +27,14 @@ int	ft_unset(char **args, char **environ)
 		var_to_unset = args[i];
 		len = strlen(var_to_unset);
 		j = 0;
-		while (environ[j])
+		while (*environ[j])
 		{
-			if (ft_strncmp(environ[j], var_to_unset, len) == 0
-				&& (environ[j][len] == '=' || environ[j][len] == '\0'))
+			if (ft_strncmp(*environ[j], var_to_unset, len) == 0
+				&& ((*environ)[j][len] == '=' || (*environ)[j][len] == '\0'))
 			{
-				while (environ[j])
+				while (*environ[j])
 				{
-					environ[j] = environ[j + 1];
+					*environ[j] = *environ[j + 1];
 					j++;
 				}
 				continue ;

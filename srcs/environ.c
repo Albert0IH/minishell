@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:15:11 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/30 09:44:07 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:42:25 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	chang_exit_status(char **env, char *status)
 	i = 0;
 	while (env[i])
 	{
-		if (!ft_strncmp(env[i], "?=", 2))
+		if (!ft_strncmp((env)[i], "?=", 2))
 		{
 			free(env[i]);
 			env[i] = NULL;
@@ -84,7 +84,7 @@ char	*create_env_var(char *line, char *name, char *value)
 		perror("malloc");
 		return (NULL);
 	}
-	new_env_var = ft_strdup(name);
+	ft_strcpy(new_env_var, name);
 	if (ft_searc_char(line, '='))
 		ft_strcat(new_env_var, "=");
 	ft_strcat(new_env_var, value);
