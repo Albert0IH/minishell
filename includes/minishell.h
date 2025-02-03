@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/03 18:43:12 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/03 19:50:04 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char		*expand_env_vars(const char *s, char **environ);
 char		**mult_lexic_sort(char **input);
 // Execute
 void		msg_from_path(char *command, t_path *path);
-void		execute_from_path(char **commands, char **environ, t_path *path);
+void		execute_from_path(char **commands, char **environ, t_path *path, char *cmd_path);
 void		execute_command(char *line, char **commands, char ***environ,
 				t_path *path);
 void		exec_multi_commands(char **commands, char ***environ, t_path *path);

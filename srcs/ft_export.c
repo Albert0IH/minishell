@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:16:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/03 18:59:52 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/03 19:34:00 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,12 @@ char	*ft_extract_value(char *s)
 	return (value);
 }
 
-
-void	add_or_update_env_var(char *line, char *var_name, char *var_value,
+void	update_env_var(char *line, char *var_name, char *var_value,
 		char ***environ)
 {
 	int		i;
 	char	*new_var;
 	int		len;
-	int		size;
-	char	**new_environ;
 
 	len = strlen(var_name);
 	i = 0;
@@ -67,24 +64,33 @@ void	add_or_update_env_var(char *line, char *var_name, char *var_value,
 		}
 		i++;
 	}
+}
+
+void	add_or_update_env_var(char *line, char *var_name, char *var_value,
+		char ***environ)
+{
+	int		i;
+	char	*new_var;
+	int		size;
+	char	**new_environ;
+
+	update_env_var(line, var_name, var_value, environ);
 	new_var = create_env_var(line, var_name, var_value);
 	if (!new_var)
 		return ;
-    size = count_lines(*environ);
-    new_environ = malloc(sizeof(char *) * (size + 2));
-    i = 0;
-    while (i < (size))
-    {
-        new_environ[i] = ft_strdup((*environ)[i]);
-        i++;
-    }
-    new_environ[i] = new_var;
-    new_environ[i + 1] = NULL;
-    free_args(*environ);
-    *environ = new_environ;
+	size = count_lines(*environ);
+	new_environ = malloc(sizeof(char *) * (size + 2));
+	i = 0;
+	while (i < (size))
+	{
+		new_environ[i] = ft_strdup((*environ)[i]);
+		i++;
+	}
+	new_environ[i] = new_var;
+	new_environ[i + 1] = NULL;
+	free_args(*environ);
+	*environ = new_environ;
 }
-
-
 
 void	show_env(char **environ)
 {
@@ -130,13 +136,11 @@ int	ft_export(char **args, char ***environ)
 		equals_sign = ft_strchr(line, '=');
 		if (!equals_sign)
 		{
-			add_or_update_env_var(args[i], line, "", environ);
-			i++;
+			add_or_update_env_var(args[i++], line, "", environ);
 			continue ;
 		}
 		*equals_sign = '\0';
-		add_or_update_env_var(args[i], line, equals_sign + 1, environ);
-		i++;
+		add_or_update_env_var(args[i++], line, equals_sign + 1, environ);
 	}
 	free(line);
 	return (0);
