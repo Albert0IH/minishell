@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/04 11:22:14 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:16:31 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_path
 	char	*full_path;
 	char	**directories;
 	char	*path;
-	char *cmd_path;
+	char	*cmd_path;
 	int		status;
 }			t_path;
 
@@ -103,7 +103,7 @@ void		execute_command(char *line, char **commands, char ***environ,
 				t_path *path);
 void		exec_multi_commands(char **commands, char ***environ, t_path *path);
 
-void		execute_on_main(char *line, char ***env, t_path *path);
+void		execute_on_main(char *line, char ***env, t_path *path, int status);
 void		execute(char *line, char **commands, char ***environ, t_path *path);
 // Builtins
 int			is_builtin(char *cmd);
