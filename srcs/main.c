@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:42:48 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/03 18:42:05 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:21:33 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	main(int ac, char **av, char **environ)
 	init_path(path);
 	(void)ac;
 	(void)av;
+	env = NULL;
 	env = ft_environ(environ);
 	setup_signals();
 	main_loop(&env, path);

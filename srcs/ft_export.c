@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:16:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/03 19:34:00 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:05:45 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	update_env_var(char *line, char *var_name, char *var_value,
 	i = 0;
 	while ((*environ)[i])
 	{
-		if (!strncmp((*environ)[i], var_name, len) && ((*environ)[i][len] == '='
-				|| (*environ)[i][len] == '\0'))
+		if (!ft_strncmp((*environ)[i], var_name, len)
+			&& ((*environ)[i][len] == '=' || (*environ)[i][len] == '\0'))
 		{
 			new_var = create_env_var(line, var_name, var_value);
 			if (!new_var)
@@ -73,8 +73,25 @@ void	add_or_update_env_var(char *line, char *var_name, char *var_value,
 	char	*new_var;
 	int		size;
 	char	**new_environ;
+	int		len;
 
-	update_env_var(line, var_name, var_value, environ);
+	// update_env_var(line, var_name, var_value, environ);
+	len = strlen(var_name);
+	i = 0;
+	while ((*environ)[i])
+	{
+		if (!ft_strncmp((*environ)[i], var_name, len)
+			&& ((*environ)[i][len] == '=' || (*environ)[i][len] == '\0'))
+		{
+			new_var = create_env_var(line, var_name, var_value);
+			if (!new_var)
+				return ;
+			free((*environ)[i]);
+			(*environ)[i] = new_var;
+			return ;
+		}
+		i++;
+	}
 	new_var = create_env_var(line, var_name, var_value);
 	if (!new_var)
 		return ;
