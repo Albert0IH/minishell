@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:16:09 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/04 10:05:45 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:14:50 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,13 @@ void	update_env_var(char *line, char *var_name, char *var_value,
 	}
 }
 
-void	add_or_update_env_var(char *line, char *var_name, char *var_value,
+void	update_environ(char *line, char *var_name, char *var_value,
 		char ***environ)
 {
 	int		i;
 	char	*new_var;
-	int		size;
-	char	**new_environ;
 	int		len;
 
-	// update_env_var(line, var_name, var_value, environ);
 	len = strlen(var_name);
 	i = 0;
 	while ((*environ)[i])
@@ -92,6 +89,17 @@ void	add_or_update_env_var(char *line, char *var_name, char *var_value,
 		}
 		i++;
 	}
+}
+
+void	add_in_environ(char *line, char *var_name, char *var_value,
+		char ***environ)
+
+{
+	int i;
+	char *new_var;
+	int size;
+	char **new_environ;
+
 	new_var = create_env_var(line, var_name, var_value);
 	if (!new_var)
 		return ;
@@ -107,6 +115,15 @@ void	add_or_update_env_var(char *line, char *var_name, char *var_value,
 	new_environ[i + 1] = NULL;
 	free_args(*environ);
 	*environ = new_environ;
+}
+
+void	add_or_update_env_var(char *line, char *var_name, char *var_value,
+		char ***environ)
+{
+	if (ft_search_on_env(*environ, var_name))
+		update_environ(line, var_name, var_value, environ);
+	else
+		add_in_environ(line, var_name, var_value, environ);
 }
 
 void	show_env(char **environ)

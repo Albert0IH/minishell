@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 17:00:30 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/01/27 19:48:03 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:12:50 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,24 @@ int	ft_search_str(char **array, char *s)
 		i++;
 	}
 	return (count);
+}
+
+int	ft_search_on_env(char **array, char *s)
+{
+	int	i;
+	int len;
+
+	i = 0;
+	len = 0;
+	while (s[len] && s[len] != '=')
+		len++;
+	while (array[i])
+	{
+		if (!ft_strncmp(array[i], s, len))
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	ft_searc_char(char *s, char c)

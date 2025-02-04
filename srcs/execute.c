@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 00:56:37 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/04 13:52:45 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:59:40 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	execute_from_path(char **commands, char ***environ, t_path *path)
 	{
 		if (execve(path->cmd_path, commands, *environ) == -1)
 			exit(2);
-		// free(path->cmd_path);
 	}
 	else if (pid > 0)
 	{
@@ -33,18 +32,8 @@ void	execute_from_path(char **commands, char ***environ, t_path *path)
 		exit(2);
 }
 
-void	execute_command(char *line, char **commands, char ***environ,
-		t_path *path)
+void	exec(char **commands, char ***environ, t_path *path)
 {
-	int	saved_stdin;
-	int	saved_stdout;
-
-	commands = tokenize_line(line, *environ);
-	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
-	{
-		free_args(commands);
-		return ;
-	}
 	if (is_builtin(commands[0]))
 	{
 		path->status = 0;
@@ -66,6 +55,21 @@ void	execute_command(char *line, char **commands, char ***environ,
 		free(path->cmd_path);
 	}
 	free_args(commands);
+}
+
+void	execute_command(char *line, char **commands, char ***environ,
+		t_path *path)
+{
+	int	saved_stdin;
+	int	saved_stdout;
+
+	commands = tokenize_line(line, *environ);
+	if (handle_redir(commands, &saved_stdout, &saved_stdin) < 0)
+	{
+		free_args(commands);
+		return ;
+	}
+	exec(commands, environ, path);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	close(saved_stdout);

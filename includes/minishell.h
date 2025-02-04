@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 18:39:59 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/04 12:16:31 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:10:34 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int			check_readline(char *line);
 void		print_tokens(char **tokens);
 int			count_lines(char **s);
 int			ft_search_str(char **array, char *s);
+int			ft_search_on_env(char **array, char *s);
 int			ft_searc_char(char *s, char c);
 void		free_matrix(char **matrix);
 int			is_operator(char *s);
