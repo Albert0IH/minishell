@@ -6,40 +6,11 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 00:56:37 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/04 10:24:53 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:32:20 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	execute_from_path(char **commands, char **environ, t_path *path)
-{
-	pid_t	pid;
-	char	*cmd_path;
-
-	pid = fork();
-	if (!pid)
-	{
-		cmd_path = get_command_path(commands[0], path, environ);
-		if (execve(cmd_path, commands, environ) == -1)
-		{
-			msg_from_path(commands[0], path);
-			path->status = 127;
-			exit(127);
-		}
-		free(cmd_path);
-	}
-	else if (pid > 0)
-	{
-		signal(SIGINT, handle_sig_on_cat);
-		waitpid(pid, &path->status, 0);
-		signal(SIGINT, handle_signal);
-		if (WIFEXITED(path->status))
-			path->status = WEXITSTATUS(path->status);
-	}
-	else
-		exit(2);
-}
 
 void	execute_command(char *line, char **commands, char ***environ,
 		t_path *path)
@@ -56,7 +27,16 @@ void	execute_command(char *line, char **commands, char ***environ,
 	if (is_builtin(commands[0]))
 		execute_builtin(commands, environ, path);
 	else
-		execute_from_path(commands, *environ, path);
+	{
+		path->cmd_path = get_command_path(commands[0], path, *environ);
+		if (!path->cmd_path)
+		{
+			msg_from_path(commands[0], path);
+			path->status = 127;
+			return ;
+		}
+		execute_from_path(commands, environ, path);
+	}
 	free_args(commands);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);

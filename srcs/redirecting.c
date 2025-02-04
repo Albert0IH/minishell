@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 11:25:09 by adinis            #+#    #+#             */
-/*   Updated: 2025/01/30 12:37:43 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:47:36 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	handle_redir(char **args, int *saved_stdout, int *saved_stdin)
 			fd = open(args[i + 1], O_RDONLY);
 			redir_out(args, fd, i);
 		}
-		else if (!ft_strcmp(args[i], "<<"))
+		else if (!ft_strcmp(args[i], "<<") && args[i + 1])
 		{
 			delim = args[i + 1];
 			here_doc(args, i, delim, pipefd);

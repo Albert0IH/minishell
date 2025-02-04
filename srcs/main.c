@@ -6,13 +6,33 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 16:42:48 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/04 10:21:33 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:31:13 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int		g_status = 0;
+
+void	execute_from_path(char **commands, char ***environ, t_path *path)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (!pid)
+	{
+		if (execve(path->cmd_path, commands, *environ) == -1)
+			exit(2);
+		free(path->cmd_path);
+	}
+	else if (pid > 0)
+	{
+		signal(SIGINT, handle_sig_on_cat);
+		waitpid(pid, &path->status, 0);
+	}
+	else
+		exit(2);
+}
 
 void	execute_on_main(char *line, char ***env, t_path *path)
 {

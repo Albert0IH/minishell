@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:20:49 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/04 10:29:21 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 10:31:50 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	remove_env_var(char *var_name, char ***environ)
 		}
 		new_environ[j++] = ft_strdup((*environ)[i++]);
 	}
-	//new_environ[j] = NULL;
+	new_environ[j] = NULL;
 	free_args(*environ);
 	*environ = new_environ;
 }
