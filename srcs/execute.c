@@ -6,7 +6,7 @@
 /*   By: ahamuyel <ahamuyel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 00:56:37 by ahamuyel          #+#    #+#             */
-/*   Updated: 2025/02/04 12:41:35 by ahamuyel         ###   ########.fr       */
+/*   Updated: 2025/02/04 13:52:45 by ahamuyel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	execute_from_path(char **commands, char ***environ, t_path *path)
 	{
 		if (execve(path->cmd_path, commands, *environ) == -1)
 			exit(2);
-		free(path->cmd_path);
+		// free(path->cmd_path);
 	}
 	else if (pid > 0)
 	{
@@ -59,9 +59,11 @@ void	execute_command(char *line, char **commands, char ***environ,
 			msg_from_path(commands[0], path);
 			path->status = 127;
 			chang_exit_status(*environ, ft_itoa(path->status));
+			free_args(commands);
 			return ;
 		}
 		execute_from_path(commands, environ, path);
+		free(path->cmd_path);
 	}
 	free_args(commands);
 	dup2(saved_stdout, STDOUT_FILENO);
